@@ -1413,23 +1413,38 @@ html[data-theme="dark"] .cls-opt.active { color: var(--alm-cyan); }
   bk.addEventListener('click', closeAllPanels);
 
   function openPanel(panel, triggerEl) {
+    /* Toggle: second click on same trigger closes the panel */
+    if (panel._trigger === triggerEl && panel.classList.contains('open')) {
+      closeAllPanels();
+      return;
+    }
     closeAllPanels();
+    panel._trigger = triggerEl;
     positionPanel(panel, triggerEl);
     panel.classList.add('open');
     bk.classList.add('open');
   }
 
   function positionPanel(panel, trigger) {
-    var r = trigger.getBoundingClientRect();
-    var pw = panel.offsetWidth || 296;
-    var ph = panel.offsetHeight || 340;
-    var space = window.innerHeight - r.bottom - 8;
-    var top = space > ph ? r.bottom + 6 : r.top - ph - 6;
-    var left = r.left;
-    if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
-    if (left < 8) left = 8;
-    if (top < 8) top = 8;
-    panel.style.top  = top  + 'px';
+    var r     = trigger.getBoundingClientRect();
+    var pw    = panel.offsetWidth || 296;
+    var isRtl = html.dir === 'rtl';
+
+    /* ── Vertical: open directly below trigger, slide up only as needed ── */
+    var PANEL_H = panel === panelPax ? 380 : 320;
+    var ideal   = r.bottom + 4;
+    var overflow = (ideal + PANEL_H) - (window.innerHeight - 4);
+    var top = overflow > 0
+      ? Math.max(r.top, ideal - overflow)  /* slide up, but never above field top */
+      : ideal;
+    if (top < 4) top = 4;
+
+    /* ── Horizontal: start-edge of trigger in LTR, end-edge in RTL ── */
+    var left = isRtl ? (r.right - pw) : r.left;
+    if (left + pw > window.innerWidth - 4) left = window.innerWidth - pw - 4;
+    if (left < 4) left = 4;
+
+    panel.style.top  = top + 'px';
     panel.style.left = left + 'px';
   }
 
