@@ -1458,26 +1458,29 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
     }
     closeAllPanels();
     panel._trigger = triggerEl;
-    positionPanel(panel, triggerEl);
+    /* Reveal invisibly FIRST so offsetHeight/offsetWidth are real measurements */
+    panel.style.visibility = 'hidden';
     panel.classList.add('open');
+    positionPanel(panel, triggerEl);   /* now uses actual rendered dimensions */
+    panel.style.visibility = '';
     bk.classList.add('open');
   }
 
   function positionPanel(panel, trigger) {
     var r     = trigger.getBoundingClientRect();
-    var pw    = panel.offsetWidth || 296;
+    var pw    = panel.offsetWidth  || 296;
+    var ph    = panel.offsetHeight || 320;  /* real height — panel is already visible */
     var isRtl = html.dir === 'rtl';
 
-    /* ── Vertical: open directly below trigger, slide up only as needed ── */
-    var PANEL_H = panel === panelPax ? 380 : 320;
-    var ideal   = r.bottom + 4;
-    var overflow = (ideal + PANEL_H) - (window.innerHeight - 4);
+    /* ── Vertical: directly below trigger; slide up only if it would overflow ── */
+    var ideal    = r.bottom + 4;
+    var overflow = (ideal + ph) - (window.innerHeight - 4);
     var top = overflow > 0
-      ? Math.max(r.top, ideal - overflow)  /* slide up, but never above field top */
+      ? Math.max(r.top - ph - 4, ideal - overflow)  /* try above field if no room below */
       : ideal;
     if (top < 4) top = 4;
 
-    /* ── Horizontal: start-edge of trigger in LTR, end-edge in RTL ── */
+    /* ── Horizontal: start-edge in LTR, end-edge in RTL ── */
     var left = isRtl ? (r.right - pw) : r.left;
     if (left + pw > window.innerWidth - 4) left = window.innerWidth - pw - 4;
     if (left < 4) left = 4;
@@ -1603,10 +1606,10 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
     var r   = trigger.getBoundingClientRect();
     var pw  = Math.max(256, Math.round(r.width));
     panelSuggest.style.width = pw + 'px';
+    var ph    = panelSuggest.offsetHeight || 200; /* real height — panel already visible */
     var ideal    = r.bottom + 4;
-    var PANEL_H  = 308;
-    var overflow = (ideal + PANEL_H) - (window.innerHeight - 4);
-    var top = overflow > 0 ? Math.max(r.top, ideal - overflow) : ideal;
+    var overflow = (ideal + ph) - (window.innerHeight - 4);
+    var top = overflow > 0 ? Math.max(r.top - ph - 4, ideal - overflow) : ideal;
     if (top < 4) top = 4;
     var isRtl = html.dir === 'rtl';
     var left  = isRtl ? (r.right - pw) : r.left;
@@ -1667,10 +1670,12 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
       });
     });
 
-    /* ── Position ONCE on first open; typing only updates content, panel never moves ── */
+    /* ── Position ONCE on first open (show invisible first to measure real height) ── */
     if (!panelSuggest.classList.contains('open') || panelSuggest._anchor !== sfInput) {
+      panelSuggest.style.visibility = 'hidden';
+      panelSuggest.classList.add('open');   /* display:block → offsetHeight is real */
       positionSuggest(sfInput);
-      panelSuggest.classList.add('open');
+      panelSuggest.style.visibility = '';
     }
   }
 
@@ -2111,9 +2116,17 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
 
   /* ── Reposition panels on resize ── */
   window.addEventListener('resize', function () {
-    if (panelPicker.classList.contains('open')  && PK.trigger)         positionPanel(panelPicker, PK.trigger);
+    if (panelPicker.classList.contains('open')  && PK.trigger)           positionPanel(panelPicker, PK.trigger);
+    if (panelPax.classList.contains('open')     && panelPax._trigger)    positionPanel(panelPax,    panelPax._trigger);
+    if (panelRooms.classList.contains('open')   && panelRooms._trigger)  positionPanel(panelRooms,  panelRooms._trigger);
     if (panelSuggest.classList.contains('open') && panelSuggest._anchor) positionSuggest(panelSuggest._anchor);
   });
+
+  /* ── Close all panels when user scrolls (panel can't chase the field) ── */
+  window.addEventListener('scroll', function () {
+    closeAllPanels();
+    closeSuggest();
+  }, { passive: true });
 
 }());
 </script>
