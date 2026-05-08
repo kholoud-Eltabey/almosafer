@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almosafer | المسافر</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ── TOKENS ── */
+:root {
+  --alm-dark:  #003B4A;
+  --alm-cyan:  #00B7C6;
+  --alm-red:   #E63946;
+  --alm-white: #FFFFFF;
+
+  --text-primary:   #003B4A;
+  --text-secondary: #4B7A85;
+  --text-subtle:    #7A9EA8;
+  --bg-page:        #F0F5F7;
+  --bg-surface:     #FFFFFF;
+  --border:         #D0E2E6;
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-full: 9999px;
+
+  --shadow-card:   0 2px 12px rgba(0,59,74,0.10);
+  --shadow-widget: 0 16px 60px rgba(0,0,0,0.22);
+
+  --sf-h: 56px;   /* shared height for every booking widget frame */
+
+  --font:    'IBM Plex Sans', sans-serif;
+  --font-ar: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-family: var(--font); }
+html[lang="ar"] { font-family: var(--font-ar); }
+body { font-family: inherit; background: var(--bg-page); color: var(--text-primary); line-height: 1.5; }
+a { text-decoration: none; color: inherit; }
+img { display: block; }
+ul { list-style: none; }
+button { cursor: pointer; font-family: inherit; border: none; background: none; }
+input, select, textarea { font-family: inherit; }
+
+/* Bilingual helpers */
+.ar { display: none; }
+.en { display: inline; }
+[lang="ar"] .ar { display: inline; }
+[lang="ar"] .en { display: none; }
+
+/* ── HEADER ── */
+.header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--alm-dark);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.header-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 24px; height: 62px;
+  display: flex; align-items: center; gap: 12px;
+}
+
+/* Logo */
+.logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.logo-icon {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.14);
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-icon svg { width: 20px; height: 20px; }
+/* Logo language switching */
+.logo-en { display: flex; }
+.logo-ar { display: none; }
+html[lang="ar"] .logo-en { display: none; }
+html[lang="ar"] .logo-ar { display: flex; }
+
+.logo-wordmark {
+  font-size: 19px; font-weight: 700; letter-spacing: -0.3px; font-family: var(--font);
+  color: var(--alm-white); display: flex; align-items: baseline;
+  font-family: var(--font);
+}
+.logo-o {
+  background: linear-gradient(90deg, var(--alm-cyan) 50%, var(--alm-red) 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+/* Arabic wordmark — gradient targets only the م zone (63-83% from left) */
+.logo-ar .logo-wordmark {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  background: linear-gradient(to right,
+    #fff 63%,
+    var(--alm-red)  63% 73%,
+    var(--alm-cyan) 73% 83%,
+    #fff 83%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Header nav */
+.header-nav { display: flex; align-items: center; gap: 2px; margin-inline-start: 24px; }
+.nav-link {
+  padding: 6px 13px; border-radius: var(--r-md);
+  font-size: 13.5px; font-weight: 500;
+  color: rgba(255,255,255,0.65);
+  transition: background 120ms, color 120ms;
+  white-space: nowrap;
+}
+.nav-link:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.nav-link.active { background: rgba(0,183,198,0.15); color: var(--alm-cyan); font-weight: 600; }
+
+/* Header right */
+.header-right { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; }
+.btn-lang {
+  padding: 6px 13px; border-radius: var(--r-full);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.72); font-size: 12.5px; font-weight: 600;
+  transition: all 120ms; white-space: nowrap;
+}
+.btn-lang:hover { border-color: var(--alm-cyan); color: var(--alm-cyan); }
+.btn-signin {
+  padding: 8px 18px; border-radius: var(--r-full);
+  background: var(--alm-cyan); color: var(--alm-dark);
+  font-size: 13px; font-weight: 700; white-space: nowrap;
+  transition: opacity 120ms;
+}
+.btn-signin:hover { opacity: 0.88; }
+
+@media (max-width: 860px) { .header-nav { display: none; } }
+@media (max-width: 560px) {
+  .header-inner { padding: 0 16px; }
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative; overflow: hidden;
+  padding: 0 0 48px;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://i.pinimg.com/originals/d8/95/57/d895577536b16260a3abd28f0be08075.jpg');
+  background-size: cover; background-position: center 50%;
+}
+.hero-scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,20,40,0.38) 0%, rgba(0,15,35,0.30) 55%, rgba(0,10,30,0.50) 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 1060px; margin: 0 auto;
+  padding: 60px 24px 0; text-align: center;
+}
+.hero-title {
+  font-size: clamp(22px, 3.5vw, 38px); font-weight: 700;
+  color: #fff; line-height: 1.15; margin-bottom: 8px;
+}
+.hero-sub {
+  font-size: clamp(13px, 1.6vw, 15px); color: rgba(255,255,255,0.68);
+  margin-bottom: 32px; font-weight: 400;
+}
+
+/* ── SEARCH SHELL — tabs float over hero, panel below ── */
+.search-shell { max-width: 1040px; margin: 0 auto; text-align: start; }
+
+/* Tabs row — sits on image */
+.sh-tabs { display: flex; gap: 3px; }
+.sh-tab {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 8px 12px; border-radius: 12px 12px 0 0;
+  font-size: 12px; font-weight: 400; font-family: inherit; white-space: nowrap;
+  background: rgba(0,0,0,0.30); backdrop-filter: blur(10px);
+  color: rgba(255,255,255,0.80); border: none; cursor: pointer;
+  transition: background 150ms, color 150ms;
+}
+.sh-tab.active { background: #fff; color: var(--alm-dark); }
+.sh-tab:not(.active):hover { background: rgba(255,255,255,0.15); color: #fff; }
+.sh-tab svg { width: 13px; height: 13px; flex-shrink: 0; color: inherit; }
+
+/* White panel */
+.sh-panel {
+  background: #fff; padding: 20px 22px 22px;
+  border-radius: 0 16px 16px 16px;
+  box-shadow: 0 20px 64px rgba(0,0,0,0.24);
+  transition: border-radius 100ms;
+}
+.sh-panel[data-corner="1"] { border-radius: 16px 16px 16px 16px; }
+.sh-panel[data-corner="2"] { border-radius: 16px 16px 16px 16px; }
+
+/* Form panels */
+.sh-form { display: none; }
+.sh-form.active { display: block; }
+
+/* Trip type + checkboxes row */
+.sf-options {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 14px; flex-wrap: wrap;
+}
+.sf-chip {
+  padding: 5px 15px; border-radius: var(--r-full);
+  border: 1.5px solid var(--border);
+  font-size: 12.5px; font-weight: 500; color: var(--text-subtle);
+  cursor: pointer; transition: all 120ms; white-space: nowrap; background: none;
+}
+.sf-chip.active {
+  border-color: var(--alm-cyan); color: var(--alm-dark);
+  background: rgba(0,183,198,0.10); font-weight: 600;
+}
+.sf-options-spacer { flex: 1; min-width: 12px; }
+.sf-check {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 12px; color: var(--text-subtle); cursor: pointer; white-space: nowrap;
+}
+.sf-check input { accent-color: var(--alm-cyan); width: 14px; height: 14px; }
+
+/* Input row */
+.sf-row { display: flex; gap: 8px; align-items: flex-end; }
+.sf-field { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.sf-field label {
+  font-size: 9.5px; font-weight: 700; color: var(--text-subtle);
+  text-transform: uppercase; letter-spacing: 0.9px; padding-inline-start: 2px;
+}
+.sf-input {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 12px; border-radius: var(--r-md);
+  min-height: var(--sf-h);
+  border: 1.5px solid var(--border); background: #F4F8FA;
+  cursor: pointer;
+  transition: border-color 120ms, background 120ms; position: relative;
+}
+.sf-input:hover { border-color: var(--alm-cyan); background: #fff; }
+.sf-input > svg { width: 16px; height: 16px; color: var(--text-subtle); flex-shrink: 0; }
+.sf-val { font-size: 12px; font-weight: 400; color: var(--text-primary); display: block; line-height: 1.25; }
+.sf-hint { font-size: 12px; font-weight: 400; color: var(--text-subtle); display: block; margin-top: 1px; }
+.sf-muted { font-size: 12px !important; font-weight: 400 !important; color: var(--text-subtle) !important; }
+
+/* Multi-city placeholder text — compact single-line at hint scale */
+.mc-grid .sf-val { font-size: 10px; font-weight: 400; }
+
+/* Swap btn between From/To */
+.sf-swap-wrap {
+  display: flex; align-items: flex-end; padding-bottom: 4px; flex-shrink: 0;
+}
+.sf-swap {
+  width: 32px; height: 32px; border-radius: var(--r-full);
+  border: 1.5px solid var(--alm-cyan); background: #fff; color: var(--alm-cyan);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 150ms; margin: 0 -6px; z-index: 1;
+}
+.sf-swap:hover { background: var(--alm-cyan); color: #fff; transform: rotate(180deg); }
+.sf-swap svg { width: 14px; height: 14px; }
+
+/* Clear icon inside a field */
+.sf-clear {
+  margin-inline-start: auto; width: 20px; height: 20px; border-radius: 50%;
+  background: #E0E8EC; color: var(--text-subtle);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; cursor: pointer; font-size: 10px; font-weight: 700;
+  transition: background 120ms; line-height: 1;
+}
+.sf-clear:hover { background: #C8D8DE; }
+
+/* Search button */
+.sf-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 28px; border-radius: var(--r-md);
+  min-height: var(--sf-h);
+  background: var(--alm-red); color: #fff;
+  font-size: 12px; font-weight: 500; white-space: nowrap; flex-shrink: 0;
+  align-self: flex-end; border: none; cursor: pointer;
+  box-shadow: 0 4px 18px rgba(230,57,70,0.32);
+  transition: opacity 120ms, transform 120ms;
+}
+.sf-btn:hover { opacity: 0.90; transform: translateY(-1px); }
+.sf-btn svg { width: 16px; height: 16px; }
+
+/* Multi-city grid — 5 equal columns; extra rows use only first 3 */
+.mc-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  align-items: end;
+}
+.mc-grid .sf-btn {
+  width: 100%;
+  justify-content: center;
+  align-self: end;
+  box-sizing: border-box;
+}
+.mc-grid .sf-val,
+.mc-grid .sf-hint,
+.mc-grid label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.mc-grid .sf-input > div {
+  overflow: hidden;
+  min-width: 0;
+}
+.mc-add-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 12px; background: none; border: none; padding: 0;
+  color: var(--alm-cyan); font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: opacity 120ms;
+}
+.mc-add-link:hover { opacity: 0.72; }
+.mc-add-link:disabled { opacity: 0.35; cursor: not-allowed; }
+.mc-add-link svg { width: 13px; height: 13px; }
+
+
+/* ── RESPONSIVE ── */
+
+/* Tablet ≤ 860px */
+@media (max-width: 860px) {
+  .hero-content   { padding: 40px 16px 0; }
+  .hero           { padding-bottom: 40px; }
+  .sh-panel       { padding: 16px 14px 18px; }
+  .sf-row         { flex-wrap: wrap; }
+  .sf-field       { min-width: calc(50% - 4px); }
+  .sf-btn         { width: 100%; justify-content: center; margin-top: 0; padding: 12px; }
+  .sf-swap-wrap   { display: none; }
+  .sf-check       { display: none; }
+  .sf-options-spacer { display: none; }
+  /* Multi-city → 3 equal cols; search button spans full row */
+  .mc-grid                { grid-template-columns: repeat(3, 1fr); }
+  .mc-grid > button.sf-btn { grid-column: 1 / -1; }
+}
+
+/* Large phone ≤ 600px */
+@media (max-width: 600px) {
+  /* Tabs scroll horizontally instead of wrapping */
+  .sh-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+  .sh-tabs::-webkit-scrollbar { display: none; }
+  /* Multi-city → 2 cols */
+  .mc-grid                { grid-template-columns: repeat(2, 1fr); }
+  .mc-grid > button.sf-btn { grid-column: 1 / -1; }
+  /* Header: hide sign-in label, keep button compact */
+  .btn-signin { padding: 7px 12px; font-size: 12px; }
+  .section    { padding: 36px 16px; }
+}
+
+/* Phone ≤ 480px */
+@media (max-width: 480px) {
+  .sf-field   { min-width: 100%; }
+  .sh-tab     { padding: 8px 10px; font-size: 11.5px; }
+  /* Multi-city → single column */
+  .mc-grid                { grid-template-columns: 1fr; }
+  .mc-grid > button.sf-btn { grid-column: 1; }
+  .header-inner { gap: 8px; }
+  .btn-lang   { display: none; }
+}
+
+/* ── DESTINATIONS ── */
+.section { max-width: 1200px; margin: 0 auto; padding: 52px 24px; }
+.section-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 28px; gap: 12px;
+}
+.section-title { font-size: clamp(20px, 2.5vw, 26px); font-weight: 700; color: var(--text-primary); }
+.section-sub { font-size: 13px; color: var(--text-subtle); margin-top: 3px; }
+.see-all {
+  display: flex; align-items: center; gap: 4px;
+  padding: 7px 14px; border-radius: var(--r-full);
+  border: 1.5px solid var(--border); background: var(--bg-surface);
+  color: var(--text-secondary); font-size: 13px; font-weight: 600;
+  white-space: nowrap; flex-shrink: 0; transition: all 120ms;
+}
+.see-all:hover { border-color: var(--alm-cyan); color: var(--alm-dark); background: rgba(0,183,198,0.08); }
+.see-all svg { width: 13px; height: 13px; }
+
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 700px) { .cards { grid-template-columns: 1fr; } }
+@media (max-width: 900px) and (min-width: 701px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+
+.dest-card {
+  border-radius: var(--r-lg); overflow: hidden; background: var(--bg-surface);
+  border: 1px solid #E4EEF1; cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: transform 200ms, box-shadow 200ms;
+}
+.dest-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(0,59,74,0.15); }
+.dest-img { position: relative; height: 190px; overflow: hidden; }
+.dest-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 4s ease; }
+.dest-card:hover .dest-img img { transform: scale(1.06); }
+.dest-badge {
+  position: absolute; top: 10px; inset-inline-start: 10px;
+  padding: 3px 9px; border-radius: var(--r-full);
+  font-size: 10.5px; font-weight: 700; color: #fff;
+}
+.badge-hot   { background: rgba(230,57,70,0.88); }
+.badge-deal  { background: rgba(0,183,198,0.90); color: var(--alm-dark); }
+.badge-saudi { background: rgba(0,59,74,0.85); }
+
+.dest-body { padding: 14px 16px 16px; }
+.dest-city { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+.dest-country { font-size: 12px; color: var(--text-subtle); margin-bottom: 12px; }
+.dest-footer { display: flex; align-items: center; justify-content: space-between; }
+.dest-price-label { font-size: 10px; color: var(--text-subtle); font-weight: 400; display: block; }
+.dest-price { font-size: 17px; font-weight: 700; color: var(--alm-dark); }
+.dest-cta {
+  padding: 7px 14px; border-radius: var(--r-full);
+  background: var(--alm-red); color: #fff;
+  font-size: 12.5px; font-weight: 700;
+  transition: opacity 120ms;
+}
+.dest-cta:hover { opacity: 0.88; }
+
+/* ── FOOTER ── */
+.footer { background: #001E29; border-top: 1px solid rgba(255,255,255,0.05); }
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 44px 24px 28px;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+}
+@media (max-width: 860px) { .footer-inner { grid-template-columns: 1fr 1fr; gap: 28px; } }
+@media (max-width: 500px)  { .footer-inner { grid-template-columns: 1fr; } }
+
+.footer-brand-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.footer-logo-icon {
+  width: 34px; height: 34px; border-radius: var(--r-md);
+  background: rgba(0,183,198,0.14); border: 1px solid rgba(0,183,198,0.2);
+  display: flex; align-items: center; justify-content: center;
+}
+.footer-logo-icon svg { width: 18px; height: 18px; }
+.footer-logo-wordmark { font-size: 17px; font-weight: 700; color: #fff; display: flex; align-items: baseline; }
+.footer-tagline { font-size: 13px; color: rgba(255,255,255,0.36); line-height: 1.75; max-width: 250px; margin-bottom: 18px; }
+.footer-social { display: flex; gap: 8px; }
+.s-btn {
+  width: 32px; height: 32px; border-radius: var(--r-md);
+  border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.05);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.36); cursor: pointer; transition: all 120ms;
+}
+.s-btn:hover { background: var(--alm-cyan); border-color: var(--alm-cyan); color: var(--alm-dark); }
+.s-btn svg { width: 14px; height: 14px; }
+
+.footer-col h4 { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.80); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+.footer-links { display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { font-size: 13px; color: rgba(255,255,255,0.38); transition: color 120ms; }
+.footer-links a:hover { color: rgba(255,255,255,0.80); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  max-width: 1200px; margin: 0 auto;
+  padding: 16px 24px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
+.footer-legal { display: flex; gap: 20px; }
+.footer-legal a { font-size: 12px; color: rgba(255,255,255,0.25); transition: color 120ms; }
+.footer-legal a:hover { color: rgba(255,255,255,0.60); }
+
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <span class="logo-en" aria-label="Almosafer">
+        <div class="logo-wordmark">Alm<span class="logo-o">o</span>safer</div>
+      </span>
+      <span class="logo-ar" aria-label="المسافر">
+        <div class="logo-wordmark">المسافر</div>
+      </span>
+    </a>
+
+    <nav class="header-nav" aria-label="Main">
+      <a href="#" class="nav-link active"><span class="en">Flights</span><span class="ar">رحلات</span></a>
+      <a href="#" class="nav-link"><span class="en">Hotels</span><span class="ar">فنادق</span></a>
+      <a href="#" class="nav-link"><span class="en">Packages</span><span class="ar">باقات</span></a>
+      <a href="#" class="nav-link"><span class="en">Umrah</span><span class="ar">عمرة</span></a>
+    </nav>
+
+    <div class="header-right">
+      <button class="btn-lang" id="langBtn" aria-label="Switch language">
+        <span class="en">العربية</span><span class="ar">English</span>
+      </button>
+      <button class="btn-signin">
+        <span class="en">Sign in</span><span class="ar">تسجيل الدخول</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" aria-label="Search travel">
+  <div class="hero-bg" role="img" aria-label="Panoramic travel landscape"></div>
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">
+      <span class="en">Let's book your next trip!</span>
+      <span class="ar">احجز رحلتك القادمة!</span>
+    </h1>
+    <p class="hero-sub">
+      <span class="en">Over 50,000 hotels &amp; 200+ airlines — best prices guaranteed</span>
+      <span class="ar">أكثر من ٥٠٬٠٠٠ فندق و٢٠٠+ شركة طيران — أفضل الأسعار مضمونة</span>
+    </p>
+
+    <div class="search-shell" role="search" aria-label="Travel search">
+
+      <!-- TABS — float over hero image -->
+      <div class="sh-tabs" role="tablist">
+        <button class="sh-tab active" role="tab" aria-selected="true" data-sh-tab="flights">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+          </svg>
+          <span class="en">Flights</span><span class="ar">رحلات جوية</span>
+        </button>
+        <button class="sh-tab" role="tab" aria-selected="false" data-sh-tab="stays">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span class="en">Stays</span><span class="ar">إقامة</span>
+        </button>
+        <button class="sh-tab" role="tab" aria-selected="false" data-sh-tab="activities">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          <span class="en">Activities</span><span class="ar">أنشطة</span>
+        </button>
+      </div>
+
+      <!-- WHITE PANEL -->
+      <div class="sh-panel" id="shPanel" data-corner="0">
+
+        <!-- ── FLIGHTS ── -->
+        <div class="sh-form active" id="sh-flights">
+
+          <!-- Trip type + options row -->
+          <div class="sf-options">
+            <button class="sf-chip active" data-trip="one-way"><span class="en">One Way</span><span class="ar">ذهاب فقط</span></button>
+            <button class="sf-chip" data-trip="round-trip"><span class="en">Round Trip</span><span class="ar">ذهاب وعودة</span></button>
+            <button class="sf-chip" data-trip="multi-city"><span class="en">Multi City</span><span class="ar">متعدد المدن</span></button>
+            <span class="sf-options-spacer"></span>
+            <label class="sf-check"><input type="checkbox"> <span class="en">Direct Flights</span><span class="ar">رحلات مباشرة</span></label>
+            <label class="sf-check"><input type="checkbox"> <span class="en">Included Baggage</span><span class="ar">أمتعة مشمولة</span></label>
+          </div>
+
+          <!-- ── Standard (One Way / Round Trip) ── -->
+          <div id="sf-standard">
+            <div class="sf-row">
+              <div class="sf-field">
+                <label><span class="en">ORIGIN</span><span class="ar">المغادرة من</span></label>
+                <div class="sf-input">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                  <div>
+                    <span class="sf-val" id="origVal" data-ph="Riyadh">Riyadh</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sf-swap-wrap">
+                <button class="sf-swap" id="swapBtn" aria-label="Swap" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+                </button>
+              </div>
+              <div class="sf-field">
+                <label><span class="en">DESTINATION</span><span class="ar">الوصول إلى</span></label>
+                <div class="sf-input">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <div>
+                    <span class="sf-val sf-muted" id="destVal"><span class="en">City</span><span class="ar">مدينة</span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="sf-field" id="sf-depart-wrap">
+                <label><span class="en">DEPARTURE</span><span class="ar">تاريخ المغادرة</span></label>
+                <div class="sf-input">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <div>
+                    <span class="sf-val sf-muted"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="sf-field" id="sf-return-wrap">
+                <label><span class="en">RETURN</span><span class="ar">تاريخ العودة</span></label>
+                <div class="sf-input">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <div>
+                    <span class="sf-val sf-muted"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span>
+                  </div>
+                  <span class="sf-clear" aria-label="Clear return">✕</span>
+                </div>
+              </div>
+              <div class="sf-field" style="flex:0.88">
+                <label><span class="en">TRAVELLERS &amp; CLASS</span><span class="ar">المسافرون والدرجة</span></label>
+                <div class="sf-input">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                  <div>
+                    <span class="sf-val">1 <span class="en">Adult, Economy</span><span class="ar">بالغ، اقتصادية</span></span>
+                  </div>
+                </div>
+              </div>
+              <button class="sf-btn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <span class="en">Search</span><span class="ar">بحث</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── Multi City ── -->
+          <div id="sf-multicity" style="display:none">
+            <!-- Grid: 5 columns. First row uses all 5; extra rows use first 3. -->
+            <div class="mc-grid" id="mc-grid">
+              <!-- Flight 1 — Origin -->
+              <div class="sf-field">
+                <label><span class="en">ORIGIN</span><span class="ar">المغادرة من</span></label>
+                <div class="sf-input">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                  <div><span class="sf-val sf-muted"><span class="en">City</span><span class="ar">مدينة</span></span></div>
+                </div>
+              </div>
+              <!-- Flight 1 — Destination -->
+              <div class="sf-field">
+                <label><span class="en">DESTINATION</span><span class="ar">الوصول إلى</span></label>
+                <div class="sf-input">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <div><span class="sf-val sf-muted"><span class="en">City</span><span class="ar">مدينة</span></span></div>
+                </div>
+              </div>
+              <!-- Flight 1 — Date -->
+              <div class="sf-field">
+                <label><span class="en">DATE</span><span class="ar">التاريخ</span></label>
+                <div class="sf-input">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <div><span class="sf-val sf-muted"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span></div>
+                </div>
+              </div>
+              <!-- Flight 1 — Travellers (col 4) -->
+              <div class="sf-field">
+                <label><span class="en">TRAVELLERS &amp; CLASS</span><span class="ar">المسافرون والدرجة</span></label>
+                <div class="sf-input">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                  <div>
+                    <span class="sf-val sf-muted">1 <span class="en">Traveler, Economy</span><span class="ar">مسافر، اقتصادية</span></span>
+                  </div>
+                </div>
+              </div>
+              <!-- Flight 1 — Search (col 5) -->
+              <button class="sf-btn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <span class="en">Search</span><span class="ar">بحث</span>
+              </button>
+              <!-- Extra flight rows injected here by JS (3 cells each → cols 1-3) -->
+            </div>
+            <button class="mc-add-link" id="mc-add" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span class="en">Add flight (Max 6)</span><span class="ar">إضافة رحلة (الحد الأقصى ٦)</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- ── STAYS ── -->
+        <div class="sh-form" id="sh-stays">
+          <div class="sf-row">
+            <div class="sf-field" style="flex:1.6">
+              <label><span class="en">SEARCH FOR</span><span class="ar">ابحث عن</span></label>
+              <div class="sf-input">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <div>
+                  <span class="sf-val sf-muted"><span class="en">Properties, places...</span><span class="ar">فنادق، أماكن...</span></span>
+                  <span class="sf-hint"><span class="en">Hotel, apartment, resort</span><span class="ar">فندق، شقة، منتجع</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="sf-field">
+              <label><span class="en">CHECK-IN</span><span class="ar">تسجيل الوصول</span></label>
+              <div class="sf-input">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <div>
+                  <span class="sf-val sf-muted"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span>
+                  <span class="sf-hint"><span class="en">Select date</span><span class="ar">اختر التاريخ</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="sf-field">
+              <label><span class="en">CHECK-OUT</span><span class="ar">تسجيل المغادرة</span></label>
+              <div class="sf-input">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <div>
+                  <span class="sf-val sf-muted"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span>
+                  <span class="sf-hint"><span class="en">Select date</span><span class="ar">اختر التاريخ</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="sf-field">
+              <label><span class="en">ROOMS &amp; GUESTS</span><span class="ar">الغرف والضيوف</span></label>
+              <div class="sf-input">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                <div>
+                  <span class="sf-val">1 <span class="en">Room, 2 Adults</span><span class="ar">غرفة، ٢ بالغ</span></span>
+                  <span class="sf-hint">0 <span class="en">Children</span><span class="ar">أطفال</span></span>
+                </div>
+              </div>
+            </div>
+            <button class="sf-btn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span class="en">Search</span><span class="ar">بحث</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── ACTIVITIES ── -->
+        <div class="sh-form" id="sh-activities">
+          <div class="sf-row">
+            <div class="sf-field">
+              <label><span class="en">SEARCH ACTIVITIES</span><span class="ar">ابحث عن أنشطة</span></label>
+              <div class="sf-input">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <div>
+                  <span class="sf-val sf-muted"><span class="en">Tours, museums, experiences...</span><span class="ar">جولات، متاحف، تجارب...</span></span>
+                  <span class="sf-hint"><span class="en">Search by name or destination</span><span class="ar">ابحث بالاسم أو الوجهة</span></span>
+                </div>
+              </div>
+            </div>
+            <button class="sf-btn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span class="en">Search</span><span class="ar">بحث</span>
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /sh-panel -->
+    </div><!-- /search-shell -->
+
+  </div>
+</section>
+
+<!-- DESTINATIONS -->
+<main id="main">
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title"><span class="en">Top Destinations</span><span class="ar">أبرز الوجهات</span></h2>
+        <p class="section-sub"><span class="en">Hand-picked by our travel experts</span><span class="ar">اختارها خبراء السفر لدينا</span></p>
+      </div>
+      <a href="#" class="see-all">
+        <span class="en">See all</span><span class="ar">عرض الكل</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+
+    <div class="cards">
+
+      <!-- Dubai -->
+      <article class="dest-card" tabindex="0">
+        <div class="dest-img">
+          <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80&auto=format&fit=crop"
+               alt="Dubai skyline with Burj Khalifa" loading="lazy">
+          <span class="dest-badge badge-hot">🔥 <span class="en">Trending</span><span class="ar">رائج</span></span>
+        </div>
+        <div class="dest-body">
+          <div class="dest-city"><span class="en">Dubai</span><span class="ar">دبي</span></div>
+          <div class="dest-country"><span class="en">United Arab Emirates</span><span class="ar">الإمارات العربية المتحدة</span></div>
+          <div class="dest-footer">
+            <div>
+              <span class="dest-price-label"><span class="en">from</span><span class="ar">من</span></span>
+              <span class="dest-price">SAR 890</span>
+            </div>
+            <button class="dest-cta"><span class="en">Book now</span><span class="ar">احجز الآن</span></button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Istanbul -->
+      <article class="dest-card" tabindex="0">
+        <div class="dest-img">
+          <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=600&q=80&auto=format&fit=crop"
+               alt="Istanbul Blue Mosque at sunset" loading="lazy">
+          <span class="dest-badge badge-deal"><span class="en">Great Deal</span><span class="ar">عرض رائع</span></span>
+        </div>
+        <div class="dest-body">
+          <div class="dest-city"><span class="en">Istanbul</span><span class="ar">إسطنبول</span></div>
+          <div class="dest-country"><span class="en">Turkey</span><span class="ar">تركيا</span></div>
+          <div class="dest-footer">
+            <div>
+              <span class="dest-price-label"><span class="en">from</span><span class="ar">من</span></span>
+              <span class="dest-price">SAR 1,240</span>
+            </div>
+            <button class="dest-cta"><span class="en">Book now</span><span class="ar">احجز الآن</span></button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Maldives -->
+      <article class="dest-card" tabindex="0">
+        <div class="dest-img">
+          <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80&auto=format&fit=crop"
+               alt="Overwater bungalows in the Maldives" loading="lazy">
+          <span class="dest-badge badge-saudi">⭐ <span class="en">Luxury</span><span class="ar">فاخر</span></span>
+        </div>
+        <div class="dest-body">
+          <div class="dest-city"><span class="en">Maldives</span><span class="ar">جزر المالديف</span></div>
+          <div class="dest-country"><span class="en">Indian Ocean</span><span class="ar">المحيط الهندي</span></div>
+          <div class="dest-footer">
+            <div>
+              <span class="dest-price-label"><span class="en">from</span><span class="ar">من</span></span>
+              <span class="dest-price">SAR 3,200</span>
+            </div>
+            <button class="dest-cta"><span class="en">Book now</span><span class="ar">احجز الآن</span></button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+
+    <div>
+      <div class="footer-brand-logo">
+        <div class="footer-logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 18L9 8l4 5 3-4 4 9H4z" fill="#00B7C6" opacity="0.9"/>
+          </svg>
+        </div>
+        <div>
+          <div class="footer-logo-wordmark">Alm<span class="logo-o">o</span>safer</div>
+          <span style="font-size:10px;color:rgba(255,255,255,0.28);font-family:var(--font-ar)">المسافر</span>
+        </div>
+      </div>
+      <p class="footer-tagline">
+        <span class="en">Saudi Arabia's leading travel platform — trusted by millions for flights, hotels, and packages.</span>
+        <span class="ar">المنصة السياحية الرائدة في المملكة — يثق بها الملايين.</span>
+      </p>
+      <div class="footer-social">
+        <a href="#" class="s-btn" aria-label="X">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" class="s-btn" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="#" class="s-btn" aria-label="Snapchat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M12 2C7.5 2 4 5.5 4 9.5c0 2 .5 3.5 1.2 4.5-.4.8-1 1.2-1.7 1.5.8.5 2 .7 3 .5.3 1 1 2.2 2 2.8-.5.2-1 .3-1.5.3.4.8 2.2 1.4 5 1.4 2.8 0 4.6-.6 5-1.4-.5 0-1-.1-1.5-.3 1-.6 1.7-1.8 2-2.8 1 .2 2.2 0 3-.5-.7-.3-1.3-.7-1.7-1.5.7-1 1.2-2.5 1.2-4.5C20 5.5 16.5 2 12 2z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4><span class="en">Company</span><span class="ar">الشركة</span></h4>
+      <div class="footer-links">
+        <a href="#"><span class="en">About Us</span><span class="ar">من نحن</span></a>
+        <a href="#"><span class="en">Careers</span><span class="ar">وظائف</span></a>
+        <a href="#"><span class="en">Press</span><span class="ar">الصحافة</span></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4><span class="en">Support</span><span class="ar">الدعم</span></h4>
+      <div class="footer-links">
+        <a href="#"><span class="en">Help Center</span><span class="ar">مركز المساعدة</span></a>
+        <a href="#"><span class="en">Contact Us</span><span class="ar">اتصل بنا</span></a>
+        <a href="#"><span class="en">Cancellations</span><span class="ar">الإلغاء</span></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4><span class="en">Explore</span><span class="ar">استكشف</span></h4>
+      <div class="footer-links">
+        <a href="#"><span class="en">Flights to Dubai</span><span class="ar">رحلات إلى دبي</span></a>
+        <a href="#"><span class="en">Hotels in Riyadh</span><span class="ar">فنادق الرياض</span></a>
+        <a href="#"><span class="en">Umrah Packages</span><span class="ar">باقات العمرة</span></a>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">
+      <span class="en">© 2025 Almosafer. All rights reserved. Powered by Seera Group.</span>
+      <span class="ar">© ٢٠٢٥ المسافر. جميع الحقوق محفوظة.</span>
+    </span>
+    <nav class="footer-legal" aria-label="Legal">
+      <a href="#"><span class="en">Privacy</span><span class="ar">الخصوصية</span></a>
+      <a href="#"><span class="en">Terms</span><span class="ar">الشروط</span></a>
+      <a href="#"><span class="en">Cookies</span><span class="ar">ملفات الارتباط</span></a>
+    </nav>
+  </div>
+</footer>
+
+
+<script>
+(function () {
+  'use strict';
+  var html = document.documentElement;
+
+  /* ── Language ── */
+  var saved = localStorage.getItem('alm-lang') || 'en';
+  setLang(saved);
+  document.getElementById('langBtn').addEventListener('click', function () {
+    var next = html.lang === 'ar' ? 'en' : 'ar';
+    setLang(next);
+    localStorage.setItem('alm-lang', next);
+  });
+  function setLang(l) {
+    html.lang = l;
+    html.dir  = l === 'ar' ? 'rtl' : 'ltr';
+    document.title = l === 'ar' ? 'المسافر | Almosafer' : 'Almosafer | المسافر';
+  }
+
+  /* ── Hero search tabs ── */
+  var shTabs  = document.querySelectorAll('.sh-tab');
+  var shPanel = document.getElementById('shPanel');
+  shTabs.forEach(function (tab, idx) {
+    tab.addEventListener('click', function () {
+      shTabs.forEach(function (t) { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+      document.querySelectorAll('.sh-form').forEach(function (f) { f.classList.remove('active'); });
+      tab.classList.add('active'); tab.setAttribute('aria-selected', 'true');
+      var formId = 'sh-' + tab.getAttribute('data-sh-tab');
+      var form = document.getElementById(formId);
+      if (form) form.classList.add('active');
+      if (shPanel) shPanel.setAttribute('data-corner', String(idx));
+    });
+  });
+
+  /* ── Flight trip type ── */
+  var tripChips    = document.querySelectorAll('[data-trip]');
+  var sfStandard   = document.getElementById('sf-standard');
+  var sfMulticity  = document.getElementById('sf-multicity');
+  var sfReturnWrap = document.getElementById('sf-return-wrap');
+  var mcGrid       = document.getElementById('mc-grid');
+  var mcAddLink    = document.getElementById('mc-add');
+  var MC_MAX       = 6;
+  /* First row is always 5 children (Origin,Dest,Date,Traveler,Search).
+     Each extra flight adds 3 children (Origin,Dest,Date → grid cols 1-3). */
+
+  function mcFlightCount() {
+    return Math.round(((mcGrid.children.length - 5) / 3) + 1);
+  }
+
+  function makeMcCell(label, iconPath, ph, isCircle) {
+    var d = document.createElement('div');
+    d.className = 'sf-field';
+    d.innerHTML =
+      '<label><span class="en">' + label + '</span></label>' +
+      '<div class="sf-input">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+          (isCircle
+            ? '<circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>'
+            : '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>') +
+        '</svg>' +
+        '<div><span class="sf-val sf-muted"><span class="en">' + ph + '</span><span class="ar">' + (ph === 'City' ? 'مدينة' : ph) + '</span></span></div>' +
+      '</div>';
+    return d;
+  }
+
+  function makeMcDateCell() {
+    var d = document.createElement('div');
+    d.className = 'sf-field';
+    d.innerHTML =
+      '<label><span class="en">DATE</span></label>' +
+      '<div class="sf-input">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+          '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>' +
+          '<line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>' +
+        '</svg>' +
+        '<div><span class="sf-val sf-muted"><span class="en">Add date</span></span></div>' +
+      '</div>';
+    return d;
+  }
+
+  function addMcRow() {
+    if (mcFlightCount() >= MC_MAX) return;
+    mcGrid.appendChild(makeMcCell('ORIGIN',      '', 'City', true));
+    mcGrid.appendChild(makeMcCell('DESTINATION', '', 'City', false));
+    mcGrid.appendChild(makeMcDateCell());
+    updateMcAddLink();
+  }
+
+  function updateMcAddLink() {
+    if (mcAddLink) mcAddLink.disabled = mcFlightCount() >= MC_MAX;
+  }
+
+  function setTripType(type) {
+    tripChips.forEach(function (c) { c.classList.toggle('active', c.getAttribute('data-trip') === type); });
+    if (type === 'multi-city') {
+      sfStandard.style.display  = 'none';
+      sfMulticity.style.display = 'block';
+      /* Seed a second flight row if not already done */
+      if (mcGrid.children.length === 5) addMcRow();
+    } else {
+      sfStandard.style.display  = 'block';
+      sfMulticity.style.display = 'none';
+      sfReturnWrap.style.display = type === 'one-way' ? 'none' : '';
+    }
+  }
+
+  tripChips.forEach(function (chip) {
+    chip.addEventListener('click', function () { setTripType(chip.getAttribute('data-trip')); });
+  });
+
+  mcAddLink && mcAddLink.addEventListener('click', addMcRow);
+
+  /* Boot state */
+  setTripType('one-way');
+
+  /* ── Swap button ── */
+  var swapBtn = document.getElementById('swapBtn');
+  if (swapBtn) {
+    var swapped = false;
+    swapBtn.addEventListener('click', function () {
+      swapped = !swapped;
+      swapBtn.style.transition = 'transform 300ms cubic-bezier(.34,1.56,.64,1)';
+      swapBtn.style.transform  = swapped ? 'rotate(180deg)' : 'rotate(0deg)';
+      /* swap origin / destination values */
+      var orig = document.getElementById('origVal');
+      var dest = document.getElementById('destVal');
+      if (orig && dest) {
+        var tmp = orig.textContent; orig.textContent = dest.textContent; dest.textContent = tmp;
+        orig.classList.toggle('s-placeholder', orig.textContent === orig.getAttribute('data-ph'));
+        dest.classList.toggle('s-placeholder', dest.textContent === dest.getAttribute('data-ph'));
+      }
+    });
+  }
+
+  /* ── Popular chips → destination field ── */
+  document.querySelectorAll('.chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var lang = html.lang === 'ar' ? 'ar' : 'en';
+      var dest = chip.getAttribute('data-dest-' + lang) || chip.textContent.trim();
+      var el = document.getElementById('destVal');
+      if (el) { el.textContent = dest; el.classList.remove('s-placeholder'); }
+      /* auto-switch to Flights tab if not already */
+      var flightsTab = document.querySelector('.sh-tab[data-sh-tab="flights"]');
+      if (flightsTab && !flightsTab.classList.contains('active')) flightsTab.click();
+    });
+  });
+
+  /* ── Clear buttons ── */
+  document.querySelectorAll('[data-clear]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var targetId = btn.getAttribute('data-clear');
+      var el = document.getElementById(targetId);
+      if (el) {
+        var ph = el.getAttribute('data-ph') || '';
+        el.textContent = ph;
+        el.classList.add('s-placeholder');
+      }
+    });
+  });
+
+
+}());
+</script>
+</body>
+</html>
