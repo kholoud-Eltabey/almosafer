@@ -1724,15 +1724,24 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
 
       var committed = false;
       function commit() {
+        /* Guard 1: already committed */
         if (committed) return;
+        /* Guard 2: suggestion mousedown already removed inp → blur fires but we must not overwrite */
+        if (!inp.parentNode) return;
         committed = true;
         var v = inp.value.trim();
-        if (v) { valSpan.textContent = v; valSpan.classList.remove('sf-muted'); }
-        else   { valSpan.innerHTML = savedHTML; }
+        if (v) {
+          valSpan.textContent = v;
+          valSpan.classList.remove('sf-muted');
+        } else {
+          /* Restore exact pre-click state — innerHTML + sf-muted class */
+          valSpan.innerHTML = savedHTML;
+          if (isMuted) valSpan.classList.add('sf-muted');
+          else         valSpan.classList.remove('sf-muted');
+        }
         valSpan.style.display = '';
-        if (inp.parentNode) inp.remove();
+        inp.remove();
         sfInput.classList.remove('sf-focus');
-        /* only close suggest if it still belongs to this field */
         if (panelSuggest._anchor === sfInput) closeSuggest();
       }
       inp.addEventListener('blur',    function () { setTimeout(commit, 160); });
