@@ -1445,6 +1445,7 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
 
   function closeAllPanels() {
     allPanels.forEach(function (p) { p && p.classList.remove('open'); });
+    if (panelSuggest) panelSuggest._anchor = null;
     bk.classList.remove('open');
   }
   bk.addEventListener('click', closeAllPanels);
@@ -1652,32 +1653,54 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
 
     panelSuggest.innerHTML = inner;
 
-    /* Wire up suggestion clicks — use mousedown to beat the blur event */
+    /* Wire up suggestion clicks — mousedown fires before blur */
     panelSuggest.querySelectorAll('.sug-item').forEach(function (el) {
       el.addEventListener('mousedown', function (e) {
-        e.preventDefault(); /* prevent input blur */
+        e.preventDefault(); /* prevent input blur so we control commit */
         var val = el.getAttribute('data-val');
         valSpan.textContent = val;
         valSpan.classList.remove('sf-muted');
         valSpan.style.display = '';
         if (inp && inp.parentNode) inp.remove();
         sfInput.classList.remove('sf-focus');
-        /* close only the suggestion panel */
-        panelSuggest.classList.remove('open');
+        closeSuggest();
       });
     });
 
-    /* Position and show — no backdrop (closes naturally on blur) */
-    positionSuggest(sfInput);
-    panelSuggest.classList.add('open');
+    /* ── Position ONCE on first open; typing only updates content, panel never moves ── */
+    if (!panelSuggest.classList.contains('open') || panelSuggest._anchor !== sfInput) {
+      positionSuggest(sfInput);
+      panelSuggest.classList.add('open');
+    }
   }
+
+  /* Centralised suggest close */
+  function closeSuggest() {
+    panelSuggest.classList.remove('open');
+    panelSuggest._anchor = null;
+  }
+
+  /* Close on any click outside the panel AND outside its trigger field */
+  document.addEventListener('mousedown', function (e) {
+    if (!panelSuggest.classList.contains('open')) return;
+    if (panelSuggest.contains(e.target)) return;           /* inside panel */
+    if (panelSuggest._anchor && panelSuggest._anchor.contains(e.target)) return; /* on trigger — handled by click */
+    closeSuggest();
+  });
 
   /* ── Searchable field: inline edit + suggestion dropdown ── */
   function makeSearchable(sfInput, valSpan, dataset) {
     if (!sfInput || !valSpan) return;
     sfInput.classList.add('sf-ptr');
     sfInput.addEventListener('click', function () {
-      if (sfInput.querySelector('.sf-inline')) return;
+      /* Toggle: clicking the same open field closes the panel */
+      if (panelSuggest.classList.contains('open') && panelSuggest._anchor === sfInput) {
+        var existInp = sfInput.querySelector('.sf-inline');
+        if (existInp) existInp.blur(); /* commit will fire via blur → setTimeout */
+        closeSuggest();
+        return;
+      }
+      if (sfInput.querySelector('.sf-inline')) return; /* already editing, different panel open */
       var isMuted   = valSpan.classList.contains('sf-muted');
       var cur       = isMuted ? '' : valSpan.textContent.trim();
       var savedHTML = valSpan.innerHTML;
@@ -1699,14 +1722,18 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
         renderSuggestions(dataset, inp.value, sfInput, valSpan, savedHTML, inp);
       });
 
+      var committed = false;
       function commit() {
+        if (committed) return;
+        committed = true;
         var v = inp.value.trim();
         if (v) { valSpan.textContent = v; valSpan.classList.remove('sf-muted'); }
         else   { valSpan.innerHTML = savedHTML; }
         valSpan.style.display = '';
         if (inp.parentNode) inp.remove();
         sfInput.classList.remove('sf-focus');
-        panelSuggest.classList.remove('open');
+        /* only close suggest if it still belongs to this field */
+        if (panelSuggest._anchor === sfInput) closeSuggest();
       }
       inp.addEventListener('blur',    function () { setTimeout(commit, 160); });
       inp.addEventListener('keydown', function (e) {
