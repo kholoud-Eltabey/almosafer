@@ -290,7 +290,7 @@ a:focus:not(:focus-visible) { outline: none; }
   border-color: var(--alm-cyan); color: var(--alm-dark);
   background: rgba(0,183,198,0.10); font-weight: 600;
 }
-.sf-options-spacer { flex: 1; min-width: 12px; }
+.sf-checks-group { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .sf-check {
   display: flex; align-items: center; gap: 5px;
   font-size: 12px; color: var(--text-primary); cursor: pointer; white-space: nowrap;
@@ -412,7 +412,7 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
   .sf-btn         { width: 100%; justify-content: center; margin-top: 0; padding: 12px; }
 
   .sf-check       { display: none; }
-  .sf-options-spacer { display: none; }
+  .sf-checks-group { display: none; }
   /* Multi-city → 3 equal cols */
   .mc-grid { grid-template-columns: repeat(3, 1fr); }
 }
@@ -618,9 +618,10 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
             <button class="sf-chip active" data-trip="one-way"><span class="en">One Way</span><span class="ar">ذهاب فقط</span></button>
             <button class="sf-chip" data-trip="round-trip"><span class="en">Round Trip</span><span class="ar">ذهاب وعودة</span></button>
             <button class="sf-chip" data-trip="multi-city"><span class="en">Multi City</span><span class="ar">متعدد المدن</span></button>
-            <span class="sf-options-spacer"></span>
-            <label class="sf-check"><input type="checkbox"> <span class="en">Direct Flights</span><span class="ar">رحلات مباشرة</span></label>
-            <label class="sf-check"><input type="checkbox"> <span class="en">Included Baggage</span><span class="ar">أمتعة مشمولة</span></label>
+            <div class="sf-checks-group">
+              <label class="sf-check"><input type="checkbox"> <span class="en">Direct Flights</span><span class="ar">رحلات مباشرة</span></label>
+              <label class="sf-check"><input type="checkbox"> <span class="en">Included Baggage</span><span class="ar">أمتعة مشمولة</span></label>
+            </div>
           </div>
 
           <!-- ── Standard (One Way / Round Trip) ── -->
