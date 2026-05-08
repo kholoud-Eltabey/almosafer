@@ -108,17 +108,6 @@ html[lang="ar"] .logo-ar { display: flex; }
   background-clip: text;
 }
 
-/* Header nav */
-.header-nav { display: flex; align-items: center; gap: 2px; margin-inline-start: 24px; }
-.nav-link {
-  padding: 6px 13px; border-radius: var(--r-md);
-  font-size: 13.5px; font-weight: 500;
-  color: rgba(255,255,255,0.65);
-  transition: background 120ms, color 120ms;
-  white-space: nowrap;
-}
-.nav-link:hover { background: rgba(255,255,255,0.08); color: #fff; }
-.nav-link.active { background: rgba(0,183,198,0.15); color: var(--alm-cyan); font-weight: 600; }
 
 /* Header right */
 .header-right { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; }
@@ -137,7 +126,6 @@ html[lang="ar"] .logo-ar { display: flex; }
 }
 .btn-signin:hover { opacity: 0.88; }
 
-@media (max-width: 860px) { .header-nav { display: none; } }
 @media (max-width: 560px) {
   .header-inner { padding: 0 16px; }
 }
@@ -247,18 +235,6 @@ html[lang="ar"] .logo-ar { display: flex; }
 /* Multi-city placeholder text — compact single-line at hint scale */
 .mc-grid .sf-val { font-size: 10px; font-weight: 400; }
 
-/* Swap btn between From/To */
-.sf-swap-wrap {
-  display: flex; align-items: flex-end; padding-bottom: 4px; flex-shrink: 0;
-}
-.sf-swap {
-  width: 32px; height: 32px; border-radius: var(--r-full);
-  border: 1.5px solid var(--alm-cyan); background: #fff; color: var(--alm-cyan);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: all 150ms; margin: 0 -6px; z-index: 1;
-}
-.sf-swap:hover { background: var(--alm-cyan); color: #fff; transform: rotate(180deg); }
-.sf-swap svg { width: 14px; height: 14px; }
 
 /* Clear icon inside a field */
 .sf-clear {
@@ -330,7 +306,7 @@ html[lang="ar"] .logo-ar { display: flex; }
   .sf-row         { flex-wrap: wrap; }
   .sf-field       { min-width: calc(50% - 4px); }
   .sf-btn         { width: 100%; justify-content: center; margin-top: 0; padding: 12px; }
-  .sf-swap-wrap   { display: none; }
+
   .sf-check       { display: none; }
   .sf-options-spacer { display: none; }
   /* Multi-city → 3 equal cols; search button spans full row */
@@ -479,14 +455,8 @@ html[lang="ar"] .logo-ar { display: flex; }
       </span>
     </a>
 
-    <nav class="header-nav" aria-label="Main">
-      <a href="#" class="nav-link active"><span class="en">Flights</span><span class="ar">رحلات</span></a>
-      <a href="#" class="nav-link"><span class="en">Hotels</span><span class="ar">فنادق</span></a>
-      <a href="#" class="nav-link"><span class="en">Packages</span><span class="ar">باقات</span></a>
-      <a href="#" class="nav-link"><span class="en">Umrah</span><span class="ar">عمرة</span></a>
-    </nav>
 
-    <div class="header-right">
+<div class="header-right">
       <button class="btn-lang" id="langBtn" aria-label="Switch language">
         <span class="en">العربية</span><span class="ar">English</span>
       </button>
@@ -562,11 +532,6 @@ html[lang="ar"] .logo-ar { display: flex; }
                     <span class="sf-val" id="origVal" data-ph="Riyadh">Riyadh</span>
                   </div>
                 </div>
-              </div>
-              <div class="sf-swap-wrap">
-                <button class="sf-swap" id="swapBtn" aria-label="Swap" type="button">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
-                </button>
               </div>
               <div class="sf-field">
                 <label><span class="en">DESTINATION</span><span class="ar">الوصول إلى</span></label>
@@ -1011,24 +976,6 @@ html[lang="ar"] .logo-ar { display: flex; }
   /* Boot state */
   setTripType('one-way');
 
-  /* ── Swap button ── */
-  var swapBtn = document.getElementById('swapBtn');
-  if (swapBtn) {
-    var swapped = false;
-    swapBtn.addEventListener('click', function () {
-      swapped = !swapped;
-      swapBtn.style.transition = 'transform 300ms cubic-bezier(.34,1.56,.64,1)';
-      swapBtn.style.transform  = swapped ? 'rotate(180deg)' : 'rotate(0deg)';
-      /* swap origin / destination values */
-      var orig = document.getElementById('origVal');
-      var dest = document.getElementById('destVal');
-      if (orig && dest) {
-        var tmp = orig.textContent; orig.textContent = dest.textContent; dest.textContent = tmp;
-        orig.classList.toggle('s-placeholder', orig.textContent === orig.getAttribute('data-ph'));
-        dest.classList.toggle('s-placeholder', dest.textContent === dest.getAttribute('data-ph'));
-      }
-    });
-  }
 
   /* ── Popular chips → destination field ── */
   document.querySelectorAll('.chip').forEach(function (chip) {
