@@ -559,6 +559,39 @@ html[data-theme="dark"] .cls-opt.active { color: var(--alm-cyan); }
 }
 @keyframes sf-spin { to { transform: rotate(360deg); } }
 
+/* ── Suggestion Dropdown ── */
+#alm-suggest {
+  position: fixed; z-index: 620;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+  min-width: 240px; display: none;
+  max-height: 308px; overflow-y: auto; padding: 6px 0;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+#alm-suggest::-webkit-scrollbar { width: 4px; }
+#alm-suggest::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+#alm-suggest.open { display: block; }
+.sug-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 14px; cursor: pointer; transition: background 80ms;
+  user-select: none;
+}
+.sug-item:hover { background: rgba(0,183,198,0.08); }
+.sug-icon {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border-radius: var(--r-md); background: rgba(0,183,198,0.10);
+  display: flex; align-items: center; justify-content: center;
+}
+.sug-icon svg { width: 13px; height: 13px; color: var(--alm-cyan); }
+.sug-body { flex: 1; min-width: 0; }
+.sug-name { font-size: 13px; font-weight: 500; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sug-sub  { font-size: 11px; color: var(--text-subtle); margin-top: 1px; }
+.sug-code { font-size: 10px; font-weight: 700; color: var(--alm-cyan); flex-shrink: 0; padding-inline-start: 4px; }
+.sug-hd   { font-size: 9.5px; font-weight: 700; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.9px; padding: 6px 14px 3px; }
+.sug-empty { padding: 18px 14px; font-size: 12px; color: var(--text-subtle); text-align: center; }
+html[data-theme="dark"] .sug-icon { background: rgba(0,183,198,0.15); }
+html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
+
 /* ── DESTINATIONS ── */
 .section { max-width: 1200px; margin: 0 auto; padding: 52px 24px; }
 .section-head {
@@ -1103,6 +1136,9 @@ html[data-theme="dark"] .cls-opt.active { color: var(--alm-cyan); }
   <button class="pax-done" id="pax-done"><span class="en">Done</span><span class="ar">تأكيد</span></button>
 </div>
 
+<!-- Suggestion dropdown -->
+<div id="alm-suggest" role="listbox" aria-label="Suggestions"></div>
+
 <!-- Rooms & Guests panel -->
 <div id="alm-rooms" role="dialog" aria-modal="true">
   <div class="pax-ttl"><span class="en">Rooms &amp; Guests</span><span class="ar">الغرف والضيوف</span></div>
@@ -1401,10 +1437,11 @@ html[data-theme="dark"] .cls-opt.active { color: var(--alm-cyan); }
 
   /* ── Backdrop & panel manager ── */
   var bk = document.getElementById('alm-bk');
-  var panelPicker = document.getElementById('alm-picker');
-  var panelPax    = document.getElementById('alm-pax');
-  var panelRooms  = document.getElementById('alm-rooms');
-  var allPanels   = [panelPicker, panelPax, panelRooms];
+  var panelPicker  = document.getElementById('alm-picker');
+  var panelPax     = document.getElementById('alm-pax');
+  var panelRooms   = document.getElementById('alm-rooms');
+  var panelSuggest = document.getElementById('alm-suggest');
+  var allPanels    = [panelPicker, panelPax, panelRooms, panelSuggest];
 
   function closeAllPanels() {
     allPanels.forEach(function (p) { p && p.classList.remove('open'); });
@@ -1497,8 +1534,190 @@ html[data-theme="dark"] .cls-opt.active { color: var(--alm-cyan); }
     });
   }
 
+  /* ══════════════════════════════════════════
+     SUGGESTION DROPDOWN — datasets + rendering
+  ══════════════════════════════════════════ */
+
+  var CITIES = [
+    { name:'Riyadh',        nameAr:'الرياض',           sub:'Saudi Arabia',   subAr:'المملكة العربية السعودية', code:'RUH', type:'city' },
+    { name:'Jeddah',        nameAr:'جدة',              sub:'Saudi Arabia',   subAr:'المملكة العربية السعودية', code:'JED', type:'city' },
+    { name:'Dammam',        nameAr:'الدمام',            sub:'Saudi Arabia',   subAr:'المملكة العربية السعودية', code:'DMM', type:'city' },
+    { name:'Madinah',       nameAr:'المدينة المنورة',   sub:'Saudi Arabia',   subAr:'المملكة العربية السعودية', code:'MED', type:'city' },
+    { name:'Dubai',         nameAr:'دبي',              sub:'UAE',            subAr:'الإمارات',               code:'DXB', type:'city' },
+    { name:'Abu Dhabi',     nameAr:'أبوظبي',           sub:'UAE',            subAr:'الإمارات',               code:'AUH', type:'city' },
+    { name:'Istanbul',      nameAr:'إسطنبول',          sub:'Turkey',         subAr:'تركيا',                  code:'IST', type:'city' },
+    { name:'Cairo',         nameAr:'القاهرة',           sub:'Egypt',          subAr:'مصر',                    code:'CAI', type:'city' },
+    { name:'Amman',         nameAr:'عمّان',             sub:'Jordan',         subAr:'الأردن',                 code:'AMM', type:'city' },
+    { name:'London',        nameAr:'لندن',             sub:'United Kingdom', subAr:'المملكة المتحدة',         code:'LHR', type:'city' },
+    { name:'Paris',         nameAr:'باريس',            sub:'France',         subAr:'فرنسا',                  code:'CDG', type:'city' },
+    { name:'Bangkok',       nameAr:'بانكوك',           sub:'Thailand',       subAr:'تايلاند',                code:'BKK', type:'city' },
+    { name:'Kuala Lumpur',  nameAr:'كوالا لمبور',      sub:'Malaysia',       subAr:'ماليزيا',                code:'KUL', type:'city' },
+    { name:'New York',      nameAr:'نيويورك',          sub:'USA',            subAr:'الولايات المتحدة',        code:'JFK', type:'city' },
+    { name:'Maldives',      nameAr:'جزر المالديف',     sub:'Indian Ocean',   subAr:'المحيط الهندي',          code:'MLE', type:'city' },
+    { name:'Beirut',        nameAr:'بيروت',            sub:'Lebanon',        subAr:'لبنان',                  code:'BEY', type:'city' },
+    { name:'Muscat',        nameAr:'مسقط',             sub:'Oman',           subAr:'عُمان',                  code:'MCT', type:'city' }
+  ];
+
+  var STAYS = [
+    { name:'Dubai',                     nameAr:'دبي',                       sub:'City · 1,200+ properties',      subAr:'مدينة · +١٢٠٠ عقار',           type:'city' },
+    { name:'Riyadh',                    nameAr:'الرياض',                    sub:'City · 600+ properties',        subAr:'مدينة · +٦٠٠ عقار',            type:'city' },
+    { name:'Jeddah',                    nameAr:'جدة',                       sub:'City · 400+ properties',        subAr:'مدينة · +٤٠٠ عقار',            type:'city' },
+    { name:'Istanbul',                  nameAr:'إسطنبول',                   sub:'City · 800+ properties',        subAr:'مدينة · +٨٠٠ عقار',            type:'city' },
+    { name:'Maldives',                  nameAr:'جزر المالديف',              sub:'Island resort',                 subAr:'منتجع جزيرة',                   type:'resort' },
+    { name:'Burj Al Arab',              nameAr:'برج العرب',                 sub:'Hotel · Dubai, UAE',            subAr:'فندق · دبي، الإمارات',          type:'hotel' },
+    { name:'Four Seasons Riyadh',       nameAr:'فور سيزونز الرياض',         sub:'Hotel · Riyadh, KSA',           subAr:'فندق · الرياض، السعودية',       type:'hotel' },
+    { name:'Raffles Jeddah',            nameAr:'رافلز جدة',                 sub:'Hotel · Jeddah, KSA',           subAr:'فندق · جدة، السعودية',          type:'hotel' },
+    { name:'Waldorf Astoria NEOM',      nameAr:'والدورف أستوريا نيوم',      sub:'Resort · NEOM, KSA',            subAr:'منتجع · نيوم، السعودية',        type:'resort' },
+    { name:'Anantara Al Jabal',         nameAr:'أنانتارا الجبل الأخضر',    sub:'Resort · Oman',                 subAr:'منتجع · عُمان',                 type:'resort' },
+    { name:'Mövenpick Makkah',          nameAr:'موفنبيك مكة',              sub:'Hotel · Makkah, KSA',           subAr:'فندق · مكة المكرمة، السعودية',  type:'hotel' }
+  ];
+
+  var ACTIVITIES = [
+    { name:'Desert Safari',             nameAr:'سفاري الصحراء',            sub:'Adventure · Dubai, UAE',         subAr:'مغامرة · دبي، الإمارات',        type:'adventure' },
+    { name:'Bosphorus Cruise',          nameAr:'جولة البوسفور',            sub:'Experience · Istanbul, Turkey',  subAr:'تجربة · إسطنبول، تركيا',        type:'experience' },
+    { name:'Louvre Abu Dhabi',          nameAr:'متحف اللوفر أبوظبي',      sub:'Museum · Abu Dhabi, UAE',        subAr:'متحف · أبوظبي، الإمارات',       type:'museum' },
+    { name:'AlUla Heritage Trail',      nameAr:'درب العُلا التراثي',       sub:'Tour · AlUla, KSA',              subAr:'جولة · العُلا، السعودية',        type:'tour' },
+    { name:'Diriyah Heritage Tour',     nameAr:'جولة الدرعية التراثية',    sub:'Tour · Riyadh, KSA',             subAr:'جولة · الرياض، السعودية',        type:'tour' },
+    { name:'Madain Saleh Tour',         nameAr:'جولة مدائن صالح',         sub:'Tour · AlUla, KSA',              subAr:'جولة · العُلا، السعودية',        type:'tour' },
+    { name:'Snorkeling in Maldives',    nameAr:'الغطس في المالديف',        sub:'Adventure · Maldives',           subAr:'مغامرة · جزر المالديف',         type:'adventure' },
+    { name:'Edge Walk Sky Views Dubai', nameAr:'جولة الحافة سكاي فيوز',   sub:'Experience · Dubai, UAE',        subAr:'تجربة · دبي، الإمارات',         type:'experience' },
+    { name:'Hagia Sophia Visit',        nameAr:'زيارة آيا صوفيا',         sub:'Museum · Istanbul, Turkey',      subAr:'متحف · إسطنبول، تركيا',         type:'museum' },
+    { name:'Hot Air Balloon Cappadocia',nameAr:'بالون هواء كابادوكيا',    sub:'Adventure · Turkey',             subAr:'مغامرة · تركيا',                type:'adventure' }
+  ];
+
+  /* Icon paths per type */
+  function sugIconPath(type) {
+    if (type === 'hotel')    return '<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>';
+    if (type === 'resort')   return '<path d="M12 22V12M12 12C12 7 7 3 2 3M12 12C12 7 17 3 22 3M2 22h20"/>';
+    if (type === 'museum')   return '<rect x="2" y="7" width="20" height="15" rx="1"/><path d="M2 7l10-5 10 5"/><line x1="12" y1="7" x2="12" y2="22"/><line x1="7" y1="12" x2="7" y2="22"/><line x1="17" y1="12" x2="17" y2="22"/>';
+    if (type === 'tour')     return '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>';
+    if (type === 'adventure')return '<polygon points="3 11 22 2 13 21 11 13 3 11"/>';
+    if (type === 'experience')return '<circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/>';
+    /* default = city pin */
+    return '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>';
+  }
+
+  function positionSuggest(trigger) {
+    panelSuggest._anchor = trigger;
+    var r   = trigger.getBoundingClientRect();
+    var pw  = Math.max(256, Math.round(r.width));
+    panelSuggest.style.width = pw + 'px';
+    var ideal    = r.bottom + 4;
+    var PANEL_H  = 308;
+    var overflow = (ideal + PANEL_H) - (window.innerHeight - 4);
+    var top = overflow > 0 ? Math.max(r.top, ideal - overflow) : ideal;
+    if (top < 4) top = 4;
+    var isRtl = html.dir === 'rtl';
+    var left  = isRtl ? (r.right - pw) : r.left;
+    if (left + pw > window.innerWidth - 4) left = window.innerWidth - pw - 4;
+    if (left < 4) left = 4;
+    panelSuggest.style.top  = top  + 'px';
+    panelSuggest.style.left = left + 'px';
+  }
+
+  function renderSuggestions(dataset, query, sfInput, valSpan, savedHTML, inp) {
+    var isAr = html.lang === 'ar';
+    var q = (query || '').trim().toLowerCase();
+    var filtered = q.length === 0
+      ? dataset.slice(0, 7)
+      : dataset.filter(function (item) {
+          return item.name.toLowerCase().indexOf(q) !== -1 ||
+                 item.nameAr.indexOf(q) !== -1 ||
+                 (item.sub  && item.sub.toLowerCase().indexOf(q)  !== -1) ||
+                 (item.subAr && item.subAr.indexOf(q) !== -1) ||
+                 (item.code && item.code.toLowerCase().indexOf(q) !== -1);
+        }).slice(0, 7);
+
+    var inner = '';
+    if (q.length === 0) {
+      inner += '<div class="sug-hd">' + (isAr ? 'وجهات مقترحة' : 'Popular destinations') + '</div>';
+    } else if (filtered.length === 0) {
+      inner = '<div class="sug-empty">' + (isAr ? 'لا توجد نتائج' : 'No results') + '</div>';
+    }
+
+    filtered.forEach(function (item) {
+      var name = isAr ? item.nameAr : item.name;
+      var sub  = isAr ? (item.subAr || item.sub || '') : (item.sub || '');
+      var code = item.code ? '<span class="sug-code">' + item.code + '</span>' : '';
+      inner +=
+        '<div class="sug-item" data-val="' + name.replace(/"/g, '&quot;') + '">' +
+          '<div class="sug-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">' + sugIconPath(item.type) + '</svg></div>' +
+          '<div class="sug-body">' +
+            '<div class="sug-name">' + name + '</div>' +
+            (sub ? '<div class="sug-sub">' + sub + '</div>' : '') +
+          '</div>' +
+          code +
+        '</div>';
+    });
+
+    panelSuggest.innerHTML = inner;
+
+    /* Wire up suggestion clicks — use mousedown to beat the blur event */
+    panelSuggest.querySelectorAll('.sug-item').forEach(function (el) {
+      el.addEventListener('mousedown', function (e) {
+        e.preventDefault(); /* prevent input blur */
+        var val = el.getAttribute('data-val');
+        valSpan.textContent = val;
+        valSpan.classList.remove('sf-muted');
+        valSpan.style.display = '';
+        if (inp && inp.parentNode) inp.remove();
+        sfInput.classList.remove('sf-focus');
+        /* close only the suggestion panel */
+        panelSuggest.classList.remove('open');
+      });
+    });
+
+    /* Position and show — no backdrop (closes naturally on blur) */
+    positionSuggest(sfInput);
+    panelSuggest.classList.add('open');
+  }
+
+  /* ── Searchable field: inline edit + suggestion dropdown ── */
+  function makeSearchable(sfInput, valSpan, dataset) {
+    if (!sfInput || !valSpan) return;
+    sfInput.classList.add('sf-ptr');
+    sfInput.addEventListener('click', function () {
+      if (sfInput.querySelector('.sf-inline')) return;
+      var isMuted   = valSpan.classList.contains('sf-muted');
+      var cur       = isMuted ? '' : valSpan.textContent.trim();
+      var savedHTML = valSpan.innerHTML;
+
+      sfInput.classList.add('sf-focus');
+      var inp = document.createElement('input');
+      inp.type        = 'text';
+      inp.className   = 'sf-inline';
+      inp.value       = cur;
+      inp.placeholder = isMuted ? getLangText(valSpan) : cur;
+      valSpan.style.display = 'none';
+      valSpan.parentNode.insertBefore(inp, valSpan.nextSibling);
+      inp.focus();
+
+      /* Immediately show suggestions */
+      renderSuggestions(dataset, cur, sfInput, valSpan, savedHTML, inp);
+
+      inp.addEventListener('input', function () {
+        renderSuggestions(dataset, inp.value, sfInput, valSpan, savedHTML, inp);
+      });
+
+      function commit() {
+        var v = inp.value.trim();
+        if (v) { valSpan.textContent = v; valSpan.classList.remove('sf-muted'); }
+        else   { valSpan.innerHTML = savedHTML; }
+        valSpan.style.display = '';
+        if (inp.parentNode) inp.remove();
+        sfInput.classList.remove('sf-focus');
+        panelSuggest.classList.remove('open');
+      }
+      inp.addEventListener('blur',    function () { setTimeout(commit, 160); });
+      inp.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter')  { e.preventDefault(); inp.blur(); }
+        if (e.key === 'Escape') { inp.value = ''; inp.blur(); }
+      });
+    });
+  }
+
   /* MC dynamic rows also need editability */
-  function makeMcFieldEditable(sfInput, valSpan) { makeEditable(sfInput, valSpan); }
+  function makeMcFieldEditable(sfInput, valSpan) { makeSearchable(sfInput, valSpan, CITIES); }
 
   /* ── Date Picker ── */
   var PK = {
@@ -1821,11 +2040,11 @@ html[data-theme="dark"] .cls-opt.active { color: var(--alm-cyan); }
     });
   }
 
-  /* ── Text-editable fields ── */
-  makeEditable(document.getElementById('si-orig'),   document.getElementById('origVal'));
-  makeEditable(document.getElementById('si-dest'),   document.getElementById('destVal'));
-  makeEditable(document.getElementById('si-stay-q'), document.getElementById('stayQVal'));
-  makeEditable(document.getElementById('si-act-q'),  document.getElementById('actQVal'));
+  /* ── Searchable fields with suggestion dropdowns ── */
+  makeSearchable(document.getElementById('si-orig'),   document.getElementById('origVal'),   CITIES);
+  makeSearchable(document.getElementById('si-dest'),   document.getElementById('destVal'),   CITIES);
+  makeSearchable(document.getElementById('si-stay-q'), document.getElementById('stayQVal'),  STAYS);
+  makeSearchable(document.getElementById('si-act-q'),  document.getElementById('actQVal'),   ACTIVITIES);
 
   /* MC grid existing origin/dest cells */
   document.querySelectorAll('#mc-grid .sf-field').forEach(function (field) {
@@ -1833,7 +2052,7 @@ html[data-theme="dark"] .cls-opt.active { color: var(--alm-cyan); }
     if (!lbl) return;
     var txt = lbl.textContent.trim();
     if (txt.indexOf('ORIGIN') !== -1 || txt.indexOf('DESTINATION') !== -1 || txt.indexOf('المغادرة') !== -1 || txt.indexOf('الوصول') !== -1) {
-      makeEditable(field.querySelector('.sf-input'), field.querySelector('.sf-val'));
+      makeSearchable(field.querySelector('.sf-input'), field.querySelector('.sf-val'), CITIES);
     }
   });
 
@@ -1854,9 +2073,10 @@ html[data-theme="dark"] .cls-opt.active { color: var(--alm-cyan); }
     if (e.key === 'Escape') closeAllPanels();
   });
 
-  /* ── Reposition panels on scroll/resize ── */
+  /* ── Reposition panels on resize ── */
   window.addEventListener('resize', function () {
-    if (panelPicker.classList.contains('open') && PK.trigger) positionPanel(panelPicker, PK.trigger);
+    if (panelPicker.classList.contains('open')  && PK.trigger)         positionPanel(panelPicker, PK.trigger);
+    if (panelSuggest.classList.contains('open') && panelSuggest._anchor) positionSuggest(panelSuggest._anchor);
   });
 
 }());
