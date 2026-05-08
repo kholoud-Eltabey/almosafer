@@ -922,7 +922,7 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
               <div class="sf-input" id="si-rooms">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
                 <div>
-                  <span class="sf-val" id="roomsVal">1 <span class="en">Room, 2 Adults</span><span class="ar">غرفة، ٢ بالغ</span></span>
+                  <span class="sf-val" id="roomsVal"><span class="en">1 Room, 2 Adults</span><span class="ar">١ غرفة، ٢ بالغون</span></span>
                 </div>
               </div>
             </div>
@@ -2059,11 +2059,19 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
     var roomsVal = document.getElementById('roomsVal');
     if (!roomsVal) return;
     var isAr = html.lang === 'ar';
+    var txt;
     if (isAr) {
-      roomsVal.textContent = RM.rooms + ' ' + (RM.rooms === 1 ? 'غرفة' : 'غرف') + '، ' + RM.adults + ' بالغ';
+      txt = RM.rooms   + ' ' + (RM.rooms   === 1 ? 'غرفة'  : 'غرف')   +
+            '، ' + RM.adults + ' ' + (RM.adults  === 1 ? 'بالغ'  : 'بالغون');
+      if (RM.children > 0)
+        txt += '، ' + RM.children + ' ' + (RM.children === 1 ? 'طفل' : 'أطفال');
     } else {
-      roomsVal.textContent = RM.rooms + ' ' + (RM.rooms === 1 ? 'Room' : 'Rooms') + ', ' + RM.adults + ' Adult' + (RM.adults > 1 ? 's' : '');
+      txt = RM.rooms   + ' ' + (RM.rooms   === 1 ? 'Room'  : 'Rooms')  +
+            ', ' + RM.adults + ' Adult'  + (RM.adults  > 1  ? 's' : '');
+      if (RM.children > 0)
+        txt += ', ' + RM.children + ' Child' + (RM.children > 1 ? 'ren' : '');
     }
+    roomsVal.textContent = txt;
     roomsVal.classList.remove('sf-muted');
   }
 
