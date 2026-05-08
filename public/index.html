@@ -437,6 +437,128 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
   .header-inner { gap: 8px; }
 }
 
+/* ══════════════════════════════════════════
+   STEP 2 — WIDGET INTERACTIONS
+══════════════════════════════════════════ */
+
+/* Inline text editing */
+.sf-input.sf-focus { border-color: var(--alm-cyan); }
+.sf-inline {
+  background: none; border: none; outline: none;
+  width: 100%; font-size: 12px; font-weight: 400;
+  color: var(--text-primary); font-family: inherit; padding: 0;
+  caret-color: var(--alm-cyan);
+}
+
+/* Clickable date / pax fields */
+.sf-input.sf-ptr { cursor: pointer; }
+.sf-input.sf-ptr:active { border-color: var(--alm-cyan); }
+
+/* Backdrop overlay */
+#alm-bk { position: fixed; inset: 0; z-index: 590; display: none; }
+#alm-bk.open { display: block; }
+
+/* ── Date Picker ── */
+#alm-picker {
+  position: fixed; z-index: 620;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+  padding: 16px; width: 296px; display: none;
+  font-size: 12px;
+}
+#alm-picker.open { display: block; }
+.pk-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.pk-lbl { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.pk-nav {
+  background: none; border: 1px solid var(--border); cursor: pointer;
+  color: var(--text-subtle); width: 28px; height: 28px; border-radius: var(--r-sm);
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+  transition: all 100ms;
+}
+.pk-nav:hover { border-color: var(--alm-cyan); color: var(--alm-cyan); }
+.pk-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: 1px; }
+.pk-dn { font-size: 9px; font-weight: 700; color: var(--text-subtle); padding: 5px 0 3px; text-transform: uppercase; letter-spacing: 0.4px; }
+.pk-d {
+  padding: 7px 2px; font-size: 12px; color: var(--text-primary);
+  cursor: pointer; border-radius: var(--r-sm); transition: background 80ms;
+  line-height: 1;
+}
+.pk-d.pk-blank, .pk-d.pk-past { color: var(--border); cursor: default; pointer-events: none; }
+.pk-d:not(.pk-blank):not(.pk-past):hover { background: rgba(0,183,198,0.14); color: var(--alm-cyan); }
+.pk-d.pk-sel { background: var(--alm-cyan) !important; color: #fff !important; font-weight: 700; }
+.pk-d.pk-range { background: rgba(0,183,198,0.12); border-radius: 0; color: var(--text-primary); }
+.pk-d.pk-range-end { background: var(--alm-dark) !important; color: #fff !important; font-weight: 700; }
+html[data-theme="dark"] .pk-d.pk-range-end { background: #1a4a5a !important; }
+.pk-ft { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.pk-clear { font-size: 11px; color: var(--alm-red); background: none; border: none; cursor: pointer; font-family: inherit; }
+.pk-hint { font-size: 11px; color: var(--text-subtle); font-style: italic; }
+
+/* ── Travellers & Rooms panels ── */
+#alm-pax, #alm-rooms {
+  position: fixed; z-index: 620;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+  padding: 16px 18px; width: 292px; display: none;
+}
+#alm-pax.open, #alm-rooms.open { display: block; }
+.pax-ttl { font-size: 9.5px; font-weight: 700; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.9px; margin-bottom: 8px; }
+.pax-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; }
+.pax-row + .pax-row { border-top: 1px solid var(--border); }
+.pax-lbl { font-size: 13px; font-weight: 500; color: var(--text-primary); line-height: 1.2; }
+.pax-sub { font-size: 10px; color: var(--text-subtle); margin-top: 2px; }
+.pax-ctr { display: flex; align-items: center; gap: 10px; }
+.pax-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid var(--border); background: none;
+  color: var(--text-secondary); font-size: 17px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: border-color 100ms, color 100ms; font-family: inherit;
+}
+.pax-btn:not([disabled]):hover { border-color: var(--alm-cyan); color: var(--alm-cyan); }
+.pax-btn[disabled] { color: var(--border); border-color: var(--border); cursor: default; }
+.pax-n { font-size: 14px; font-weight: 600; color: var(--text-primary); min-width: 20px; text-align: center; }
+.pax-class-ttl { font-size: 9.5px; font-weight: 700; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.9px; margin: 12px 0 8px; }
+.cls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.cls-opt {
+  padding: 7px 6px; border-radius: var(--r-md); border: 1.5px solid var(--border);
+  font-size: 11px; font-weight: 500; color: var(--text-subtle);
+  cursor: pointer; text-align: center; transition: all 110ms;
+  background: none; font-family: inherit; white-space: nowrap;
+}
+.cls-opt.active { border-color: var(--alm-cyan); background: rgba(0,183,198,0.10); color: var(--alm-dark); font-weight: 600; }
+html[data-theme="dark"] .cls-opt.active { color: var(--alm-cyan); }
+.pax-done {
+  margin-top: 14px; width: 100%; padding: 10px;
+  background: var(--alm-red); color: #fff; border: none;
+  border-radius: var(--r-md); font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: background 120ms;
+}
+.pax-done:hover { background: #d4323e; }
+
+/* ── MC remove button ── */
+.mc-rm { display: flex; align-items: center; padding-bottom: 0; justify-content: center; }
+.mc-rm-btn {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1.5px solid var(--border); background: none;
+  color: var(--text-subtle); font-size: 18px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 120ms; font-family: inherit; margin-top: 20px;
+}
+.mc-rm-btn:hover { border-color: var(--alm-red); color: var(--alm-red); }
+
+/* ── Search loading ── */
+.sf-btn.sf-loading { pointer-events: none; opacity: 0.85; }
+.sf-btn.sf-loading > * { display: none; }
+.sf-btn.sf-loading::after {
+  content: ''; display: inline-block;
+  width: 18px; height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: sf-spin 0.65s linear infinite;
+}
+@keyframes sf-spin { to { transform: rotate(360deg); } }
+
 /* ── DESTINATIONS ── */
 .section { max-width: 1200px; margin: 0 auto; padding: 52px 24px; }
 .section-head {
@@ -629,7 +751,7 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
             <div class="sf-row">
               <div class="sf-field">
                 <label><span class="en">ORIGIN</span><span class="ar">المغادرة من</span></label>
-                <div class="sf-input">
+                <div class="sf-input" id="si-orig">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
                   <div>
                     <span class="sf-val" id="origVal" data-ph="Riyadh">Riyadh</span>
@@ -638,7 +760,7 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
               </div>
               <div class="sf-field">
                 <label><span class="en">DESTINATION</span><span class="ar">الوصول إلى</span></label>
-                <div class="sf-input">
+                <div class="sf-input" id="si-dest">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
                   <div>
                     <span class="sf-val sf-muted" id="destVal"><span class="en">City</span><span class="ar">مدينة</span></span>
@@ -666,10 +788,10 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
               </div>
               <div class="sf-field" style="flex:0.88">
                 <label><span class="en">TRAVELLERS &amp; CLASS</span><span class="ar">المسافرون والدرجة</span></label>
-                <div class="sf-input">
+                <div class="sf-input" id="si-pax">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                   <div>
-                    <span class="sf-val">1 <span class="en">Adult, Economy</span><span class="ar">بالغ، اقتصادية</span></span>
+                    <span class="sf-val" id="paxVal">1 <span class="en">Adult, Economy</span><span class="ar">بالغ، اقتصادية</span></span>
                   </div>
                 </div>
               </div>
@@ -737,37 +859,37 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
           <div class="sf-row">
             <div class="sf-field" style="flex:1.6">
               <label><span class="en">SEARCH FOR</span><span class="ar">ابحث عن</span></label>
-              <div class="sf-input">
+              <div class="sf-input" id="si-stay-q">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 <div>
-                  <span class="sf-val sf-muted"><span class="en">Properties, places...</span><span class="ar">فنادق، أماكن...</span></span>
+                  <span class="sf-val sf-muted" id="stayQVal"><span class="en">Properties, places...</span><span class="ar">فنادق، أماكن...</span></span>
                 </div>
               </div>
             </div>
             <div class="sf-field">
               <label><span class="en">CHECK-IN</span><span class="ar">تسجيل الوصول</span></label>
-              <div class="sf-input">
+              <div class="sf-input" id="si-checkin">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 <div>
-                  <span class="sf-val sf-muted"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span>
+                  <span class="sf-val sf-muted" id="checkinVal"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span>
                 </div>
               </div>
             </div>
             <div class="sf-field">
               <label><span class="en">CHECK-OUT</span><span class="ar">تسجيل المغادرة</span></label>
-              <div class="sf-input">
+              <div class="sf-input" id="si-checkout">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 <div>
-                  <span class="sf-val sf-muted"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span>
+                  <span class="sf-val sf-muted" id="checkoutVal"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span>
                 </div>
               </div>
             </div>
             <div class="sf-field">
               <label><span class="en">ROOMS &amp; GUESTS</span><span class="ar">الغرف والضيوف</span></label>
-              <div class="sf-input">
+              <div class="sf-input" id="si-rooms">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
                 <div>
-                  <span class="sf-val">1 <span class="en">Room, 2 Adults</span><span class="ar">غرفة، ٢ بالغ</span></span>
+                  <span class="sf-val" id="roomsVal">1 <span class="en">Room, 2 Adults</span><span class="ar">غرفة، ٢ بالغ</span></span>
                 </div>
               </div>
             </div>
@@ -783,10 +905,10 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
           <div class="sf-row">
             <div class="sf-field">
               <label><span class="en">SEARCH ACTIVITIES</span><span class="ar">ابحث عن أنشطة</span></label>
-              <div class="sf-input">
+              <div class="sf-input" id="si-act-q">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 <div>
-                  <span class="sf-val sf-muted"><span class="en">Tours, museums, experiences...</span><span class="ar">جولات، متاحف، تجارب...</span></span>
+                  <span class="sf-val sf-muted" id="actQVal"><span class="en">Tours, museums, experiences...</span><span class="ar">جولات، متاحف، تجارب...</span></span>
                 </div>
               </div>
             </div>
@@ -952,6 +1074,53 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
 
 <div id="alm-toast" role="status" aria-live="polite"></div>
 
+<!-- ── STEP 2 PANELS ── -->
+<div id="alm-bk" aria-hidden="true"></div>
+<div id="alm-picker" role="dialog" aria-modal="true" aria-label="Date picker"></div>
+
+<!-- Travellers & Class panel -->
+<div id="alm-pax" role="dialog" aria-modal="true">
+  <div class="pax-ttl"><span class="en">Travellers</span><span class="ar">المسافرون</span></div>
+  <div class="pax-row">
+    <div><div class="pax-lbl"><span class="en">Adults</span><span class="ar">بالغون</span></div><div class="pax-sub"><span class="en">Age 12+</span><span class="ar">١٢ سنة فأكثر</span></div></div>
+    <div class="pax-ctr"><button class="pax-btn" data-pax="adults" data-op="dec">−</button><span class="pax-n" id="pn-adults">1</span><button class="pax-btn" data-pax="adults" data-op="inc">+</button></div>
+  </div>
+  <div class="pax-row">
+    <div><div class="pax-lbl"><span class="en">Children</span><span class="ar">أطفال</span></div><div class="pax-sub"><span class="en">Age 2–11</span><span class="ar">٢–١١ سنة</span></div></div>
+    <div class="pax-ctr"><button class="pax-btn" data-pax="children" data-op="dec">−</button><span class="pax-n" id="pn-children">0</span><button class="pax-btn" data-pax="children" data-op="inc">+</button></div>
+  </div>
+  <div class="pax-row">
+    <div><div class="pax-lbl"><span class="en">Infants</span><span class="ar">رضّع</span></div><div class="pax-sub"><span class="en">Under 2</span><span class="ar">أقل من سنتين</span></div></div>
+    <div class="pax-ctr"><button class="pax-btn" data-pax="infants" data-op="dec">−</button><span class="pax-n" id="pn-infants">0</span><button class="pax-btn" data-pax="infants" data-op="inc">+</button></div>
+  </div>
+  <div class="pax-class-ttl"><span class="en">Cabin Class</span><span class="ar">درجة السفر</span></div>
+  <div class="cls-grid">
+    <button class="cls-opt active" data-cls="economy"><span class="en">Economy</span><span class="ar">اقتصادية</span></button>
+    <button class="cls-opt" data-cls="premium"><span class="en">Prem. Economy</span><span class="ar">اقتصادية مميزة</span></button>
+    <button class="cls-opt" data-cls="business"><span class="en">Business</span><span class="ar">رجال الأعمال</span></button>
+    <button class="cls-opt" data-cls="first"><span class="en">First Class</span><span class="ar">الدرجة الأولى</span></button>
+  </div>
+  <button class="pax-done" id="pax-done"><span class="en">Done</span><span class="ar">تأكيد</span></button>
+</div>
+
+<!-- Rooms & Guests panel -->
+<div id="alm-rooms" role="dialog" aria-modal="true">
+  <div class="pax-ttl"><span class="en">Rooms &amp; Guests</span><span class="ar">الغرف والضيوف</span></div>
+  <div class="pax-row">
+    <div><div class="pax-lbl"><span class="en">Rooms</span><span class="ar">غرف</span></div></div>
+    <div class="pax-ctr"><button class="pax-btn" data-room="rooms" data-op="dec">−</button><span class="pax-n" id="rn-rooms">1</span><button class="pax-btn" data-room="rooms" data-op="inc">+</button></div>
+  </div>
+  <div class="pax-row">
+    <div><div class="pax-lbl"><span class="en">Adults</span><span class="ar">بالغون</span></div><div class="pax-sub"><span class="en">Age 18+</span><span class="ar">١٨ سنة فأكثر</span></div></div>
+    <div class="pax-ctr"><button class="pax-btn" data-room="adults" data-op="dec">−</button><span class="pax-n" id="rn-adults">2</span><button class="pax-btn" data-room="adults" data-op="inc">+</button></div>
+  </div>
+  <div class="pax-row">
+    <div><div class="pax-lbl"><span class="en">Children</span><span class="ar">أطفال</span></div><div class="pax-sub"><span class="en">Age 2–17</span><span class="ar">٢–١٧ سنة</span></div></div>
+    <div class="pax-ctr"><button class="pax-btn" data-room="children" data-op="dec">−</button><span class="pax-n" id="rn-children">0</span><button class="pax-btn" data-room="children" data-op="inc">+</button></div>
+  </div>
+  <button class="pax-done" id="rooms-done"><span class="en">Done</span><span class="ar">تأكيد</span></button>
+</div>
+
 <script>
 (function () {
   'use strict';
@@ -1081,7 +1250,7 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
      Each extra flight adds 3 children (Origin,Dest,Date → grid cols 1-3). */
 
   function mcFlightCount() {
-    return Math.round(((mcGrid.children.length - 4) / 3) + 1);
+    return Math.round(((mcGrid.children.length - 4) / 4) + 1);
   }
 
   function makeMcCell(label, iconPath, ph, isCircle) {
@@ -1117,9 +1286,26 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
 
   function addMcRow() {
     if (mcFlightCount() >= MC_MAX) return;
-    mcGrid.appendChild(makeMcCell('ORIGIN',      '', 'City', true));
-    mcGrid.appendChild(makeMcCell('DESTINATION', '', 'City', false));
-    mcGrid.appendChild(makeMcDateCell());
+    var orig = makeMcCell('ORIGIN',      '', 'City', true);
+    var dest = makeMcCell('DESTINATION', '', 'City', false);
+    var date = makeMcDateCell();
+    var rm   = document.createElement('div');
+    rm.className = 'mc-rm';
+    rm.innerHTML = '<button class="mc-rm-btn" type="button" aria-label="Remove flight">×</button>';
+    rm.querySelector('button').addEventListener('click', function () {
+      orig.remove(); dest.remove(); date.remove(); rm.remove();
+      updateMcAddLink();
+    });
+    /* make newly created city cells editable */
+    var origVal = orig.querySelector('.sf-val');
+    var destVal = dest.querySelector('.sf-val');
+    if (origVal) makeMcFieldEditable(orig.querySelector('.sf-input'), origVal);
+    if (destVal) makeMcFieldEditable(dest.querySelector('.sf-input'), destVal);
+    bindMcDateField(date.querySelector('.sf-input'));
+    mcGrid.appendChild(orig);
+    mcGrid.appendChild(dest);
+    mcGrid.appendChild(date);
+    mcGrid.appendChild(rm);
     updateMcAddLink();
   }
 
@@ -1146,6 +1332,14 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
   });
 
   mcAddLink && mcAddLink.addEventListener('click', addMcRow);
+
+  /* ── expose currentTripType for Step 2 ── */
+  var currentTripType = 'one-way';
+  var _origSetTripType = setTripType;
+  setTripType = function (type) {
+    currentTripType = type;
+    _origSetTripType(type);
+  };
 
   /* Boot state */
   setTripType('one-way');
@@ -1177,6 +1371,474 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
     });
   });
 
+
+
+  /* ══════════════════════════════════════════
+     STEP 2 — SEARCH WIDGET INTERACTIONS
+  ══════════════════════════════════════════ */
+
+  /* ── Shared state ── */
+  var W = {
+    depart:   null,   /* Date */
+    ret:      null,   /* Date — round trip return */
+    checkin:  null,
+    checkout: null,
+    adults:   1, children: 0, infants: 0, cls: 'economy',
+    rooms: 1, rAdults: 2, rChildren: 0
+  };
+
+  /* ── Date formatting helpers ── */
+  var MO_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var MO_AR = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  var DOW   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  function fmtDate(d) {
+    if (!d) return '';
+    if (html.lang === 'ar') return d.getDate() + ' ' + MO_AR[d.getMonth()];
+    return DOW[d.getDay()] + ', ' + d.getDate() + ' ' + MO_EN[d.getMonth()];
+  }
+  function midnight(d) { var x = new Date(d); x.setHours(0,0,0,0); return x; }
+  var today = midnight(new Date());
+
+  /* ── Backdrop & panel manager ── */
+  var bk = document.getElementById('alm-bk');
+  var panelPicker = document.getElementById('alm-picker');
+  var panelPax    = document.getElementById('alm-pax');
+  var panelRooms  = document.getElementById('alm-rooms');
+  var allPanels   = [panelPicker, panelPax, panelRooms];
+
+  function closeAllPanels() {
+    allPanels.forEach(function (p) { p && p.classList.remove('open'); });
+    bk.classList.remove('open');
+  }
+  bk.addEventListener('click', closeAllPanels);
+
+  function openPanel(panel, triggerEl) {
+    closeAllPanels();
+    positionPanel(panel, triggerEl);
+    panel.classList.add('open');
+    bk.classList.add('open');
+  }
+
+  function positionPanel(panel, trigger) {
+    var r = trigger.getBoundingClientRect();
+    var pw = panel.offsetWidth || 296;
+    var ph = panel.offsetHeight || 340;
+    var space = window.innerHeight - r.bottom - 8;
+    var top = space > ph ? r.bottom + 6 : r.top - ph - 6;
+    var left = r.left;
+    if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
+    if (left < 8) left = 8;
+    if (top < 8) top = 8;
+    panel.style.top  = top  + 'px';
+    panel.style.left = left + 'px';
+  }
+
+  /* ── Inline text editing ── */
+  function makeEditable(sfInput, valSpan) {
+    if (!sfInput || !valSpan) return;
+    sfInput.classList.add('sf-ptr');
+    sfInput.addEventListener('click', function (e) {
+      if (sfInput.querySelector('.sf-inline')) return;
+      var isMuted = valSpan.classList.contains('sf-muted');
+      var cur = isMuted ? '' : valSpan.textContent.trim();
+      var ph  = valSpan.getAttribute('data-ph') || '';
+
+      sfInput.classList.add('sf-focus');
+      var inp = document.createElement('input');
+      inp.type        = 'text';
+      inp.className   = 'sf-inline';
+      inp.value       = cur;
+      inp.placeholder = isMuted ? valSpan.textContent.trim() : ph;
+      valSpan.style.display = 'none';
+      valSpan.parentNode.insertBefore(inp, valSpan.nextSibling);
+      inp.focus();
+
+      function commit() {
+        var v = inp.value.trim();
+        if (v) {
+          valSpan.textContent = v;
+          valSpan.classList.remove('sf-muted');
+        } else {
+          /* restore original placeholder markup */
+          if (ph) {
+            valSpan.textContent = ph;
+            valSpan.classList.remove('sf-muted');
+          }
+          /* else leave as-is — bilingual spans inside */
+        }
+        valSpan.style.display = '';
+        inp.remove();
+        sfInput.classList.remove('sf-focus');
+      }
+      inp.addEventListener('blur',    commit);
+      inp.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter')  { e.preventDefault(); inp.blur(); }
+        if (e.key === 'Escape') { inp.value = ''; inp.blur(); }
+      });
+    });
+  }
+
+  /* MC dynamic rows also need editability */
+  function makeMcFieldEditable(sfInput, valSpan) { makeEditable(sfInput, valSpan); }
+
+  /* ── Date Picker ── */
+  var PK = {
+    mode:      'single', /* 'single' | 'range' */
+    selecting: 'start',  /* 'start' | 'end' */
+    start:     null,
+    end:       null,
+    month:     new Date(),
+    onPick:    null,
+    trigger:   null
+  };
+
+  var DOW_EN = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  var DOW_AR = ['أح','إث','ثل','أر','خم','جم','سب'];
+  var MON_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var MON_AR = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+  function openPicker(triggerEl, mode, onPick) {
+    PK.mode      = mode || 'single';
+    PK.selecting = 'start';
+    PK.month     = midnight(PK.start || new Date());
+    PK.month.setDate(1);
+    PK.onPick    = onPick;
+    PK.trigger   = triggerEl;
+    renderPicker();
+    openPanel(panelPicker, triggerEl);
+  }
+
+  function renderPicker() {
+    var m  = PK.month;
+    var y  = m.getFullYear(), mo = m.getMonth();
+    var isAr    = html.lang === 'ar';
+    var dowList = isAr ? DOW_AR : DOW_EN;
+    var mLabel  = (isAr ? MON_AR[mo] : MON_EN[mo]) + ' ' + y;
+    var first   = new Date(y, mo, 1).getDay();
+    var days    = new Date(y, mo + 1, 0).getDate();
+
+    var hint = '';
+    if (PK.mode === 'range' && PK.selecting === 'end') {
+      hint = isAr ? 'اختر تاريخ العودة' : 'Select return date';
+    }
+
+    var html2 = '<div class="pk-hd">' +
+      '<button class="pk-nav" id="pk-prev">&#8249;</button>' +
+      '<span class="pk-lbl">' + mLabel + '</span>' +
+      '<button class="pk-nav" id="pk-next">&#8250;</button>' +
+      '</div><div class="pk-grid" id="pk-g"></div>' +
+      '<div class="pk-ft"><button class="pk-clear" id="pk-clr">' + (isAr ? 'مسح' : 'Clear') + '</button>' +
+      '<span class="pk-hint">' + hint + '</span></div>';
+    panelPicker.innerHTML = html2;
+
+    var grid = document.getElementById('pk-g');
+    dowList.forEach(function (d) {
+      var el = document.createElement('div');
+      el.className = 'pk-dn'; el.textContent = d;
+      grid.appendChild(el);
+    });
+    for (var i = 0; i < first; i++) {
+      var bl = document.createElement('div'); bl.className = 'pk-d pk-blank'; grid.appendChild(bl);
+    }
+    for (var d = 1; d <= days; d++) {
+      var date = midnight(new Date(y, mo, d));
+      var el   = document.createElement('div');
+      el.className = 'pk-d';
+      el.textContent = d;
+      if (date < today) el.classList.add('pk-past');
+      if (PK.start && date.getTime() === PK.start.getTime()) el.classList.add('pk-sel');
+      if (PK.end   && date.getTime() === PK.end.getTime())   el.classList.add('pk-range-end');
+      if (PK.start && PK.end && date > PK.start && date < PK.end) el.classList.add('pk-range');
+      (function (date) {
+        el.addEventListener('click', function () { pickDay(date); });
+      })(date);
+      grid.appendChild(el);
+    }
+
+    document.getElementById('pk-prev').addEventListener('click', function () {
+      PK.month = new Date(y, mo - 1, 1); renderPicker();
+    });
+    document.getElementById('pk-next').addEventListener('click', function () {
+      PK.month = new Date(y, mo + 1, 1); renderPicker();
+    });
+    document.getElementById('pk-clr').addEventListener('click', function () {
+      PK.start = null; PK.end = null;
+      if (PK.onPick) PK.onPick(null, null);
+      closeAllPanels();
+    });
+  }
+
+  function pickDay(date) {
+    if (PK.mode === 'single') {
+      PK.start = date;
+      if (PK.onPick) PK.onPick(date, null);
+      closeAllPanels();
+      return;
+    }
+    /* range */
+    if (PK.selecting === 'start') {
+      PK.start = date; PK.end = null;
+      PK.selecting = 'end';
+      renderPicker();
+    } else {
+      if (date <= PK.start) { PK.start = date; PK.end = null; PK.selecting = 'end'; renderPicker(); return; }
+      PK.end = date;
+      PK.selecting = 'start';
+      if (PK.onPick) PK.onPick(PK.start, PK.end);
+      closeAllPanels();
+    }
+  }
+
+  /* Date display helpers */
+  function setDateDisplay(valSpan, date) {
+    if (!valSpan) return;
+    if (date) {
+      valSpan.textContent = fmtDate(date);
+      valSpan.classList.remove('sf-muted');
+    } else {
+      valSpan.innerHTML = '<span class="en">Add date</span><span class="ar">أضف تاريخاً</span>';
+      valSpan.classList.add('sf-muted');
+    }
+  }
+
+  /* Bind the two standard flight date fields */
+  var departInput = document.querySelector('#sf-depart-wrap .sf-input');
+  var returnInput = document.querySelector('#sf-return-wrap .sf-input');
+  var departVal   = departInput && departInput.querySelector('.sf-val');
+  var returnVal   = returnInput && returnInput.querySelector('.sf-val');
+
+  if (departInput) {
+    departInput.classList.add('sf-ptr');
+    departInput.addEventListener('click', function () {
+      PK.start = W.depart; PK.end = W.ret;
+      var mode = currentTripType === 'round-trip' ? 'range' : 'single';
+      openPicker(departInput, mode, function (s, e) {
+        W.depart = s; W.ret   = e;
+        setDateDisplay(departVal, W.depart);
+        setDateDisplay(returnVal,  W.ret);
+      });
+    });
+  }
+  if (returnInput) {
+    returnInput.classList.add('sf-ptr');
+    returnInput.addEventListener('click', function () {
+      PK.start = W.depart; PK.end = W.ret;
+      openPicker(returnInput, 'range', function (s, e) {
+        W.depart = s; W.ret = e;
+        setDateDisplay(departVal, W.depart);
+        setDateDisplay(returnVal,  W.ret);
+      });
+    });
+  }
+
+  /* Stays date fields */
+  var checkinInput  = document.getElementById('si-checkin');
+  var checkoutInput = document.getElementById('si-checkout');
+  var checkinVal    = checkinInput  && checkinInput.querySelector('.sf-val');
+  var checkoutVal   = checkoutInput && checkoutInput.querySelector('.sf-val');
+
+  if (checkinInput) {
+    checkinInput.classList.add('sf-ptr');
+    checkinInput.addEventListener('click', function () {
+      PK.start = W.checkin; PK.end = W.checkout;
+      openPicker(checkinInput, 'range', function (s, e) {
+        W.checkin = s; W.checkout = e;
+        setDateDisplay(checkinVal,  W.checkin);
+        setDateDisplay(checkoutVal, W.checkout);
+      });
+    });
+  }
+  if (checkoutInput) {
+    checkoutInput.classList.add('sf-ptr');
+    checkoutInput.addEventListener('click', function () {
+      PK.start = W.checkin; PK.end = W.checkout;
+      openPicker(checkoutInput, 'range', function (s, e) {
+        W.checkin = s; W.checkout = e;
+        setDateDisplay(checkinVal,  W.checkin);
+        setDateDisplay(checkoutVal, W.checkout);
+      });
+    });
+  }
+
+  /* MC dynamic row date field binding */
+  function bindMcDateField(sfInput) {
+    if (!sfInput) return;
+    sfInput.classList.add('sf-ptr');
+    var valSpan = sfInput.querySelector('.sf-val');
+    sfInput.addEventListener('click', function () {
+      PK.start = null; PK.end = null;
+      openPicker(sfInput, 'single', function (date) {
+        setDateDisplay(valSpan, date);
+      });
+    });
+  }
+
+  /* Bind existing MC grid date cells (Flight 1 Date) */
+  var mcDateCells = document.querySelectorAll('#mc-grid .sf-field');
+  mcDateCells.forEach(function (field) {
+    var lbl = field.querySelector('label');
+    if (lbl && lbl.textContent.trim().indexOf('DATE') !== -1) {
+      bindMcDateField(field.querySelector('.sf-input'));
+    }
+  });
+
+  /* ── Travellers & Class Panel ── */
+  var PAX = { adults: 1, children: 0, infants: 0, cls: 'economy' };
+
+  function refreshPaxUI() {
+    document.getElementById('pn-adults').textContent   = PAX.adults;
+    document.getElementById('pn-children').textContent = PAX.children;
+    document.getElementById('pn-infants').textContent  = PAX.infants;
+    panelPax.querySelectorAll('.pax-btn').forEach(function (btn) {
+      var key = btn.dataset.pax, op = btn.dataset.op;
+      var val = PAX[key];
+      var min = key === 'adults' ? 1 : 0;
+      var max = key === 'adults' ? 9 : (key === 'children' ? 8 : 4);
+      btn.disabled = op === 'dec' ? val <= min : val >= max;
+    });
+  }
+
+  panelPax.querySelectorAll('.pax-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var key = btn.dataset.pax, op = btn.dataset.op;
+      if (op === 'inc') PAX[key]++;
+      else              PAX[key] = Math.max(key === 'adults' ? 1 : 0, PAX[key] - 1);
+      refreshPaxUI();
+    });
+  });
+
+  panelPax.querySelectorAll('.cls-opt').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      panelPax.querySelectorAll('.cls-opt').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      PAX.cls = btn.dataset.cls;
+    });
+  });
+
+  function clsLabel(cls) {
+    var map = { economy: { en: 'Economy', ar: 'اقتصادية' },
+                premium:  { en: 'Prem. Economy', ar: 'اقتصادية مميزة' },
+                business: { en: 'Business', ar: 'رجال الأعمال' },
+                first:    { en: 'First Class', ar: 'الدرجة الأولى' } };
+    return map[cls] || map.economy;
+  }
+
+  function updatePaxDisplay() {
+    var paxVal = document.getElementById('paxVal');
+    if (!paxVal) return;
+    var total = PAX.adults + PAX.children + PAX.infants;
+    var isAr  = html.lang === 'ar';
+    var clsL  = clsLabel(PAX.cls);
+    if (isAr) {
+      paxVal.textContent = total + ' ' + (total === 1 ? 'مسافر' : 'مسافرون') + '، ' + clsL.ar;
+    } else {
+      paxVal.textContent = total + ' ' + (total === 1 ? 'Traveller' : 'Travellers') + ', ' + clsL.en;
+    }
+    paxVal.classList.remove('sf-muted');
+  }
+
+  document.getElementById('pax-done').addEventListener('click', function () {
+    updatePaxDisplay();
+    closeAllPanels();
+  });
+
+  var siPax = document.getElementById('si-pax');
+  if (siPax) {
+    siPax.classList.add('sf-ptr');
+    siPax.addEventListener('click', function () {
+      refreshPaxUI();
+      openPanel(panelPax, siPax);
+    });
+  }
+
+  /* ── Rooms & Guests Panel ── */
+  var RM = { rooms: 1, adults: 2, children: 0 };
+
+  function refreshRoomsUI() {
+    document.getElementById('rn-rooms').textContent    = RM.rooms;
+    document.getElementById('rn-adults').textContent   = RM.adults;
+    document.getElementById('rn-children').textContent = RM.children;
+    panelRooms.querySelectorAll('.pax-btn').forEach(function (btn) {
+      var key = btn.dataset.room, op = btn.dataset.op;
+      var val = RM[key];
+      var min = (key === 'adults' || key === 'rooms') ? 1 : 0;
+      btn.disabled = op === 'dec' ? val <= min : val >= 9;
+    });
+  }
+
+  panelRooms.querySelectorAll('.pax-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var key = btn.dataset.room, op = btn.dataset.op;
+      var min = (key === 'adults' || key === 'rooms') ? 1 : 0;
+      if (op === 'inc') RM[key]++;
+      else              RM[key] = Math.max(min, RM[key] - 1);
+      refreshRoomsUI();
+    });
+  });
+
+  function updateRoomsDisplay() {
+    var roomsVal = document.getElementById('roomsVal');
+    if (!roomsVal) return;
+    var isAr = html.lang === 'ar';
+    if (isAr) {
+      roomsVal.textContent = RM.rooms + ' ' + (RM.rooms === 1 ? 'غرفة' : 'غرف') + '، ' + RM.adults + ' بالغ';
+    } else {
+      roomsVal.textContent = RM.rooms + ' ' + (RM.rooms === 1 ? 'Room' : 'Rooms') + ', ' + RM.adults + ' Adult' + (RM.adults > 1 ? 's' : '');
+    }
+    roomsVal.classList.remove('sf-muted');
+  }
+
+  document.getElementById('rooms-done').addEventListener('click', function () {
+    updateRoomsDisplay();
+    closeAllPanels();
+  });
+
+  var siRooms = document.getElementById('si-rooms');
+  if (siRooms) {
+    siRooms.classList.add('sf-ptr');
+    siRooms.addEventListener('click', function () {
+      refreshRoomsUI();
+      openPanel(panelRooms, siRooms);
+    });
+  }
+
+  /* ── Text-editable fields ── */
+  makeEditable(document.getElementById('si-orig'),   document.getElementById('origVal'));
+  makeEditable(document.getElementById('si-dest'),   document.getElementById('destVal'));
+  makeEditable(document.getElementById('si-stay-q'), document.getElementById('stayQVal'));
+  makeEditable(document.getElementById('si-act-q'),  document.getElementById('actQVal'));
+
+  /* MC grid existing origin/dest cells */
+  document.querySelectorAll('#mc-grid .sf-field').forEach(function (field) {
+    var lbl = field.querySelector('label');
+    if (!lbl) return;
+    var txt = lbl.textContent.trim();
+    if (txt.indexOf('ORIGIN') !== -1 || txt.indexOf('DESTINATION') !== -1 || txt.indexOf('المغادرة') !== -1 || txt.indexOf('الوصول') !== -1) {
+      makeEditable(field.querySelector('.sf-input'), field.querySelector('.sf-val'));
+    }
+  });
+
+  /* ── Search button loading state ── */
+  document.querySelectorAll('.sf-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (btn.classList.contains('mc-add-link')) return;
+      btn.classList.add('sf-loading');
+      setTimeout(function () {
+        btn.classList.remove('sf-loading');
+        showToast(html.lang === 'ar' ? 'نتائج البحث قادمة في الخطوة ٣ 🚀' : 'Search results coming in Step 3 🚀');
+      }, 1800);
+    });
+  });
+
+  /* ── Close panels on Escape ── */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAllPanels();
+  });
+
+  /* ── Reposition panels on scroll/resize ── */
+  window.addEventListener('resize', function () {
+    if (panelPicker.classList.contains('open') && PK.trigger) positionPanel(panelPicker, PK.trigger);
+  });
 
 }());
 </script>
