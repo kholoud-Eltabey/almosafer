@@ -1,0 +1,5 @@
+.wrangler/
+.playwright-mcp/
+.claude/
+CLAUDE.md
+*.json
