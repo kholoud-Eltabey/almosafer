@@ -126,6 +126,64 @@ html[lang="ar"] .logo-ar { display: flex; }
 }
 .btn-signin:hover { opacity: 0.88; }
 
+/* Theme toggle button */
+.btn-theme {
+  width: 34px; height: 34px; border-radius: var(--r-full);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.72); background: none;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 120ms; flex-shrink: 0;
+}
+.btn-theme:hover { border-color: var(--alm-cyan); color: var(--alm-cyan); }
+.btn-theme svg { width: 16px; height: 16px; pointer-events: none; }
+.btn-theme .icon-moon { display: none; }
+html[data-theme="dark"] .btn-theme .icon-sun  { display: none; }
+html[data-theme="dark"] .btn-theme .icon-moon { display: block; }
+
+/* ── DARK THEME ── */
+html[data-theme="dark"] {
+  --text-primary:   #ddeef2;
+  --text-secondary: #7aacb8;
+  --text-subtle:    #4e7f8c;
+  --bg-page:        #071820;
+  --bg-surface:     #0c2330;
+  --border:         #163545;
+}
+html[data-theme="dark"] body          { background: var(--bg-page); }
+html[data-theme="dark"] .sh-panel     { background: #0c2330; }
+html[data-theme="dark"] .sf-input     { background: #071820; border-color: var(--border); }
+html[data-theme="dark"] .sf-input:hover { background: #0c2330; }
+html[data-theme="dark"] .sf-chip      { background: #0c2330; border-color: var(--border); }
+html[data-theme="dark"] .dest-card    { background: #0c2330; border-color: var(--border); }
+html[data-theme="dark"] .dest-body    { background: #0c2330; }
+html[data-theme="dark"] .section      { background: var(--bg-page); }
+html[data-theme="dark"] .see-all      { background: #0c2330; border-color: var(--border); }
+html[data-theme="dark"] .footer       { background: #030e14; }
+html[data-theme="dark"] .footer-inner { border-color: #0f2530; }
+html[data-theme="dark"] .s-btn        { border-color: rgba(255,255,255,0.08); }
+
+/* ── FOCUS STATES (keyboard nav) ── */
+:focus-visible {
+  outline: 2px solid var(--alm-cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible) { outline: none; }
+
+/* ── TOAST ── */
+#alm-toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px);
+  background: #003B4A; color: #fff;
+  padding: 11px 22px; border-radius: var(--r-full);
+  font-size: 13px; font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.30);
+  opacity: 0; pointer-events: none;
+  transition: opacity 220ms, transform 220ms;
+  z-index: 999; white-space: nowrap;
+}
+#alm-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
 @media (max-width: 560px) {
   .header-inner { padding: 0 16px; }
 }
@@ -403,14 +461,13 @@ html[lang="ar"] .logo-ar { display: flex; }
 @media (max-width: 860px) { .footer-inner { grid-template-columns: 1fr 1fr; gap: 28px; } }
 @media (max-width: 500px)  { .footer-inner { grid-template-columns: 1fr; } }
 
-.footer-brand-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-.footer-logo-icon {
-  width: 34px; height: 34px; border-radius: var(--r-md);
-  background: rgba(0,183,198,0.14); border: 1px solid rgba(0,183,198,0.2);
-  display: flex; align-items: center; justify-content: center;
-}
-.footer-logo-icon svg { width: 18px; height: 18px; }
+.footer-brand-logo { display: flex; align-items: center; margin-bottom: 14px; }
 .footer-logo-wordmark { font-size: 17px; font-weight: 700; color: #fff; display: flex; align-items: baseline; }
+.footer-logo-ar {
+  background: linear-gradient(to right, #fff 63%, var(--alm-red) 63% 73%, var(--alm-cyan) 73% 83%, #fff 83%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  font-family: var(--font-ar);
+}
 .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.36); line-height: 1.75; max-width: 250px; margin-bottom: 18px; }
 .footer-social { display: flex; gap: 8px; }
 .s-btn {
@@ -457,10 +514,14 @@ html[lang="ar"] .logo-ar { display: flex; }
 
 
 <div class="header-right">
+      <button class="btn-theme" id="themeBtn" aria-label="Switch to dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
       <button class="btn-lang" id="langBtn" aria-label="Switch language">
         <span class="en">العربية</span><span class="ar">English</span>
       </button>
-      <button class="btn-signin">
+      <button class="btn-signin" id="signinBtn">
         <span class="en">Sign in</span><span class="ar">تسجيل الدخول</span>
       </button>
     </div>
@@ -792,15 +853,8 @@ html[lang="ar"] .logo-ar { display: flex; }
 
     <div>
       <div class="footer-brand-logo">
-        <div class="footer-logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 18L9 8l4 5 3-4 4 9H4z" fill="#00B7C6" opacity="0.9"/>
-          </svg>
-        </div>
-        <div>
-          <div class="footer-logo-wordmark">Alm<span class="logo-o">o</span>safer</div>
-          <span style="font-size:10px;color:rgba(255,255,255,0.28);font-family:var(--font-ar)">المسافر</span>
-        </div>
+        <span class="logo-en"><div class="footer-logo-wordmark">Alm<span class="logo-o">o</span>safer</div></span>
+        <span class="logo-ar"><div class="footer-logo-wordmark footer-logo-ar">المسافر</div></span>
       </div>
       <p class="footer-tagline">
         <span class="en">Saudi Arabia's leading travel platform — trusted by millions for flights, hotels, and packages.</span>
@@ -860,25 +914,109 @@ html[lang="ar"] .logo-ar { display: flex; }
   </div>
 </footer>
 
+<div id="alm-toast" role="status" aria-live="polite"></div>
 
 <script>
 (function () {
   'use strict';
   var html = document.documentElement;
 
-  /* ── Language ── */
-  var saved = localStorage.getItem('alm-lang') || 'en';
-  setLang(saved);
-  document.getElementById('langBtn').addEventListener('click', function () {
-    var next = html.lang === 'ar' ? 'en' : 'ar';
-    setLang(next);
-    localStorage.setItem('alm-lang', next);
-  });
+  /* ══════════════════════════════════════════
+     STEP 1 — HEADER + GLOBAL NAVIGATION
+  ══════════════════════════════════════════ */
+
+  /* ── TOAST ── */
+  function showToast(msg) {
+    var t = document.getElementById('alm-toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._tid);
+    t._tid = setTimeout(function () { t.classList.remove('show'); }, 2600);
+  }
+
+  /* ── LANGUAGE ── */
   function setLang(l) {
     html.lang = l;
     html.dir  = l === 'ar' ? 'rtl' : 'ltr';
     document.title = l === 'ar' ? 'المسافر | Almosafer' : 'Almosafer | المسافر';
+    localStorage.setItem('alm-lang', l);
   }
+  setLang(localStorage.getItem('alm-lang') || 'en');
+  document.getElementById('langBtn').addEventListener('click', function () {
+    setLang(html.lang === 'ar' ? 'en' : 'ar');
+  });
+
+  /* ── THEME ── */
+  function setTheme(t) {
+    html.setAttribute('data-theme', t);
+    localStorage.setItem('alm-theme', t);
+    var btn = document.getElementById('themeBtn');
+    if (btn) btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  setTheme(localStorage.getItem('alm-theme') || 'light');
+  var themeBtn = document.getElementById('themeBtn');
+  if (themeBtn) themeBtn.addEventListener('click', function () {
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ── LOGO → scroll to top ── */
+  var logoLink = document.querySelector('a.logo');
+  if (logoLink) {
+    logoLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  /* ── SIGN IN → coming soon toast ── */
+  var signinBtn = document.getElementById('signinBtn');
+  if (signinBtn) {
+    signinBtn.addEventListener('click', function () {
+      showToast(html.lang === 'ar' ? 'تسجيل الدخول قريباً' : 'Sign in — coming soon');
+    });
+  }
+
+  /* ── FOOTER LINKS ── */
+  var footerDestMap = [
+    { keys: ['dubai', 'دبي'],               en: 'Dubai',   ar: 'دبي' },
+    { keys: ['riyadh', 'الرياض', 'فنادق'],  en: 'Riyadh',  ar: 'الرياض' },
+    { keys: ['umrah', 'عمرة', 'makkah'],    en: 'Makkah',  ar: 'مكة المكرمة' }
+  ];
+
+  document.querySelectorAll('.footer-links a, .footer-legal a').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var text = (a.textContent || '').trim().toLowerCase();
+      var matched = false;
+
+      footerDestMap.forEach(function (entry) {
+        if (matched) return;
+        if (entry.keys.some(function (k) { return text.includes(k); })) {
+          matched = true;
+          var destEl = document.getElementById('destVal');
+          if (destEl) {
+            destEl.textContent = html.lang === 'ar' ? entry.ar : entry.en;
+            destEl.classList.remove('sf-muted');
+          }
+          var hero = document.querySelector('.hero');
+          if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+
+      if (!matched) {
+        showToast(html.lang === 'ar' ? 'هذه الصفحة قيد التطوير' : 'Coming soon');
+      }
+    });
+  });
+
+  /* Footer social — toast */
+  document.querySelectorAll('.footer-social .s-btn').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      showToast(html.lang === 'ar' ? 'تابعونا قريباً' : 'Social links coming soon');
+    });
+  });
 
   /* ── Hero search tabs ── */
   var shTabs  = document.querySelectorAll('.sh-tab');
