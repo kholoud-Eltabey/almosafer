@@ -1481,15 +1481,30 @@ html[data-theme="dark"] .si-proto-note { background:rgba(0,183,198,.12); border-
 .si-otp-box:focus { border-color:var(--alm-cyan); background:var(--bg-surface); }
 .si-otp-box.otp-ok { border-color:var(--alm-cyan); background:rgba(0,183,198,.07); }
 html[data-theme="dark"] .si-otp-box { background:var(--bg-page); }
-.si-resend { text-align:center; margin-top:10px; }
-.si-resend-cd { font-size:12px; color:var(--text-subtle); }
+.si-resend { text-align:center; margin-top:16px; min-height:22px; }
+.si-resend-cd { font-size:12.5px; color:var(--text-subtle); }
 .si-resend-btn {
-  font-size:12px; font-weight:600; color:var(--alm-cyan);
+  font-size:12.5px; font-weight:600; color:var(--alm-cyan);
   background:none; border:none; cursor:pointer;
-  font-family:inherit; padding:0; transition:opacity 120ms; display:none;
+  font-family:inherit; padding:0; transition:opacity 120ms;
+  text-decoration:underline; text-underline-offset:2px; display:none;
 }
-.si-resend-btn:disabled { color:var(--text-subtle); cursor:default; }
-.si-resend-btn:not([disabled]):hover { opacity:.72; }
+.si-resend-btn:hover { opacity:.72; }
+/* OTP resent toast */
+#si-resend-toast {
+  position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(12px);
+  background:var(--alm-dark); color:#fff;
+  font-size:13px; font-weight:600; font-family:inherit;
+  padding:10px 22px; border-radius:var(--r-full);
+  box-shadow:0 6px 24px rgba(0,0,0,.28);
+  opacity:0; pointer-events:none;
+  transition:opacity 200ms ease, transform 200ms ease;
+  z-index:9999; white-space:nowrap;
+}
+#si-resend-toast.si-toast-show {
+  opacity:1; transform:translateX(-50%) translateY(0);
+}
+html[data-theme="dark"] #si-resend-toast { background:#00B7C6; color:#fff; }
 
 /* ── My Account section ── */
 #my-account { display:none; background:var(--bg-page); border-top:1px solid var(--border); min-height:70vh; }
@@ -2668,24 +2683,37 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     box.addEventListener('click', function(){ box.select && box.select(); });
   });
 
+  /* Resend toast */
+  var _siToastTimer = null;
+  function showResendToast() {
+    var toast = document.getElementById('si-resend-toast');
+    if (!toast) return;
+    var isAr = html.lang === 'ar';
+    toast.textContent = isAr ? 'تم إعادة إرسال الرمز ✓' : 'Code resent ✓';
+    toast.classList.add('si-toast-show');
+    clearTimeout(_siToastTimer);
+    _siToastTimer = setTimeout(function() { toast.classList.remove('si-toast-show'); }, 2800);
+  }
+
   /* Resend countdown */
   function startResendCountdown() {
-    var secs = 30;
+    var secs = 58;
     if (siResendCd)  { siResendCd.style.display = ''; }
-    if (siResendBtn) { siResendBtn.style.display = 'none'; siResendBtn.disabled = true; }
+    if (siResendBtn) { siResendBtn.style.display = 'none'; }
     clearInterval(siResendTimer);
     function tick() {
       var isAr = html.lang === 'ar';
-      if (siResendCd) siResendCd.textContent = (isAr?'إعادة الإرسال بعد ':'Resend in ') + secs + (isAr?'ث':'s');
-      secs--;
-      if (secs < 0) {
+      if (secs > 0) {
+        if (siResendCd) siResendCd.textContent = isAr
+          ? 'إعادة الإرسال بعد ' + secs + ' ثانية'
+          : 'Resend code in ' + secs + ' seconds';
+        secs--;
+      } else {
         clearInterval(siResendTimer);
         if (siResendCd)  siResendCd.style.display = 'none';
         if (siResendBtn) {
-          var isAr2 = html.lang === 'ar';
           siResendBtn.style.display = '';
-          siResendBtn.disabled = false;
-          siResendBtn.textContent = isAr2 ? 'إعادة إرسال الرمز' : 'Resend code';
+          siResendBtn.textContent = html.lang === 'ar' ? 'إعادة إرسال الرمز' : 'Resend code';
         }
       }
     }
@@ -2694,15 +2722,18 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   }
 
   if (siResendBtn) siResendBtn.addEventListener('click', function() {
-    if (!_sb || !SI_CONTACT) return;
+    if (!SI_CONTACT) return;
     siOtpDone = false;
     clearOtpBoxes();
     siOtpBoxes.forEach(function(b){ b.disabled = false; });
     if (siOtpErrEl) siOtpErrEl.textContent = '';
-    var isPhone = (SI_MODE === 'phone');
-    var sendParams = isPhone ? { phone: SI_CONTACT } : { email: SI_CONTACT, options: { shouldCreateUser: true } };
-    _sb.auth.signInWithOtp(sendParams).catch(function(){});
+    if (_sb) {
+      var isPhone = (SI_MODE === 'phone');
+      var sendParams = isPhone ? { phone: SI_CONTACT } : { email: SI_CONTACT, options: { shouldCreateUser: true } };
+      _sb.auth.signInWithOtp(sendParams).catch(function(){});
+    }
     startResendCountdown();
+    showResendToast();
     setTimeout(function(){ if (siOtpBoxes[0]) siOtpBoxes[0].focus(); }, 80);
   });
 
@@ -5195,5 +5226,6 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
 }());
 </script>
+<div id="si-resend-toast" role="status" aria-live="polite"></div>
 </body>
 </html>
