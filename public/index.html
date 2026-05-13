@@ -1608,6 +1608,8 @@ html[data-theme="dark"] .ma-menu-item:hover,
 html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
 </style>
+<!-- Supabase Auth -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -2338,10 +2340,6 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       <h2 class="si-title">
         <span class="en">Enter your code</span><span class="ar">أدخل الرمز</span>
       </h2>
-      <div class="si-proto-note" id="si-proto-note">
-        <span class="si-proto-note-icon">🔧</span>
-        <span id="si-proto-note-text"></span>
-      </div>
       <p class="si-otp-target" id="si-otp-target"></p>
       <div class="si-otp-row" id="si-otp-row" role="group" aria-label="OTP code">
         <input class="si-otp-box" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1">
@@ -2476,6 +2474,14 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   }
   updateHeaderAuth();
 
+  /* ── Supabase client ── */
+  var _sb = (typeof supabase !== 'undefined' && supabase.createClient)
+    ? supabase.createClient(
+        'https://rkhenujvtzytleglnlqw.supabase.co',
+        'sb_publishable_8M1Fl3VSiwu79hMJL467lQ_DPMXy0_G'
+      )
+    : null;
+
   /* ── Sign-in modal (passwordless OTP) ── */
   var siModal      = document.getElementById('signin-modal');
   var siOverlay    = document.getElementById('si-overlay');
@@ -2553,14 +2559,6 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
     var isAr = html.lang === 'ar';
 
-    /* ── Prototype mode note ── */
-    var protoNoteText = document.getElementById('si-proto-note-text');
-    if (protoNoteText) {
-      protoNoteText.textContent = isAr
-        ? 'وضع النموذج الأولي: الرمز مُحاكى. استخدم أي رمز مكوّن من ٦ أرقام للمتابعة.'
-        : 'Prototype mode: OTP is simulated. Use any 6-digit code to continue.';
-    }
-
     /* ── Contact target line ── */
     if (siOtpTarget) {
       var via = isPhone
@@ -2584,25 +2582,52 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   }
 
   function verifyOtp(code) {
-    if (siOtpDone || code.length !== 6) return;
+    if (siOtpDone || code.length !== 6 || !_sb) return;
     siOtpDone = true;
     if (siOtpErrEl) siOtpErrEl.textContent = '';
     siOtpBoxes.forEach(function(b){ b.disabled = true; });
     clearInterval(siResendTimer);
-    setTimeout(function(){ completeSignIn(SI_CONTACT, SI_MODE === 'phone'); }, 600);
+
+    var isPhone = (SI_MODE === 'phone');
+    var params = isPhone
+      ? { phone: SI_CONTACT, token: code, type: 'sms' }
+      : { email: SI_CONTACT, token: code, type: 'email' };
+
+    _sb.auth.verifyOtp(params)
+      .then(function(res) {
+        if (res.error) {
+          siOtpDone = false;
+          siOtpBoxes.forEach(function(b){ b.disabled = false; });
+          var isAr = html.lang === 'ar';
+          if (siOtpErrEl) siOtpErrEl.textContent = isAr ? 'رمز غير صحيح. حاول مجدداً.' : 'Invalid code. Please try again.';
+          clearOtpBoxes();
+          setTimeout(function(){ if (siOtpBoxes[0]) siOtpBoxes[0].focus(); }, 80);
+          return;
+        }
+        /* Success — use Supabase user data */
+        var sbUser = res.data && res.data.user;
+        var contact = (sbUser && sbUser.email) || (sbUser && sbUser.phone) || SI_CONTACT;
+        completeSignIn(contact, isPhone, sbUser);
+      })
+      .catch(function() {
+        siOtpDone = false;
+        siOtpBoxes.forEach(function(b){ b.disabled = false; });
+        if (siOtpErrEl) siOtpErrEl.textContent = html.lang === 'ar' ? 'خطأ في الشبكة. أعد المحاولة.' : 'Network error. Please try again.';
+      });
   }
 
-  function completeSignIn(contact, isPhone) {
+  function completeSignIn(contact, isPhone, sbUser) {
     var name;
     if (isPhone) {
-      name = 'Traveller';
+      name = (sbUser && sbUser.user_metadata && sbUser.user_metadata.full_name) || 'Traveller';
     } else {
       var raw = contact.split('@')[0].replace(/[._\-+]/g,' ').replace(/\d+/g,'').trim() || 'Traveller';
       name = raw.split(' ').map(function(w){ return w ? w.charAt(0).toUpperCase()+w.slice(1):''; }).join(' ').trim() || 'Traveller';
     }
     var ch = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', refId = 'ALM-';
     for (var ri = 0; ri < 7; ri++) refId += ch.charAt(Math.floor(Math.random()*ch.length));
-    ALM_USER = { name:name, email:contact, refId:refId };
+    var sbId = sbUser && sbUser.id;
+    ALM_USER = { name:name, email:contact, refId:refId, sbId:sbId };
     try { localStorage.setItem('alm-user', JSON.stringify(ALM_USER)); } catch(er) {}
     updateHeaderAuth();
     closeSignIn();
@@ -2669,10 +2694,14 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   }
 
   if (siResendBtn) siResendBtn.addEventListener('click', function() {
+    if (!_sb || !SI_CONTACT) return;
     siOtpDone = false;
     clearOtpBoxes();
     siOtpBoxes.forEach(function(b){ b.disabled = false; });
     if (siOtpErrEl) siOtpErrEl.textContent = '';
+    var isPhone = (SI_MODE === 'phone');
+    var sendParams = isPhone ? { phone: SI_CONTACT } : { email: SI_CONTACT, options: { shouldCreateUser: true } };
+    _sb.auth.signInWithOtp(sendParams).catch(function(){});
     startResendCountdown();
     setTimeout(function(){ if (siOtpBoxes[0]) siOtpBoxes[0].focus(); }, 80);
   });
@@ -2693,10 +2722,24 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     }
     var btn = document.getElementById('si-email-submit');
     if (btn) { btn.disabled = true; btn.textContent = isAr ? 'جارٍ الإرسال...' : 'Sending...'; }
-    setTimeout(function() {
+    if (!_sb) {
+      if (siEmailErrEl) siEmailErrEl.textContent = isAr ? 'خطأ في الاتصال. أعد المحاولة.' : 'Connection error. Please try again.';
       if (btn) { btn.disabled = false; btn.innerHTML = '<span class="en">Continue</span><span class="ar">متابعة</span>'; }
-      showOtpStep(email, false);
-    }, 600);
+      return;
+    }
+    _sb.auth.signInWithOtp({ email: email, options: { shouldCreateUser: true } })
+      .then(function(res) {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span class="en">Continue</span><span class="ar">متابعة</span>'; }
+        if (res.error) {
+          if (siEmailErrEl) siEmailErrEl.textContent = res.error.message || (isAr ? 'فشل الإرسال. أعد المحاولة.' : 'Failed to send OTP. Try again.');
+          return;
+        }
+        showOtpStep(email, false);
+      })
+      .catch(function() {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span class="en">Continue</span><span class="ar">متابعة</span>'; }
+        if (siEmailErrEl) siEmailErrEl.textContent = isAr ? 'خطأ في الشبكة. أعد المحاولة.' : 'Network error. Please try again.';
+      });
   });
 
   /* Phone form */
@@ -2710,13 +2753,27 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       if (siPhoneErrEl) siPhoneErrEl.textContent = isAr ? 'يرجى إدخال رقم جوال صحيح' : 'Please enter a valid mobile number';
       return;
     }
-    var full = code + ' ' + phone;
+    var e164 = code + phone; /* E.164: +966512345678 */
     var btn  = document.getElementById('si-phone-submit');
     if (btn) { btn.disabled = true; btn.textContent = isAr ? 'جارٍ الإرسال...' : 'Sending...'; }
-    setTimeout(function() {
+    if (!_sb) {
+      if (siPhoneErrEl) siPhoneErrEl.textContent = isAr ? 'خطأ في الاتصال. أعد المحاولة.' : 'Connection error. Please try again.';
       if (btn) { btn.disabled = false; btn.innerHTML = '<span class="en">Send OTP</span><span class="ar">إرسال الرمز</span>'; }
-      showOtpStep(full, true);
-    }, 600);
+      return;
+    }
+    _sb.auth.signInWithOtp({ phone: e164 })
+      .then(function(res) {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span class="en">Send OTP</span><span class="ar">إرسال الرمز</span>'; }
+        if (res.error) {
+          if (siPhoneErrEl) siPhoneErrEl.textContent = res.error.message || (isAr ? 'فشل الإرسال. أعد المحاولة.' : 'Failed to send OTP. Try again.');
+          return;
+        }
+        showOtpStep(e164, true);
+      })
+      .catch(function() {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<span class="en">Send OTP</span><span class="ar">إرسال الرمز</span>'; }
+        if (siPhoneErrEl) siPhoneErrEl.textContent = isAr ? 'خطأ في الشبكة. أعد المحاولة.' : 'Network error. Please try again.';
+      });
   });
 
   /* Mode switches */
