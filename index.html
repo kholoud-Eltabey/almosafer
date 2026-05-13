@@ -1458,9 +1458,20 @@ html[data-theme="dark"] .si-country-sel { background:var(--bg-page); }
 .si-step-back:hover { opacity:.72; }
 .si-otp-target {
   font-size:12.5px; color:var(--text-subtle);
-  text-align:center; margin-bottom:22px; line-height:1.6;
+  text-align:center; margin-bottom:12px; line-height:1.6;
 }
 .si-otp-target strong { color:var(--text-primary); font-weight:600; word-break:break-all; }
+.si-test-otp {
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  background:rgba(230,57,70,.07); border:1px dashed rgba(230,57,70,.35);
+  border-radius:var(--r-md); padding:8px 14px;
+  font-size:12px; color:var(--text-subtle); margin-bottom:18px; text-align:center;
+}
+.si-test-otp-code {
+  font-size:18px; font-weight:800; letter-spacing:3px;
+  color:var(--alm-red); font-family:monospace;
+}
+html[data-theme="dark"] .si-test-otp { background:rgba(230,57,70,.10); border-color:rgba(230,57,70,.30); }
 .si-proto-note {
   display:flex; align-items:flex-start; gap:8px;
   background:rgba(0,183,198,.09); border:1px solid rgba(0,183,198,.28);
@@ -2356,6 +2367,10 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
         <span class="en">Enter your code</span><span class="ar">أدخل الرمز</span>
       </h2>
       <p class="si-otp-target" id="si-otp-target"></p>
+      <div class="si-test-otp" id="si-test-otp" style="display:none">
+        <span><span class="en">Test OTP for prototype:</span><span class="ar">رمز اختبار النموذج:</span></span>
+        <span class="si-test-otp-code" id="si-test-otp-code"></span>
+      </div>
       <div class="si-otp-row" id="si-otp-row" role="group" aria-label="OTP code">
         <input class="si-otp-box" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1">
         <input class="si-otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2">
@@ -2522,10 +2537,24 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   var siResendCd   = document.getElementById('si-resend-cd');
   var siResendBtn  = document.getElementById('si-resend-btn');
 
-  var SI_MODE    = 'email';
-  var SI_CONTACT = '';
+  var SI_MODE      = 'email';
+  var SI_CONTACT   = '';
+  var SI_TEST_OTP  = '';
   var siResendTimer = null;
-  var siOtpDone  = false;
+  var siOtpDone    = false;
+
+  function generateTestOtp() {
+    /* New random 6-digit code every call — never fixed */
+    SI_TEST_OTP = String(Math.floor(100000 + Math.random() * 900000));
+    return SI_TEST_OTP;
+  }
+
+  function showTestOtp(code) {
+    var el   = document.getElementById('si-test-otp');
+    var code_el = document.getElementById('si-test-otp-code');
+    if (el)      el.style.display = '';
+    if (code_el) code_el.textContent = code;
+  }
 
   function openSignIn() {
     if (!siModal) return;
@@ -2574,6 +2603,9 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
     var isAr = html.lang === 'ar';
 
+    /* ── Generate & display test OTP ── */
+    showTestOtp(generateTestOtp());
+
     /* ── Contact target line ── */
     if (siOtpTarget) {
       var via = isPhone
@@ -2597,13 +2629,33 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   }
 
   function verifyOtp(code) {
-    if (siOtpDone || code.length !== 6 || !_sb) return;
+    if (siOtpDone || code.length !== 6) return;
+    var isAr    = html.lang === 'ar';
+    var isPhone = (SI_MODE === 'phone');
+
+    /* ── Test OTP path (matches generated code) ── */
+    if (SI_TEST_OTP && code === SI_TEST_OTP) {
+      siOtpDone = true;
+      if (siOtpErrEl) siOtpErrEl.textContent = '';
+      siOtpBoxes.forEach(function(b){ b.disabled = true; });
+      clearInterval(siResendTimer);
+      completeSignIn(SI_CONTACT, isPhone, null);
+      return;
+    }
+
+    /* ── Real Supabase path (if client available) ── */
+    if (!_sb) {
+      if (siOtpErrEl) siOtpErrEl.textContent = isAr ? 'رمز غير صحيح. حاول مجدداً.' : 'Invalid code. Please try again.';
+      clearOtpBoxes();
+      setTimeout(function(){ if (siOtpBoxes[0]) siOtpBoxes[0].focus(); }, 80);
+      return;
+    }
+
     siOtpDone = true;
     if (siOtpErrEl) siOtpErrEl.textContent = '';
     siOtpBoxes.forEach(function(b){ b.disabled = true; });
     clearInterval(siResendTimer);
 
-    var isPhone = (SI_MODE === 'phone');
     var params = isPhone
       ? { phone: SI_CONTACT, token: code, type: 'sms' }
       : { email: SI_CONTACT, token: code, type: 'email' };
@@ -2613,21 +2665,19 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
         if (res.error) {
           siOtpDone = false;
           siOtpBoxes.forEach(function(b){ b.disabled = false; });
-          var isAr = html.lang === 'ar';
           if (siOtpErrEl) siOtpErrEl.textContent = isAr ? 'رمز غير صحيح. حاول مجدداً.' : 'Invalid code. Please try again.';
           clearOtpBoxes();
           setTimeout(function(){ if (siOtpBoxes[0]) siOtpBoxes[0].focus(); }, 80);
           return;
         }
-        /* Success — use Supabase user data */
-        var sbUser = res.data && res.data.user;
+        var sbUser  = res.data && res.data.user;
         var contact = (sbUser && sbUser.email) || (sbUser && sbUser.phone) || SI_CONTACT;
         completeSignIn(contact, isPhone, sbUser);
       })
       .catch(function() {
         siOtpDone = false;
         siOtpBoxes.forEach(function(b){ b.disabled = false; });
-        if (siOtpErrEl) siOtpErrEl.textContent = html.lang === 'ar' ? 'خطأ في الشبكة. أعد المحاولة.' : 'Network error. Please try again.';
+        if (siOtpErrEl) siOtpErrEl.textContent = isAr ? 'خطأ في الشبكة. أعد المحاولة.' : 'Network error. Please try again.';
       });
   }
 
@@ -2732,6 +2782,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       var sendParams = isPhone ? { phone: SI_CONTACT } : { email: SI_CONTACT, options: { shouldCreateUser: true } };
       _sb.auth.signInWithOtp(sendParams).catch(function(){});
     }
+    showTestOtp(generateTestOtp());
     startResendCountdown();
     showResendToast();
     setTimeout(function(){ if (siOtpBoxes[0]) siOtpBoxes[0].focus(); }, 80);
