@@ -1433,14 +1433,41 @@ html[data-theme="dark"] .si-divider span { background:var(--bg-surface); }
 }
 .si-phone-btn:hover { border-color:var(--alm-cyan); background:rgba(0,183,198,.05); }
 .si-phone-row { display:flex; gap:8px; }
-.si-country-sel {
-  padding:11px 8px; border-radius:var(--r-md);
+/* Custom country picker */
+.si-cc-wrap { position:relative; flex-shrink:0; }
+.si-cc-btn {
+  display:flex; align-items:center; gap:5px;
+  padding:11px 10px; border-radius:var(--r-md);
   border:1.5px solid var(--border); background:var(--bg-page);
   color:var(--text-primary); font-size:13px; font-family:inherit;
-  outline:none; cursor:pointer; transition:border-color 120ms; flex-shrink:0;
+  cursor:pointer; outline:none; transition:border-color 120ms;
+  white-space:nowrap; height:100%;
 }
-.si-country-sel:focus { border-color:var(--alm-cyan); }
-html[data-theme="dark"] .si-country-sel { background:var(--bg-page); }
+.si-cc-btn:hover, .si-cc-btn:focus { border-color:var(--alm-cyan); }
+.si-cc-btn[aria-expanded="true"] { border-color:var(--alm-cyan); }
+.si-cc-flag { font-size:18px; line-height:1; }
+.si-cc-code { font-weight:600; font-size:13px; }
+.si-cc-chevron { transition:transform 200ms; color:var(--text-subtle); flex-shrink:0; }
+.si-cc-btn[aria-expanded="true"] .si-cc-chevron { transform:rotate(180deg); }
+.si-cc-drop {
+  position:absolute; top:calc(100% + 5px); left:0; z-index:500;
+  background:var(--bg-surface); border:1.5px solid var(--border);
+  border-radius:var(--r-md); box-shadow:0 8px 28px rgba(0,59,74,.14);
+  min-width:140px; max-height:252px; overflow-y:auto;
+  padding:4px; margin:0; list-style:none; display:none;
+}
+html[dir="rtl"] .si-cc-drop { left:auto; right:0; }
+.si-cc-drop.open { display:block; }
+.si-cc-opt {
+  padding:9px 12px; border-radius:var(--r-sm);
+  cursor:pointer; font-size:13.5px; font-family:inherit;
+  color:var(--text-primary); display:flex; align-items:center; gap:8px;
+  transition:background 100ms; list-style:none;
+}
+.si-cc-opt:hover { background:rgba(0,183,198,.09); }
+.si-cc-opt[aria-selected="true"] { background:rgba(0,183,198,.09); font-weight:700; color:var(--alm-dark); }
+html[data-theme="dark"] .si-cc-drop { background:#1a2a30; }
+html[data-theme="dark"] .si-cc-btn { background:#1a2a30; }
 .si-phone-input { flex:1; min-width:0; }
 .si-back-link {
   display:block; text-align:center; margin-top:14px;
@@ -2329,17 +2356,24 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
               <span class="en">Mobile number</span><span class="ar">رقم الجوال</span>
             </label>
             <div class="si-phone-row">
-              <select class="si-country-sel" id="si-country" aria-label="Country code">
-                <option value="+966">🇸🇦 +966</option>
-                <option value="+971">🇦🇪 +971</option>
-                <option value="+965">🇰🇼 +965</option>
-                <option value="+974">🇶🇦 +974</option>
-                <option value="+973">🇧🇭 +973</option>
-                <option value="+968">🇴🇲 +968</option>
-                <option value="+20">🇪🇬 +20</option>
-                <option value="+44">🇬🇧 +44</option>
-                <option value="+1">🇺🇸 +1</option>
-              </select>
+              <div class="si-cc-wrap" id="si-cc-wrap">
+                <button type="button" class="si-cc-btn" id="si-cc-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Country code">
+                  <span class="si-cc-flag" id="si-cc-flag">🇸🇦</span>
+                  <span class="si-cc-code" id="si-cc-code">+966</span>
+                  <svg class="si-cc-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" width="10" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+                </button>
+                <ul class="si-cc-drop" id="si-cc-drop" role="listbox" aria-label="Country code">
+                  <li class="si-cc-opt" role="option" data-code="+966" data-flag="🇸🇦" aria-selected="true"><span>🇸🇦</span><span>+966</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+971" data-flag="🇦🇪"><span>🇦🇪</span><span>+971</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+965" data-flag="🇰🇼"><span>🇰🇼</span><span>+965</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+974" data-flag="🇶🇦"><span>🇶🇦</span><span>+974</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+973" data-flag="🇧🇭"><span>🇧🇭</span><span>+973</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+968" data-flag="🇴🇲"><span>🇴🇲</span><span>+968</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+20"  data-flag="🇪🇬"><span>🇪🇬</span><span>+20</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+44"  data-flag="🇬🇧"><span>🇬🇧</span><span>+44</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+1"   data-flag="🇺🇸"><span>🇺🇸</span><span>+1</span></li>
+                </ul>
+              </div>
               <input type="tel" id="si-phone" class="si-input si-phone-input" placeholder="5XX XXX XXXX" inputmode="numeric" autocomplete="tel-national">
             </div>
           </div>
@@ -2524,8 +2558,40 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   var siPhoneForm  = document.getElementById('si-phone-form');
   var siEmailEl    = document.getElementById('si-email');
   var siPhoneEl    = document.getElementById('si-phone');
-  var siCountryEl  = document.getElementById('si-country');
   var siEmailErrEl = document.getElementById('si-email-err');
+  /* Custom country picker */
+  var siCcBtn   = document.getElementById('si-cc-btn');
+  var siCcDrop  = document.getElementById('si-cc-drop');
+  var siCcFlagEl = document.getElementById('si-cc-flag');
+  var siCcCodeEl = document.getElementById('si-cc-code');
+  var siCcOpts  = siCcDrop ? Array.prototype.slice.call(siCcDrop.querySelectorAll('.si-cc-opt')) : [];
+
+  function siCcOpen() {
+    if (!siCcDrop) return;
+    siCcDrop.classList.add('open');
+    if (siCcBtn) siCcBtn.setAttribute('aria-expanded', 'true');
+  }
+  function siCcClose() {
+    if (!siCcDrop) return;
+    siCcDrop.classList.remove('open');
+    if (siCcBtn) siCcBtn.setAttribute('aria-expanded', 'false');
+  }
+  function siCcSelect(opt) {
+    siCcOpts.forEach(function(o){ o.removeAttribute('aria-selected'); });
+    opt.setAttribute('aria-selected', 'true');
+    if (siCcFlagEl) siCcFlagEl.textContent = opt.getAttribute('data-flag');
+    if (siCcCodeEl) siCcCodeEl.textContent = opt.getAttribute('data-code');
+    siCcClose();
+  }
+  if (siCcBtn) siCcBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    siCcDrop && siCcDrop.classList.contains('open') ? siCcClose() : siCcOpen();
+  });
+  siCcOpts.forEach(function(opt) {
+    opt.addEventListener('click', function(e) { e.stopPropagation(); siCcSelect(opt); });
+  });
+  document.addEventListener('click', function() { siCcClose(); });
+  if (siCcDrop) siCcDrop.addEventListener('click', function(e){ e.stopPropagation(); });
   var siPhoneErrEl = document.getElementById('si-phone-err');
   var siToPhone    = document.getElementById('si-to-phone');
   var siBackEmail  = document.getElementById('si-back-to-email');
@@ -2829,7 +2895,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     e.preventDefault();
     var isAr  = html.lang === 'ar';
     var phone = siPhoneEl ? siPhoneEl.value.replace(/\D/g,'') : '';
-    var code  = siCountryEl ? siCountryEl.value : '+966';
+    var code  = (siCcCodeEl && siCcCodeEl.textContent) ? siCcCodeEl.textContent.trim() : '+966';
     if (siPhoneErrEl) siPhoneErrEl.textContent = '';
     if (!phone || phone.length < 7) {
       if (siPhoneErrEl) siPhoneErrEl.textContent = isAr ? 'يرجى إدخال رقم جوال صحيح' : 'Please enter a valid mobile number';
