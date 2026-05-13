@@ -1390,7 +1390,7 @@ html[data-theme="dark"] .promo-card { background:var(--bg-surface); }
 }
 .si-close:hover { border-color:var(--alm-red); color:var(--alm-red); }
 .si-logo { text-align:center; margin-bottom:20px; }
-.si-logo-mark { font-size:22px; font-weight:800; color:var(--text-primary); display:inline-block; }
+.si-logo-mark { font-size:22px; font-weight:600; color:var(--text-primary); display:inline-block; }
 .si-title { font-size:20px; font-weight:800; color:var(--text-primary); margin-bottom:6px; text-align:center; }
 .si-sub { font-size:12.5px; color:var(--text-subtle); text-align:center; margin-bottom:24px; line-height:1.5; }
 .si-field { margin-bottom:14px; }
@@ -2334,7 +2334,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
               <span class="en">Email address</span>
               <span class="ar">البريد الإلكتروني</span>
             </label>
-            <input type="email" id="si-email" class="si-input" placeholder="you@example.com" autocomplete="email">
+            <input type="text" id="si-email" class="si-input" placeholder="you@example.com" autocomplete="email" inputmode="email" spellcheck="false" autocorrect="off" autocapitalize="off">
           </div>
           <button type="submit" class="si-btn" id="si-email-submit">
             <span class="en">Continue</span><span class="ar">متابعة</span>
@@ -2374,7 +2374,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
                   <li class="si-cc-opt" role="option" data-code="+1"   data-iso="us"><img src="https://flagcdn.com/24x18/us.png" width="24" height="18" alt="US"><span>+1</span></li>
                 </ul>
               </div>
-              <input type="tel" id="si-phone" class="si-input si-phone-input" placeholder="5XX XXX XXXX" inputmode="numeric" autocomplete="tel-national">
+              <input type="text" id="si-phone" class="si-input si-phone-input" placeholder="5XX XXX XXXX" inputmode="numeric" autocomplete="tel-national" spellcheck="false" autocorrect="off" autocapitalize="off">
             </div>
           </div>
           <button type="submit" class="si-btn" id="si-phone-submit">
@@ -2909,7 +2909,9 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     var btn  = document.getElementById('si-phone-submit');
     if (btn) { btn.disabled = true; btn.textContent = isAr ? 'جارٍ الإرسال...' : 'Sending...'; }
     if (!_sb) {
-      if (siPhoneErrEl) siPhoneErrEl.textContent = isAr ? 'خطأ في الاتصال. أعد المحاولة.' : 'Connection error. Please try again.';
+      if (siPhoneErrEl) siPhoneErrEl.innerHTML = isAr
+        ? 'خدمة الرسائل القصيرة غير متاحة. <strong>استخدم البريد الإلكتروني بدلاً من ذلك.</strong>'
+        : 'SMS service unavailable. <strong>Please use email instead.</strong>';
       if (btn) { btn.disabled = false; btn.innerHTML = '<span class="en">Send OTP</span><span class="ar">إرسال الرمز</span>'; }
       return;
     }
@@ -2917,7 +2919,19 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       .then(function(res) {
         if (btn) { btn.disabled = false; btn.innerHTML = '<span class="en">Send OTP</span><span class="ar">إرسال الرمز</span>'; }
         if (res.error) {
-          if (siPhoneErrEl) siPhoneErrEl.textContent = res.error.message || (isAr ? 'فشل الإرسال. أعد المحاولة.' : 'Failed to send OTP. Try again.');
+          var raw = res.error.message || '';
+          var isProviderErr = /phone|sms|provider|disabled|not enabled|not configured|unsupported/i.test(raw);
+          var errText;
+          if (isAr) {
+            errText = isProviderErr
+              ? 'خدمة الرسائل القصيرة غير مفعّلة. <strong>استخدم البريد الإلكتروني بدلاً من ذلك.</strong>'
+              : (escHtml(raw) || 'فشل الإرسال. أعد المحاولة.');
+          } else {
+            errText = isProviderErr
+              ? 'SMS is not configured for this app. <strong>Please use email instead.</strong>'
+              : (escHtml(raw) || 'Failed to send OTP. Please try again.');
+          }
+          if (siPhoneErrEl) siPhoneErrEl.innerHTML = errText;
           return;
         }
         showOtpStep(e164, true);
