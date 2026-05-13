@@ -1461,6 +1461,15 @@ html[data-theme="dark"] .si-country-sel { background:var(--bg-page); }
   text-align:center; margin-bottom:22px; line-height:1.6;
 }
 .si-otp-target strong { color:var(--text-primary); font-weight:600; word-break:break-all; }
+.si-proto-note {
+  display:flex; align-items:flex-start; gap:8px;
+  background:rgba(0,183,198,.09); border:1px solid rgba(0,183,198,.28);
+  border-radius:var(--r-md); padding:9px 12px;
+  font-size:11.5px; color:var(--text-primary); line-height:1.5;
+  margin-bottom:14px; text-align:start;
+}
+.si-proto-note-icon { font-size:14px; flex-shrink:0; margin-top:1px; }
+html[data-theme="dark"] .si-proto-note { background:rgba(0,183,198,.12); border-color:rgba(0,183,198,.30); }
 .si-otp-row { display:flex; gap:8px; justify-content:center; margin-bottom:14px; }
 .si-otp-box {
   width:44px; height:52px; border-radius:var(--r-md);
@@ -2329,6 +2338,10 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       <h2 class="si-title">
         <span class="en">Enter your code</span><span class="ar">أدخل الرمز</span>
       </h2>
+      <div class="si-proto-note" id="si-proto-note">
+        <span class="si-proto-note-icon">🔧</span>
+        <span id="si-proto-note-text"></span>
+      </div>
       <p class="si-otp-target" id="si-otp-target"></p>
       <div class="si-otp-row" id="si-otp-row" role="group" aria-label="OTP code">
         <input class="si-otp-box" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1">
@@ -2537,8 +2550,19 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     clearOtpBoxes();
     siOtpBoxes.forEach(function(b){ b.disabled = false; });
     if (siOtpErrEl) siOtpErrEl.textContent = '';
+
+    var isAr = html.lang === 'ar';
+
+    /* ── Prototype mode note ── */
+    var protoNoteText = document.getElementById('si-proto-note-text');
+    if (protoNoteText) {
+      protoNoteText.textContent = isAr
+        ? 'وضع النموذج الأولي: الرمز مُحاكى. استخدم أي رمز مكوّن من ٦ أرقام للمتابعة.'
+        : 'Prototype mode: OTP is simulated. Use any 6-digit code to continue.';
+    }
+
+    /* ── Contact target line ── */
     if (siOtpTarget) {
-      var isAr = html.lang === 'ar';
       var via = isPhone
         ? (isAr ? 'عبر الرسائل القصيرة على' : 'via SMS to')
         : (isAr ? 'عبر البريد الإلكتروني على' : 'via Email at');
@@ -2546,6 +2570,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
         (isAr ? 'أدخل الرمز المكوّن من ٦ أرقام المُرسل ' : 'Enter the 6-digit code sent ')
         + via + ' <strong>' + escHtml(contact) + '</strong>';
     }
+
     startResendCountdown();
     setTimeout(function(){ if (siOtpBoxes[0]) siOtpBoxes[0].focus(); }, 160);
   }
