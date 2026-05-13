@@ -13,7 +13,8 @@
 :root {
   --alm-dark:  #003B4A;
   --alm-cyan:  #00B7C6;
-  --alm-red:   #E63946;
+  --alm-red:      #E63946;
+  --alm-red-dark: #C8202D; /* accessible: 5.6:1 contrast with white */
   --alm-white: #FFFFFF;
 
   --text-primary:   #003B4A;
@@ -36,6 +37,94 @@
 
   --font:    'IBM Plex Sans', sans-serif;
   --font-ar: 'IBM Plex Sans Arabic', sans-serif;
+
+  /* ── DESIGN SYSTEM — COLOR TOKENS (light) ── */
+  --color-background-primary:        #0077A8;
+  --color-background-primary-hover:  #00688F;
+  --color-background-primary-active: #005977;
+  --color-background-default:        #FFFFFF;
+  --color-background-surface:        #FFFFFF;
+  --color-background-subtle:         #F5F5F5;
+  --color-background-sunken:         #F5F5F5;
+  --color-background-inverse:        #090909;
+  --color-background-disabled:       #E5E5E5;
+  --color-background-selected:       #CCE7EE;
+  --color-surface-default:           #FFFFFF;
+  --color-surface-subtle:            #E5E5E5;
+
+  --color-text-primary:    #090909;
+  --color-text-secondary:  #4B4B4B;
+  --color-text-subtle:     #6B6B6B;
+  --color-text-inverse:    #FFFFFF;
+  --color-text-brand:      #0077A8;
+  --color-text-disabled:   #8A8A8A;
+  --color-text-danger:     #A81C1E;
+  --color-text-warning:    #7E6217;
+  --color-text-success:    #1B5E28;
+
+  --color-border-default:  #D4D4D4;
+  --color-border-subtle:   #E5E5E5;
+  --color-border-strong:   #8A8A8A;
+  --color-border-focus:    #0077A8;
+  --color-border-disabled: #D4D4D4;
+  --color-border-selected: #0077A8;
+  --color-border-danger:   #FF6A6B;
+
+  --color-status-success:       #2F9E44;
+  --color-status-success-bold:  #1B5E28;
+  --color-status-warning:       #C9A227;
+  --color-status-warning-bold:  #7E6217;
+  --color-status-danger:        #FF4D4F;
+  --color-status-danger-bold:   #A81C1E;
+  --color-status-info:          #3A86FF;
+
+  /* ── DESIGN SYSTEM — SPACING TOKENS ── */
+  --spacing-xs:         8px;
+  --spacing-sm:         16px;
+  --spacing-md:         24px;
+  --spacing-lg:         32px;
+  --spacing-xl:         40px;
+  --spacing-layout-sm:  48px;
+  --spacing-layout-md:  64px;
+  --spacing-layout-lg:  80px;
+
+  /* ── DESIGN SYSTEM — RADIUS TOKENS ── */
+  --radius-none:    0px;
+  --radius-xs:      2px;
+  --radius-sm:      4px;
+  --radius-md:      6px;
+  --radius-lg:      8px;
+  --radius-xl:     12px;
+  --radius-2xl:    16px;
+  --radius-full: 9999px;
+
+  /* ── DESIGN SYSTEM — TYPOGRAPHY TOKENS ── */
+  --font-weight-regular:   400;
+  --font-weight-medium:    500;
+  --font-weight-semibold:  600;
+  --font-weight-bold:      700;
+
+  --line-height-tight:   1.2;
+  --line-height-normal:  1.5;
+  --line-height-loose:   1.75;
+
+  --letter-spacing-tight:  -0.01em;
+  --letter-spacing-normal:  0em;
+  --letter-spacing-wide:    0.02em;
+
+  --text-body-sm-size:    12px;
+  --text-body-size:       16px;
+  --text-heading-sm-size: 20px;
+  --text-heading-md-size: 24px;
+  --text-heading-lg-size: 24px;
+
+  /* ── DESIGN SYSTEM — MOTION TOKENS ── */
+  --motion-fast:   100ms cubic-bezier(0.2, 0, 0, 1);
+  --motion-normal: 200ms cubic-bezier(0.2, 0, 0, 1);
+  --motion-slow:   300ms cubic-bezier(0.2, 0, 0, 1);
+  --motion-enter:  200ms cubic-bezier(0, 0, 0.2, 1);
+  --motion-exit:   150ms cubic-bezier(0.4, 0, 1, 1);
+  --motion-layout: 400ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 /* ── RESET ── */
@@ -63,14 +152,14 @@ input, select, textarea { font-family: inherit; }
 }
 .header-inner {
   max-width: 1200px; margin: 0 auto;
-  padding: 0 24px; height: 62px;
+  padding: 0 var(--spacing-md); height: 62px;
   display: flex; align-items: center; gap: 12px;
 }
 
 /* Logo */
 .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .logo-icon {
-  width: 36px; height: 36px; border-radius: 9px;
+  width: 36px; height: 36px; border-radius: var(--radius-lg);
   background: rgba(255,255,255,0.10);
   border: 1px solid rgba(255,255,255,0.14);
   display: flex; align-items: center; justify-content: center;
@@ -83,7 +172,7 @@ html[lang="ar"] .logo-en { display: none; }
 html[lang="ar"] .logo-ar { display: flex; }
 
 .logo-wordmark {
-  font-size: 19px; font-weight: 700; letter-spacing: -0.3px; font-family: var(--font);
+  font-size: var(--text-heading-sm-size); font-weight: var(--font-weight-semibold); letter-spacing: var(--letter-spacing-tight); font-family: var(--font);
   color: var(--alm-white); display: flex; align-items: baseline;
   font-family: var(--font);
 }
@@ -117,12 +206,12 @@ html[lang="ar"] .logo-ar { display: flex; }
 .btn-lang,
 .btn-signin {
   height: 34px;
-  border-radius: var(--r-full);
+  border-radius: var(--radius-full);
   border: 1px solid rgba(255,255,255,0.18);
   color: rgba(255,255,255,0.72);
   background: none;
   display: flex; align-items: center; justify-content: center;
-  transition: border-color 120ms, color 120ms, background 120ms;
+  transition: border-color var(--motion-fast), color var(--motion-fast), background var(--motion-fast);
   flex-shrink: 0; white-space: nowrap; cursor: pointer;
 }
 .btn-theme:hover,
@@ -144,7 +233,7 @@ html[data-theme="dark"] .btn-theme .icon-moon { display: block; }
 .btn-lang svg { width: 16px; height: 16px; pointer-events: none; }
 
 /* Sign in — same pill, slightly accented */
-.btn-signin { padding: 0 14px; font-size: 12px; font-weight: 600; }
+.btn-signin { padding: 0 var(--spacing-sm); font-size: var(--text-body-sm-size); font-weight: var(--font-weight-semibold); }
 .btn-signin:hover { background: rgba(0,183,198,0.10); }
 
 /* ── DARK THEME ── */
@@ -180,6 +269,7 @@ html[data-theme="dark"] .sh-tab:not(.active):hover {
 html[data-theme="dark"] .sf-input     { background: #071820; border-color: var(--border); }
 html[data-theme="dark"] .sf-input:hover { background: #0c2330; }
 html[data-theme="dark"] .sf-chip      { background: #0c2330; border-color: var(--border); color: var(--text-subtle); }
+html[data-theme="dark"] .sf-chip:not(.active):hover { border-color: rgba(0,183,198,0.55); background: rgba(0,183,198,0.08); color: var(--text-secondary); }
 html[data-theme="dark"] .sf-chip.active { color: var(--alm-cyan); background: rgba(0,183,198,0.12); border-color: var(--alm-cyan); }
 html[data-theme="dark"] .dest-card    { background: #0c2330; border-color: var(--border); }
 html[data-theme="dark"] .dest-body    { background: #0c2330; }
@@ -190,11 +280,40 @@ html[data-theme="dark"] .header       { background: #030e14; }
 html[data-theme="dark"] .footer-inner { border-color: #0f2530; }
 html[data-theme="dark"] .s-btn        { border-color: rgba(255,255,255,0.08); }
 
+/* ── DESIGN SYSTEM — DARK TOKEN OVERRIDES ── */
+html[data-theme="dark"] {
+  --color-background-primary:        #339FBB;
+  --color-background-primary-hover:  #0077A8;
+  --color-background-primary-active: #00688F;
+  --color-background-default:        #090909;
+  --color-background-surface:        #090909;
+  --color-background-subtle:         #1A1A1A;
+  --color-background-sunken:         #2F2F2F;
+  --color-background-inverse:        #FFFFFF;
+  --color-background-disabled:       #2F2F2F;
+  --color-background-selected:       #00495E;
+  --color-surface-default:           #2F2F2F;
+  --color-surface-subtle:            #4B4B4B;
+
+  --color-text-primary:    #E5E5E5;
+  --color-text-secondary:  #8A8A8A;
+  --color-text-subtle:     #8A8A8A;
+  --color-text-inverse:    #090909;
+  --color-text-brand:      #66B7CC;
+  --color-text-disabled:   #4B4B4B;
+
+  --color-border-default:  #4B4B4B;
+  --color-border-subtle:   #2F2F2F;
+  --color-border-strong:   #8A8A8A;
+  --color-border-focus:    #339FBB;
+  --color-border-selected: #339FBB;
+}
+
 /* ── FOCUS STATES (keyboard nav) ── */
 :focus-visible {
-  outline: 2px solid var(--alm-cyan);
+  outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 button:focus:not(:focus-visible),
 a:focus:not(:focus-visible) { outline: none; }
@@ -202,18 +321,18 @@ a:focus:not(:focus-visible) { outline: none; }
 /* ── TOAST ── */
 #alm-toast {
   position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px);
-  background: #003B4A; color: #fff;
-  padding: 11px 22px; border-radius: var(--r-full);
-  font-size: 13px; font-weight: 500;
+  background: var(--alm-dark); color: var(--color-text-inverse);
+  padding: 11px 22px; border-radius: var(--radius-full);
+  font-size: var(--text-body-sm-size); font-weight: var(--font-weight-medium);
   box-shadow: 0 8px 32px rgba(0,0,0,0.30);
   opacity: 0; pointer-events: none;
-  transition: opacity 220ms, transform 220ms;
+  transition: opacity var(--motion-normal), transform var(--motion-normal);
   z-index: 999; white-space: nowrap;
 }
 #alm-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 @media (max-width: 560px) {
-  .header-inner { padding: 0 16px; }
+  .header-inner { padding: 0 var(--spacing-sm); }
 }
 
 /* ── HERO ── */
@@ -223,8 +342,15 @@ a:focus:not(:focus-visible) { outline: none; }
 }
 .hero-bg {
   position: absolute; inset: 0;
-  background-image: url('https://i.pinimg.com/originals/d8/95/57/d895577536b16260a3abd28f0be08075.jpg');
-  background-size: cover; background-position: center 50%;
+  background-image: url('https://images.unsplash.com/photo-1598322313658-512b47702270?w=1600&q=85&auto=format&fit=crop');
+  background-size: cover; background-position: center 40%;
+}
+@media (max-width: 900px) {
+  .hero-bg { background-position: center 38%; }
+}
+@media (max-width: 600px) {
+  .hero-bg { background-position: center 35%; }
+  .hero { min-height: 520px; }
 }
 .hero-scrim {
   position: absolute; inset: 0;
@@ -284,7 +410,14 @@ a:focus:not(:focus-visible) { outline: none; }
   padding: 5px 15px; border-radius: var(--r-full);
   border: 1.5px solid var(--border);
   font-size: 12.5px; font-weight: 500; color: var(--text-subtle);
-  cursor: pointer; transition: all 120ms; white-space: nowrap; background: none;
+  cursor: pointer;
+  transition: border-color var(--motion-fast), background var(--motion-fast), color var(--motion-fast);
+  white-space: nowrap; background: none;
+}
+.sf-chip:not(.active):hover {
+  border-color: rgba(0,183,198,0.55);
+  background: rgba(0,183,198,0.05);
+  color: var(--text-secondary);
 }
 .sf-chip.active {
   border-color: var(--alm-cyan); color: var(--alm-dark);
@@ -329,7 +462,8 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
   transition: border-color 120ms, background 120ms; position: relative;
 }
 .sf-input:hover { border-color: var(--alm-cyan); background: #fff; }
-.sf-input > svg { width: 16px; height: 16px; color: var(--text-subtle); flex-shrink: 0; }
+.sf-input > svg { width: 16px; height: 16px; color: inherit; flex-shrink: 0; }
+.sf-input:has(.sf-muted) > svg { color: var(--text-subtle); }
 .sf-val { font-size: 12px; font-weight: 400; color: var(--text-primary); display: block; line-height: 1.25; }
 .sf-hint { font-size: 12px; font-weight: 400; color: var(--text-subtle); display: block; margin-top: 1px; }
 .sf-muted { font-size: 12px !important; font-weight: 400 !important; color: var(--text-subtle) !important; }
@@ -621,6 +755,7 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
   transition: transform 200ms, box-shadow 200ms;
 }
 .dest-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(0,59,74,0.15); }
+.dest-card:focus-visible { border-radius: var(--r-lg); outline-offset: 3px; }
 .dest-img { position: relative; height: 190px; overflow: hidden; }
 .dest-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 4s ease; }
 .dest-card:hover .dest-img img { transform: scale(1.06); }
@@ -629,7 +764,7 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
   padding: 3px 9px; border-radius: var(--r-full);
   font-size: 10.5px; font-weight: 700; color: #fff;
 }
-.badge-hot   { background: rgba(230,57,70,0.88); }
+.badge-hot   { background: var(--alm-red-dark); }
 .badge-deal  { background: rgba(0,183,198,0.90); color: var(--alm-dark); }
 .badge-saudi { background: rgba(0,59,74,0.85); }
 
@@ -647,6 +782,142 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
 }
 .dest-cta:hover { opacity: 0.88; }
 
+/* ─────────────────────────────────────────────
+   OVERLAY PAGES — All Destinations + City Guide
+───────────────────────────────────────────── */
+.overlay-page {
+  position: fixed; inset: 0; z-index: 300;
+  background: var(--bg-page);
+  overflow-y: auto; overflow-x: hidden;
+  opacity: 0; visibility: hidden;
+  transform: translateY(24px);
+  transition: opacity 240ms cubic-bezier(0,0,0.2,1),
+              transform 240ms cubic-bezier(0,0,0.2,1),
+              visibility 0s 240ms;
+}
+.overlay-page.ovp-open {
+  opacity: 1; visibility: visible; transform: none;
+  transition-delay: 0s;
+}
+/* Overlay sticky header */
+.ovp-head {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--alm-dark);
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 24px; height: 58px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+html[data-theme="dark"] .ovp-head { background: #030e14; }
+.ovp-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: rgba(255,255,255,0.75); font-size: 13px; font-weight: 500;
+  background: none; border: none; cursor: pointer; padding: 6px 0;
+  transition: color var(--motion-fast);
+}
+.ovp-back:hover { color: var(--alm-cyan); }
+.ovp-back svg { width: 16px; height: 16px; }
+html[dir="rtl"] .ovp-back svg { transform: scaleX(-1); }
+.ovp-head-title { font-size: 15px; font-weight: 600; color: #fff; }
+.ovp-head-count { font-size: 12px; color: rgba(255,255,255,0.38); margin-inline-start: auto; }
+
+/* All-destinations grid */
+.adp-body { max-width: 1200px; margin: 0 auto; padding: 32px 24px 64px; }
+.adp-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+@media (max-width: 960px) { .adp-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px) { .adp-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* City guide hero */
+.cg-hero { position: relative; height: 380px; overflow: hidden; }
+.cg-hero img { width: 100%; height: 100%; object-fit: cover; }
+.cg-hero-scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,10,30,0.10) 0%, rgba(0,10,30,0.68) 100%);
+}
+.cg-hero-text {
+  position: absolute; bottom: 28px;
+  inset-inline-start: 0; inset-inline-end: 0; padding: 0 32px;
+}
+.cg-city-name { font-size: clamp(26px, 4vw, 40px); font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 5px; }
+.cg-country-label { font-size: 14px; color: rgba(255,255,255,0.68); }
+
+/* City guide content */
+.cg-content { max-width: 880px; margin: 0 auto; padding: 32px 24px 72px; }
+.cg-cta-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+.cg-footer-cta { display: flex; gap: 12px; flex-wrap: wrap; padding-top: 28px; border-top: 1px solid var(--border); margin-top: 40px; }
+.cg-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px; border-radius: var(--r-md);
+  font-size: 14px; font-weight: 600; border: none; cursor: pointer;
+  transition: opacity 120ms, transform 120ms; white-space: nowrap;
+}
+.cg-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.cg-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+.cg-btn-flights { background: var(--alm-red); color: #fff; }
+.cg-btn-stays   { background: var(--alm-dark); color: #fff; }
+.cg-intro-text { font-size: 15px; line-height: 1.75; color: var(--text-secondary); margin-bottom: 22px; }
+.cg-best-time {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 14px; border-radius: var(--r-full);
+  background: rgba(0,183,198,0.10); border: 1.5px solid rgba(0,183,198,0.28);
+  font-size: 13px; font-weight: 500; color: var(--alm-dark); margin-bottom: 36px;
+}
+html[data-theme="dark"] .cg-best-time { color: var(--alm-cyan); background: rgba(0,183,198,0.10); }
+.cg-best-time svg { width: 14px; height: 14px; color: var(--alm-cyan); flex-shrink: 0; }
+
+.cg-section { margin-bottom: 36px; }
+.cg-section-title {
+  font-size: 17px; font-weight: 700; color: var(--text-primary);
+  padding-bottom: 10px; margin-bottom: 14px;
+  border-bottom: 2px solid var(--border);
+}
+.cg-attractions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (max-width: 560px) { .cg-attractions { grid-template-columns: 1fr; } }
+.cg-attr-card {
+  padding: 14px 16px; border-radius: var(--r-md);
+  background: var(--bg-surface); border: 1px solid var(--border);
+}
+html[data-theme="dark"] .cg-attr-card { background: #0c2330; }
+.cg-attr-name { font-size: 13.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.cg-attr-desc { font-size: 12px; color: var(--text-subtle); line-height: 1.55; }
+
+.cg-hotels, .cg-flights, .cg-todo, .cg-tips { display: flex; flex-direction: column; gap: 8px; }
+.cg-hotel-row, .cg-flight-row {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 12px 16px; border-radius: var(--r-md);
+  background: var(--bg-surface); border: 1px solid var(--border);
+}
+html[data-theme="dark"] .cg-hotel-row,
+html[data-theme="dark"] .cg-flight-row { background: #0c2330; }
+.cg-hotel-name { font-size: 13.5px; font-weight: 600; color: var(--text-primary); }
+.cg-hotel-stars { font-size: 11px; color: var(--alm-cyan); margin-top: 2px; }
+.cg-hotel-price { font-size: 15px; font-weight: 700; color: var(--alm-dark); margin-inline-start: auto; text-align: end; }
+html[data-theme="dark"] .cg-hotel-price { color: var(--text-primary); }
+.cg-price-from { font-size: 10px; color: var(--text-subtle); display: block; }
+.cg-fl-airline { font-size: 13px; font-weight: 600; color: var(--text-primary); min-width: 110px; }
+.cg-fl-time { font-size: 12.5px; color: var(--text-secondary); }
+.cg-fl-stops { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--r-full); }
+.cg-fl-stops.direct { background: rgba(34,181,115,.12); color: #22B573; }
+.cg-fl-stops.one    { background: rgba(0,183,198,.10); color: var(--alm-cyan); }
+.cg-fl-price { font-size: 15px; font-weight: 700; color: var(--alm-red); margin-inline-start: auto; }
+.cg-todo-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: var(--r-md);
+  background: var(--bg-surface); border: 1px solid var(--border);
+  font-size: 13px; color: var(--text-primary);
+}
+html[data-theme="dark"] .cg-todo-item { background: #0c2330; }
+.cg-todo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--alm-cyan); flex-shrink: 0; }
+.cg-tip {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 14px; border-radius: var(--r-md);
+  background: rgba(0,183,198,0.05); border: 1px solid rgba(0,183,198,0.18);
+  font-size: 13px; line-height: 1.55; color: var(--text-secondary);
+}
+html[data-theme="dark"] .cg-tip { background: rgba(0,183,198,0.07); }
+.cg-tip-icon { width: 16px; height: 16px; color: var(--alm-cyan); flex-shrink: 0; margin-top: 1px; }
+
 /* ── FOOTER ── */
 .footer { background: #001E29; border-top: 1px solid rgba(255,255,255,0.05); }
 .footer-inner {
@@ -658,7 +929,7 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
 @media (max-width: 500px)  { .footer-inner { grid-template-columns: 1fr; } }
 
 .footer-brand-logo { display: flex; align-items: center; margin-bottom: 14px; }
-.footer-logo-wordmark { font-size: 17px; font-weight: 700; color: #fff; display: flex; align-items: baseline; }
+.footer-logo-wordmark { font-size: 17px; font-weight: var(--font-weight-semibold); color: #fff; display: flex; align-items: baseline; }
 .footer-logo-ar {
   background: linear-gradient(to right, #fff 63%, var(--alm-red) 63% 73%, var(--alm-cyan) 73% 83%, #fff 83%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
@@ -691,6 +962,641 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
 .footer-legal a { font-size: 12px; color: rgba(255,255,255,0.25); transition: color 120ms; }
 .footer-legal a:hover { color: rgba(255,255,255,0.60); }
 
+/* ══════════════════════════════════════════
+   STEP 3 — RESULTS, FILTERS, SORTING
+══════════════════════════════════════════ */
+#results-section { display:none; background:var(--bg-page); border-top:1px solid var(--border); }
+#results-section.rs-open { display:block; }
+.rs-wrap { max-width:1200px; margin:0 auto; padding:28px 24px 52px; }
+.rs-topbar { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
+.rs-back { display:inline-flex; align-items:center; gap:5px; background:none; border:none; padding:0; font-size:13px; font-weight:600; color:var(--alm-cyan); cursor:pointer; font-family:inherit; transition:opacity 120ms; margin-bottom:4px; }
+.rs-back:hover { opacity:.72; }
+.rs-back svg { width:14px; height:14px; }
+.rs-count { font-size:13px; color:var(--text-subtle); }
+.rs-count strong { color:var(--text-primary); font-size:22px; font-weight:800; margin-inline-end:4px; vertical-align:middle; }
+.rs-sort-wrap { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.rs-sort-lbl { font-size:12px; font-weight:600; color:var(--text-subtle); white-space:nowrap; }
+.rs-sort-sel { padding:7px 10px; border-radius:var(--r-md); border:1.5px solid var(--border); background:var(--bg-surface); color:var(--text-primary); font-size:12.5px; font-weight:500; cursor:pointer; font-family:inherit; appearance:none; -webkit-appearance:none; padding-inline-end:28px; background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237A9EA8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; min-width:172px; transition:border-color 120ms; }
+html[dir="rtl"] .rs-sort-sel { background-position:left 10px center; padding-inline-start:28px; padding-inline-end:10px; }
+.rs-sort-sel:focus { outline:none; border-color:var(--alm-cyan); }
+html[data-theme="dark"] .rs-sort-sel { background-color:var(--bg-surface); }
+.rs-active-filters { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+.rs-active-filters:empty { display:none; }
+.af-chip { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:var(--r-full); background:rgba(0,183,198,.12); border:1.5px solid rgba(0,183,198,.25); font-size:11.5px; font-weight:500; color:var(--alm-dark); cursor:pointer; transition:background 80ms; user-select:none; }
+html[data-theme="dark"] .af-chip { color:var(--alm-cyan); }
+.af-chip:hover { background:rgba(0,183,198,.22); }
+.af-chip-x { font-size:10px; font-weight:700; opacity:.6; }
+.rs-body { display:flex; align-items:flex-start; gap:20px; }
+.rs-filters { width:226px; flex-shrink:0; background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px 18px; position:sticky; top:80px; }
+.rs-filter-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+.rs-filter-title { font-size:13px; font-weight:700; color:var(--text-primary); }
+.rs-clear-all { font-size:11px; font-weight:600; color:var(--alm-red); background:none; border:none; cursor:pointer; font-family:inherit; transition:opacity 120ms; }
+.rs-clear-all:hover { opacity:.72; }
+.flt-group { margin-bottom:15px; padding-bottom:15px; border-bottom:1px solid var(--border); }
+.flt-group:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.flt-ttl { font-size:10px; font-weight:700; color:var(--text-subtle); text-transform:uppercase; letter-spacing:.8px; margin-bottom:9px; }
+.flt-check { display:flex; align-items:center; gap:8px; padding:4px 0; font-size:12.5px; color:var(--text-primary); cursor:pointer; user-select:none; }
+.flt-check input[type="checkbox"] { -webkit-appearance:none; appearance:none; width:14px; height:14px; flex-shrink:0; border:1.5px solid var(--text-subtle); border-radius:3px; background:transparent; cursor:pointer; transition:all 100ms; }
+.flt-check input[type="checkbox"]:checked { background:var(--alm-cyan); border-color:var(--alm-cyan); background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l3 3 5-6' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:center; background-size:9px 7px; }
+.flt-price-val { font-size:12px; font-weight:600; color:var(--alm-cyan); margin-bottom:6px; }
+.flt-range { width:100%; appearance:none; -webkit-appearance:none; height:3px; border-radius:3px; outline:none; background:linear-gradient(to right,var(--alm-cyan) 0%,var(--alm-cyan) var(--pct,100%),var(--border) var(--pct,100%),var(--border) 100%); cursor:pointer; }
+.flt-range::-webkit-slider-thumb { appearance:none; -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:var(--alm-cyan); border:2px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,.2); cursor:pointer; }
+.flt-range::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--alm-cyan); border:2px solid #fff; cursor:pointer; }
+.rs-list { flex:1; min-width:0; }
+.rs-list.rs-loading { opacity:.4; pointer-events:none; transition:opacity 200ms; }
+.rs-empty { text-align:center; padding:52px 24px; background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-lg); }
+.rs-empty-icon { font-size:38px; margin-bottom:12px; }
+.rs-empty-title { font-size:17px; font-weight:700; color:var(--text-primary); margin-bottom:6px; }
+.rs-empty-sub { font-size:13px; color:var(--text-subtle); margin-bottom:18px; }
+.rs-empty-btn { display:inline-flex; align-items:center; gap:6px; padding:9px 20px; border-radius:var(--r-full); background:var(--alm-cyan); color:#fff; font-size:13px; font-weight:600; border:none; cursor:pointer; font-family:inherit; transition:opacity 120ms; }
+.rs-empty-btn:hover { opacity:.85; }
+.rc-flight { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:15px 18px; display:flex; align-items:center; gap:14px; margin-bottom:10px; cursor:pointer; transition:box-shadow 150ms,border-color 150ms,transform 150ms; }
+.rc-flight:hover { box-shadow:0 6px 24px rgba(0,59,74,.12); border-color:var(--alm-cyan); transform:translateY(-1px); }
+.rc-airline { width:66px; flex-shrink:0; text-align:center; }
+.rc-airline-badge { width:40px; height:40px; border-radius:var(--r-md); background:linear-gradient(135deg,var(--alm-dark),#00688c); display:flex; align-items:center; justify-content:center; margin:0 auto 4px; font-size:11px; font-weight:800; color:#fff; letter-spacing:.5px; }
+.rc-airline-name { font-size:9.5px; color:var(--text-subtle); line-height:1.3; }
+.rc-times { flex:1; min-width:0; display:flex; align-items:center; gap:10px; }
+.rc-time-block { text-align:center; }
+.rc-time { font-size:18px; font-weight:700; color:var(--text-primary); line-height:1; }
+.rc-iata { font-size:11px; color:var(--text-subtle); margin-top:2px; }
+.rc-route-mid { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; min-width:60px; }
+.rc-dur { font-size:11px; color:var(--text-subtle); }
+.rc-route-line { width:100%; height:1px; background:var(--border); position:relative; }
+.rc-route-line::before { content:''; position:absolute; left:0; top:-3px; width:6px; height:6px; border-radius:50%; background:var(--border); }
+.rc-route-line::after { content:''; position:absolute; right:0; top:-3px; width:6px; height:6px; border-radius:50%; background:var(--alm-cyan); }
+html[dir="rtl"] .rc-route-line::before { left:auto; right:0; }
+html[dir="rtl"] .rc-route-line::after { right:auto; left:0; }
+.rc-stops { font-size:10px; font-weight:700; }
+.rc-stops.direct { color:#22B573; }
+.rc-stops.one { color:var(--alm-cyan); }
+.rc-stops.multi { color:var(--alm-red); }
+.rc-tags { display:flex; flex-direction:column; gap:4px; min-width:90px; }
+.rc-tag { font-size:10px; font-weight:600; padding:2px 7px; border-radius:var(--r-full); text-align:center; }
+.rc-tag-bag { background:rgba(34,181,115,.12); color:#22B573; }
+.rc-tag-cls { background:rgba(0,183,198,.10); color:var(--alm-cyan); text-transform:capitalize; }
+.rc-price-block { text-align:end; flex-shrink:0; }
+.rc-price-from { font-size:10px; color:var(--text-subtle); }
+.rc-price-num { font-size:19px; font-weight:800; color:var(--alm-dark); line-height:1.1; }
+html[data-theme="dark"] .rc-price-num { color:var(--text-primary); }
+.rc-price-curr { font-size:11px; font-weight:600; color:var(--text-secondary); }
+.rc-select-btn { margin-top:7px; padding:6px 14px; border-radius:var(--r-full); background:var(--alm-red); color:#fff; font-size:12px; font-weight:700; border:none; cursor:pointer; font-family:inherit; white-space:nowrap; transition:opacity 120ms; }
+.rc-select-btn:hover { opacity:.88; }
+.rc-stay { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; display:flex; margin-bottom:10px; cursor:pointer; transition:box-shadow 150ms,border-color 150ms,transform 150ms; min-height:130px; }
+.rc-stay:hover { box-shadow:0 6px 24px rgba(0,59,74,.12); border-color:var(--alm-cyan); transform:translateY(-1px); }
+.rc-stay-img { width:155px; flex-shrink:0; overflow:hidden; }
+.rc-stay-img img { width:100%; height:100%; object-fit:cover; transition:transform 3s ease; display:block; }
+.rc-stay:hover .rc-stay-img img { transform:scale(1.05); }
+.rc-stay-body { flex:1; padding:13px 15px; display:flex; gap:10px; min-width:0; }
+.rc-stay-info { flex:1; min-width:0; }
+.rc-stay-name { font-size:15px; font-weight:700; color:var(--text-primary); margin-bottom:2px; }
+.rc-stars { color:#FFC53D; font-size:11px; margin-bottom:3px; letter-spacing:1px; }
+.rc-stay-city { font-size:12px; color:var(--text-subtle); margin-bottom:8px; }
+.rc-amenities { display:flex; flex-wrap:wrap; gap:4px; }
+.rc-amenity { font-size:10.5px; font-weight:500; padding:2px 7px; border-radius:var(--r-full); border:1px solid var(--border); color:var(--text-secondary); }
+.rc-stay-right { text-align:end; flex-shrink:0; display:flex; flex-direction:column; justify-content:space-between; }
+.rc-score-badge { display:inline-flex; align-items:center; gap:5px; justify-content:flex-end; }
+.rc-score-num { width:32px; height:32px; border-radius:var(--r-md); background:var(--alm-dark); color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; }
+.rc-score-lbl { font-size:11px; font-weight:600; color:var(--text-secondary); }
+.rc-nightly { font-size:10px; color:var(--text-subtle); }
+.rc-nightly-price { font-size:19px; font-weight:800; color:var(--alm-dark); }
+html[data-theme="dark"] .rc-nightly-price { color:var(--text-primary); }
+.rc-nightly-curr { font-size:11px; font-weight:600; color:var(--text-secondary); }
+.rc-view-btn { padding:6px 13px; border-radius:var(--r-full); background:var(--alm-red); color:#fff; font-size:12px; font-weight:700; border:none; cursor:pointer; font-family:inherit; transition:opacity 120ms; align-self:flex-end; margin-top:6px; }
+.rc-view-btn:hover { opacity:.88; }
+.rc-act { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; display:flex; margin-bottom:10px; cursor:pointer; transition:box-shadow 150ms,border-color 150ms,transform 150ms; min-height:120px; }
+.rc-act:hover { box-shadow:0 6px 24px rgba(0,59,74,.12); border-color:var(--alm-cyan); transform:translateY(-1px); }
+.rc-act-img { width:155px; flex-shrink:0; overflow:hidden; }
+.rc-act-img img { width:100%; height:100%; object-fit:cover; transition:transform 3s ease; display:block; }
+.rc-act:hover .rc-act-img img { transform:scale(1.05); }
+.rc-act-body { flex:1; padding:13px 15px; display:flex; gap:10px; min-width:0; align-items:center; }
+.rc-act-info { flex:1; min-width:0; }
+.rc-act-cat { display:inline-block; font-size:10.5px; font-weight:700; padding:2px 9px; border-radius:var(--r-full); margin-bottom:5px; }
+.cat-adventure { background:rgba(230,57,70,.10); color:var(--alm-red); }
+.cat-experience { background:rgba(0,183,198,.10); color:var(--alm-cyan); }
+.cat-tour { background:rgba(0,59,74,.08); color:var(--alm-dark); }
+html[data-theme="dark"] .cat-tour { background:rgba(0,183,198,.08); color:var(--alm-cyan); }
+.cat-museum { background:rgba(75,122,133,.12); color:var(--text-secondary); }
+.rc-act-name { font-size:15px; font-weight:700; color:var(--text-primary); margin-bottom:3px; }
+.rc-act-meta { font-size:12px; color:var(--text-subtle); margin-bottom:5px; }
+.rc-act-rating { display:flex; align-items:center; gap:4px; font-size:12px; }
+.rc-act-rating .stars { color:#FFC53D; }
+.rc-act-rating .rev { color:var(--text-subtle); font-size:11px; }
+.rc-act-right { text-align:end; flex-shrink:0; display:flex; flex-direction:column; justify-content:center; gap:7px; }
+.rc-act-pp { font-size:10px; color:var(--text-subtle); }
+.rc-act-price { font-size:19px; font-weight:800; color:var(--alm-dark); line-height:1; }
+html[data-theme="dark"] .rc-act-price { color:var(--text-primary); }
+.rc-act-curr { font-size:11px; font-weight:600; color:var(--text-secondary); }
+.rc-book-btn { padding:6px 13px; border-radius:var(--r-full); background:var(--alm-red); color:#fff; font-size:12px; font-weight:700; border:none; cursor:pointer; font-family:inherit; transition:opacity 120ms; }
+.rc-book-btn:hover { opacity:.88; }
+#alm-modal { position:fixed; inset:0; z-index:800; display:none; align-items:center; justify-content:center; padding:20px; }
+#alm-modal.modal-open { display:flex; }
+.modal-overlay { position:absolute; inset:0; background:rgba(0,20,30,.60); backdrop-filter:blur(4px); }
+.modal-box { position:relative; z-index:1; background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-xl); width:100%; max-width:580px; max-height:88vh; overflow-y:auto; box-shadow:0 24px 80px rgba(0,0,0,.32); animation:modal-in 180ms ease; }
+@keyframes modal-in { from{opacity:0;transform:scale(.96) translateY(8px)} to{opacity:1;transform:none} }
+.modal-close-row { display:flex; justify-content:flex-end; padding:12px 12px 0; position:sticky; top:0; background:var(--bg-surface); z-index:2; }
+.modal-close { width:28px; height:28px; border-radius:50%; border:1px solid var(--border); background:var(--bg-surface); color:var(--text-subtle); font-size:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 100ms; font-family:inherit; }
+.modal-close:hover { border-color:var(--alm-red); color:var(--alm-red); }
+.modal-body { padding:0 22px 24px; }
+.mdl-img { width:calc(100% + 44px); margin-inline-start:-22px; height:190px; object-fit:cover; display:block; margin-bottom:16px; margin-top:-4px; }
+.mdl-badge { display:inline-flex; align-items:center; gap:5px; padding:4px 12px; border-radius:var(--r-full); font-size:11px; font-weight:700; margin-bottom:9px; }
+.mdl-badge-flight { background:rgba(0,59,74,.08); color:var(--alm-dark); }
+html[data-theme="dark"] .mdl-badge-flight { background:rgba(0,183,198,.12); color:var(--alm-cyan); }
+.mdl-badge-stay { background:rgba(0,183,198,.10); color:var(--alm-cyan); }
+.mdl-badge-act { background:rgba(230,57,70,.08); color:var(--alm-red); }
+.mdl-title { font-size:20px; font-weight:800; color:var(--text-primary); margin-bottom:3px; }
+.mdl-sub { font-size:13px; color:var(--text-subtle); margin-bottom:16px; }
+.mdl-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:16px; }
+.mdl-stat { background:var(--bg-page); border-radius:var(--r-md); padding:10px 12px; }
+.mdl-stat-lbl { font-size:9.5px; font-weight:700; color:var(--text-subtle); text-transform:uppercase; letter-spacing:.8px; margin-bottom:4px; }
+.mdl-stat-val { font-size:14px; font-weight:700; color:var(--text-primary); }
+.mdl-price-row { display:flex; align-items:center; justify-content:space-between; padding:13px 0; border-top:1px solid var(--border); }
+.mdl-total-lbl { font-size:12px; color:var(--text-subtle); }
+.mdl-total-price { font-size:24px; font-weight:800; color:var(--alm-dark); }
+html[data-theme="dark"] .mdl-total-price { color:var(--text-primary); }
+.mdl-cta { width:100%; padding:12px; border-radius:var(--r-md); background:var(--alm-red); color:#fff; font-size:14px; font-weight:700; border:none; cursor:pointer; font-family:inherit; transition:opacity 120ms; margin-top:11px; }
+.mdl-cta:hover { opacity:.88; }
+@media (max-width:860px) { .rs-body{flex-direction:column;} .rs-filters{width:100%;position:static;} .rc-stay-img,.rc-act-img{width:120px;} }
+@media (max-width:600px) { .rs-filters{display:none;} .rc-tags{display:none;} .rc-stay{flex-direction:column;} .rc-stay-img{width:100%;height:160px;} .rc-act{flex-direction:column;} .rc-act-img{width:100%;height:140px;} .mdl-grid{grid-template-columns:1fr;} }
+
+/* ══════════════════════════════════════════
+   STEP 4 — HOTEL DETAIL & BOOKING FLOW
+══════════════════════════════════════════ */
+#hotel-detail,#booking-summary,#booking-confirm { display:none; background:var(--bg-page); border-top:1px solid var(--border); }
+#hotel-detail.hd-open,#booking-summary.bk-open,#booking-confirm.bc-open { display:block; }
+.hd-wrap { max-width:960px; margin:0 auto; padding:24px 24px 52px; }
+.bk-wrap,.bc-wrap { max-width:720px; margin:0 auto; padding:24px 24px 52px; }
+/* Gallery */
+.hd-gallery { display:grid; grid-template-columns:2fr 1fr; grid-template-rows:160px 160px; gap:6px; border-radius:var(--r-lg); overflow:hidden; margin-bottom:22px; }
+.hd-gallery-main { grid-row:1/-1; }
+.hd-gallery img { width:100%; height:100%; object-fit:cover; display:block; }
+/* Hotel header */
+.hd-header-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px; gap:12px; flex-wrap:wrap; }
+.hd-name { font-size:22px; font-weight:800; color:var(--text-primary); margin-bottom:5px; }
+.hd-meta { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.hd-stars { color:#FFC53D; font-size:14px; }
+.hd-city { font-size:13px; color:var(--text-subtle); }
+.hd-score-big { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.hd-score-num-big { width:42px; height:42px; border-radius:var(--r-md); background:var(--alm-dark); color:#fff; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; }
+.hd-score-info { text-align:start; }
+.hd-score-lbl { font-size:12px; font-weight:700; color:var(--text-primary); }
+.hd-score-cnt { font-size:10px; color:var(--text-subtle); }
+/* Section title */
+.hd-section-title { font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:12px; margin-top:20px; }
+/* Amenities */
+.hd-amenities { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
+.hd-amenity { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:var(--r-full); border:1px solid var(--border); background:var(--bg-surface); font-size:12.5px; color:var(--text-primary); }
+.hd-amenity svg { color:var(--alm-cyan); flex-shrink:0; }
+/* Dates bar */
+.hd-dates-bar { display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:10px 14px; background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-md); margin-bottom:6px; font-size:12px; color:var(--text-primary); }
+.hd-dates-lbl { color:var(--text-subtle); font-size:11px; margin-inline-end:3px; }
+.hd-dates-sep { color:var(--text-subtle); }
+/* Room cards */
+.hd-rooms { display:flex; flex-direction:column; gap:10px; margin-bottom:18px; }
+.hd-room { background:var(--bg-surface); border:2px solid var(--border); border-radius:var(--r-lg); padding:14px 16px; display:flex; align-items:center; gap:14px; cursor:pointer; transition:border-color 150ms,background 150ms; }
+.hd-room:hover { border-color:rgba(0,183,198,.5); }
+.hd-room.selected { border-color:var(--alm-cyan); background:rgba(0,183,198,.05); }
+html[data-theme="dark"] .hd-room.selected { background:rgba(0,183,198,.08); }
+.hd-room-radio { width:20px; height:20px; border-radius:50%; border:2px solid var(--border); flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:border-color 150ms; }
+.hd-room.selected .hd-room-radio { border-color:var(--alm-cyan); }
+.hd-room.selected .hd-room-radio::after { content:''; width:10px; height:10px; border-radius:50%; background:var(--alm-cyan); display:block; }
+.hd-room-info { flex:1; min-width:0; }
+.hd-room-name { font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:3px; }
+.hd-room-meta { font-size:12px; color:var(--text-subtle); margin-bottom:6px; }
+.hd-room-features { display:flex; flex-wrap:wrap; gap:4px; }
+.hd-room-feat { font-size:11px; color:var(--text-secondary); background:var(--bg-page); padding:2px 8px; border-radius:var(--r-full); border:1px solid var(--border); }
+.hd-room-price { text-align:end; flex-shrink:0; min-width:90px; }
+.hd-room-per { font-size:10px; color:var(--text-subtle); }
+.hd-room-amount { font-size:19px; font-weight:800; color:var(--alm-dark); line-height:1.1; }
+html[data-theme="dark"] .hd-room-amount { color:var(--text-primary); }
+.hd-room-curr { font-size:11px; font-weight:600; color:var(--text-secondary); }
+.hd-room-avail { font-size:10px; color:#22B573; font-weight:600; margin-top:2px; }
+/* Continue bar */
+.hd-continue-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 0; border-top:1px solid var(--border); flex-wrap:wrap; }
+.hd-sel-info { font-size:13px; color:var(--text-subtle); }
+.hd-sel-info strong { color:var(--text-primary); }
+.hd-continue-btn { padding:11px 28px; background:var(--alm-red); color:#fff; border:none; border-radius:var(--r-md); font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; transition:opacity 120ms; }
+.hd-continue-btn:hover { opacity:.88; }
+.hd-continue-btn:disabled { opacity:.35; cursor:not-allowed; }
+/* Booking summary */
+.bk-page-title { font-size:20px; font-weight:800; color:var(--text-primary); margin-bottom:20px; }
+.bk-card { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:18px 20px; margin-bottom:14px; }
+.bk-card-title { font-size:10px; font-weight:700; color:var(--text-subtle); text-transform:uppercase; letter-spacing:.8px; margin-bottom:14px; }
+.bk-hotel-row { display:flex; align-items:center; gap:14px; }
+.bk-hotel-img { width:68px; height:54px; border-radius:var(--r-md); overflow:hidden; flex-shrink:0; }
+.bk-hotel-img img { width:100%; height:100%; object-fit:cover; display:block; }
+.bk-hotel-name { font-size:15px; font-weight:700; color:var(--text-primary); margin-bottom:2px; }
+.bk-hotel-meta { font-size:12px; color:var(--text-subtle); margin-top:3px; }
+.bk-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); font-size:13px; }
+.bk-row:last-child { border-bottom:none; }
+.bk-row-lbl { color:var(--text-subtle); }
+.bk-row-val { font-weight:600; color:var(--text-primary); }
+.bk-total-row { display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:2px solid var(--border); margin-top:6px; }
+.bk-total-lbl { font-size:14px; font-weight:700; color:var(--text-primary); }
+.bk-total-price { font-size:26px; font-weight:800; color:var(--alm-dark); }
+html[data-theme="dark"] .bk-total-price { color:var(--text-primary); }
+.bk-confirm-btn { width:100%; padding:13px; background:var(--alm-red); color:#fff; border:none; border-radius:var(--r-md); font-size:15px; font-weight:700; cursor:pointer; font-family:inherit; transition:opacity 120ms; margin-top:4px; }
+.bk-confirm-btn:hover { opacity:.88; }
+.bk-note { font-size:11px; color:var(--text-subtle); text-align:center; margin-top:9px; }
+/* Booking confirmation */
+.bc-check { width:64px; height:64px; border-radius:50%; background:rgba(34,181,115,.14); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; }
+.bc-check svg { width:32px; height:32px; color:#22B573; }
+.bc-title { font-size:24px; font-weight:800; color:var(--text-primary); margin-bottom:6px; text-align:center; }
+.bc-sub { font-size:14px; color:var(--text-subtle); margin-bottom:22px; text-align:center; }
+.bc-ref { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:18px 22px; margin-bottom:16px; text-align:center; }
+.bc-ref-lbl { font-size:10px; font-weight:700; color:var(--text-subtle); text-transform:uppercase; letter-spacing:.8px; margin-bottom:6px; }
+.bc-ref-num { font-size:24px; font-weight:800; color:var(--alm-cyan); letter-spacing:3px; }
+.bc-details { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px 20px; margin-bottom:22px; }
+.bc-det-row { display:flex; justify-content:space-between; padding:7px 0; font-size:13px; border-bottom:1px solid var(--border); }
+.bc-det-row:last-child { border-bottom:none; }
+.bc-det-lbl { color:var(--text-subtle); }
+.bc-det-val { font-weight:600; color:var(--text-primary); text-align:end; }
+.bc-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.bc-btn-trips { padding:10px 24px; border-radius:var(--r-full); background:var(--alm-cyan); color:#fff; border:none; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:opacity 120ms; }
+.bc-btn-trips:hover { opacity:.85; }
+.bc-btn-home { padding:10px 24px; border-radius:var(--r-full); border:1.5px solid var(--border); background:var(--bg-surface); color:var(--text-primary); font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:all 120ms; }
+.bc-btn-home:hover { border-color:var(--alm-cyan); color:var(--alm-cyan); }
+@media (max-width:600px) { .hd-gallery{grid-template-columns:1fr;grid-template-rows:200px;} .hd-gallery-sec{display:none;} .hd-room{flex-wrap:wrap;} .hd-room-price{width:100%;text-align:start;} .bk-hotel-row{flex-wrap:wrap;} }
+
+/* ══════════════════════════════════════════
+   LOGOS + DEALS SECTION
+══════════════════════════════════════════ */
+
+/* Airline brand-color badge */
+.rc-airline-badge { transition: background 200ms; }
+
+/* Hotel chain badge */
+.rc-chain-badge {
+  display:inline-flex; align-items:center; gap:4px;
+  padding:2px 8px; border-radius:var(--r-full);
+  border:1px solid var(--border); background:var(--bg-page);
+  margin-bottom:5px;
+}
+.rc-chain-name { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.7px; }
+
+/* ══════════════════════════════════════════
+   DEALS — promo deal cards
+══════════════════════════════════════════ */
+.deals-section { background:var(--bg-page); border-top:1px solid var(--border); }
+html[data-theme="dark"] .deals-section { background:var(--bg-page); }
+.deals-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+@media (max-width:860px) { .deals-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:540px) { .deals-grid { grid-template-columns:1fr; } }
+
+.promo-card {
+  border-radius:var(--r-xl); overflow:hidden;
+  background:var(--bg-surface); border:1px solid var(--border);
+  cursor:pointer; box-shadow:0 2px 14px rgba(0,59,74,.08);
+  transition:transform 180ms, box-shadow 180ms;
+  display:flex; flex-direction:column; position:relative;
+}
+html[data-theme="dark"] .promo-card { background:var(--bg-surface); }
+.promo-card:hover { transform:translateY(-5px); box-shadow:0 16px 44px rgba(0,59,74,.16); }
+.promo-card:hover .promo-img img { transform:scale(1.06); }
+
+/* Image area */
+.promo-img { position:relative; height:195px; overflow:hidden; flex-shrink:0; }
+.promo-img img { width:100%; height:100%; object-fit:cover; transition:transform 4s ease; display:block; }
+.promo-img-scrim {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,10,25,.55) 0%, rgba(0,10,25,.06) 55%, transparent 100%);
+}
+
+/* Discount bubble — top-left of image */
+.promo-disc {
+  position:absolute; top:12px; inset-inline-start:12px;
+  background:var(--alm-red); color:#fff;
+  font-size:11px; font-weight:800; letter-spacing:.2px;
+  padding:5px 11px; border-radius:var(--r-full);
+  box-shadow:0 2px 8px rgba(230,57,70,.45);
+  line-height:1;
+}
+/* Category tag — top-right */
+.promo-cat-tag {
+  position:absolute; top:12px; inset-inline-end:12px;
+  background:rgba(0,0,0,.48); backdrop-filter:blur(10px);
+  color:rgba(255,255,255,.92); font-size:9.5px; font-weight:700;
+  padding:4px 10px; border-radius:var(--r-full); letter-spacing:.3px;
+}
+/* Colored accent stripe at bottom of image */
+.promo-accent {
+  position:absolute; bottom:0; inset-inline-start:0; inset-inline-end:0;
+  height:3px; opacity:.9;
+}
+
+/* Body */
+.promo-body { padding:15px 17px 17px; flex:1; display:flex; flex-direction:column; }
+.promo-title {
+  font-size:14.5px; font-weight:700; color:var(--text-primary);
+  margin-bottom:5px; line-height:1.35;
+}
+.promo-desc {
+  font-size:12px; color:var(--text-subtle); line-height:1.55;
+  flex:1; margin-bottom:13px;
+}
+
+/* Inline code + copy */
+.promo-footer-row {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; padding-top:12px; border-top:1px solid var(--border);
+}
+.promo-inline-code {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:12.5px; color:var(--text-subtle);
+}
+.promo-inline-code strong {
+  font-family: var(--font); font-weight:800;
+  font-size:13px; letter-spacing:1.5px; color:var(--text-primary);
+}
+.promo-copy-btn {
+  display:inline-flex; align-items:center; justify-content:center;
+  background:none; border:none; cursor:pointer; padding:3px;
+  color:var(--text-subtle); transition:color 120ms; flex-shrink:0;
+  border-radius:4px;
+}
+.promo-copy-btn:hover { color:var(--alm-cyan); }
+.promo-copy-btn svg { width:14px; height:14px; pointer-events:none; }
+.promo-view-btn {
+  padding:7px 16px; border-radius:var(--r-full);
+  background:var(--alm-red); color:#fff;
+  font-size:12px; font-weight:700; border:none;
+  cursor:pointer; font-family:inherit; flex-shrink:0;
+  transition:opacity 120ms;
+  display:inline-flex; align-items:center; gap:5px;
+}
+.promo-view-btn:hover { opacity:.88; }
+.promo-view-btn svg { width:11px; height:11px; flex-shrink:0; }
+
+/* ── Coming Soon section ── */
+#deal-coming-soon {
+  display:none; background:var(--bg-page);
+  min-height:60vh; border-top:1px solid var(--border);
+}
+#deal-coming-soon.dcs-open { display:block; }
+.dcs-wrap {
+  max-width:480px; margin:0 auto;
+  padding:36px 24px 72px;
+  display:flex; flex-direction:column; align-items:flex-start;
+}
+.dcs-back {
+  display:inline-flex; align-items:center; gap:6px;
+  background:none; border:none; padding:0;
+  font-size:13px; font-weight:600; color:var(--alm-cyan);
+  cursor:pointer; font-family:inherit; transition:opacity 120ms;
+  margin-bottom:52px;
+}
+.dcs-back:hover { opacity:.72; }
+.dcs-back svg { width:15px; height:15px; }
+.dcs-content {
+  width:100%; text-align:center;
+  padding:48px 24px;
+  background:var(--bg-surface); border:1px solid var(--border);
+  border-radius:var(--r-xl);
+}
+.dcs-icon { font-size:42px; margin-bottom:18px; }
+.dcs-title {
+  font-size:clamp(22px,3vw,30px); font-weight:800;
+  color:var(--text-primary); line-height:1.2;
+}
+
+/* ══════════════════════════════════════════
+   MY ACCOUNT — SIGN-IN MODAL + ACCOUNT PAGE
+══════════════════════════════════════════ */
+
+/* ── Sign-in modal ── */
+#signin-modal {
+  position:fixed; inset:0; z-index:920;
+  display:none; align-items:center; justify-content:center; padding:20px;
+}
+#signin-modal.si-open { display:flex; }
+.si-overlay {
+  position:absolute; inset:0;
+  background:rgba(0,20,30,.65); backdrop-filter:blur(6px);
+}
+.si-box {
+  position:relative; z-index:1;
+  background:var(--bg-surface); border:1px solid var(--border);
+  border-radius:var(--r-xl); width:100%; max-width:400px;
+  padding:36px 30px 28px;
+  box-shadow:0 24px 80px rgba(0,0,0,.34);
+  animation:modal-in 180ms ease;
+}
+.si-close {
+  position:absolute; top:14px; inset-inline-end:14px;
+  width:28px; height:28px; border-radius:50%;
+  border:1px solid var(--border); background:var(--bg-surface);
+  color:var(--text-subtle); font-size:12px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all 100ms; font-family:inherit;
+}
+.si-close:hover { border-color:var(--alm-red); color:var(--alm-red); }
+.si-logo { text-align:center; margin-bottom:20px; }
+.si-logo-mark { font-size:22px; font-weight:800; color:var(--text-primary); display:inline-block; }
+.si-title { font-size:20px; font-weight:800; color:var(--text-primary); margin-bottom:6px; text-align:center; }
+.si-sub { font-size:12.5px; color:var(--text-subtle); text-align:center; margin-bottom:24px; line-height:1.5; }
+.si-field { margin-bottom:14px; }
+.si-label {
+  font-size:10px; font-weight:700; color:var(--text-subtle);
+  text-transform:uppercase; letter-spacing:.9px; display:block; margin-bottom:6px;
+}
+.si-input {
+  width:100%; padding:11px 13px; border-radius:var(--r-md);
+  border:1.5px solid var(--border); background:var(--bg-page);
+  color:var(--text-primary); font-size:13px; font-family:inherit;
+  outline:none; transition:border-color 120ms;
+}
+.si-input:focus { border-color:var(--alm-cyan); background:var(--bg-surface); }
+html[data-theme="dark"] .si-input { background:var(--bg-page); }
+.si-btn {
+  width:100%; padding:12px; border-radius:var(--r-md);
+  background:var(--alm-red); color:#fff;
+  font-size:14px; font-weight:700; border:none;
+  cursor:pointer; font-family:inherit; transition:opacity 120ms; margin-top:4px;
+}
+.si-btn:hover { opacity:.88; }
+.si-btn:disabled { opacity:.5; cursor:not-allowed; }
+.si-err { font-size:12px; color:var(--alm-red); text-align:center; margin-top:10px; min-height:18px; }
+.si-demo-note { font-size:11px; color:var(--text-subtle); text-align:center; margin-top:16px; line-height:1.5; }
+.si-divider {
+  text-align:center; font-size:11px; font-weight:600;
+  color:var(--text-subtle); margin:16px 0; position:relative;
+}
+.si-divider::before { content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--border); }
+.si-divider span { background:var(--bg-surface); padding:0 12px; position:relative; }
+html[data-theme="dark"] .si-divider span { background:var(--bg-surface); }
+.si-phone-btn {
+  width:100%; padding:11px 16px; border-radius:var(--r-md);
+  border:1.5px solid var(--border); background:none;
+  color:var(--text-primary); font-size:13.5px; font-weight:600;
+  cursor:pointer; font-family:inherit;
+  display:flex; align-items:center; justify-content:center; gap:9px;
+  transition:border-color 120ms, background 120ms;
+}
+.si-phone-btn:hover { border-color:var(--alm-cyan); background:rgba(0,183,198,.05); }
+.si-phone-row { display:flex; gap:8px; }
+.si-country-sel {
+  padding:11px 8px; border-radius:var(--r-md);
+  border:1.5px solid var(--border); background:var(--bg-page);
+  color:var(--text-primary); font-size:13px; font-family:inherit;
+  outline:none; cursor:pointer; transition:border-color 120ms; flex-shrink:0;
+}
+.si-country-sel:focus { border-color:var(--alm-cyan); }
+html[data-theme="dark"] .si-country-sel { background:var(--bg-page); }
+.si-phone-input { flex:1; min-width:0; }
+.si-back-link {
+  display:block; text-align:center; margin-top:14px;
+  font-size:12px; font-weight:600; color:var(--alm-cyan);
+  background:none; border:none; cursor:pointer; font-family:inherit;
+  transition:opacity 120ms; padding:0; width:100%;
+}
+.si-back-link:hover { opacity:.72; }
+.si-step-back {
+  display:inline-flex; align-items:center; gap:5px;
+  background:none; border:none; padding:0 0 16px;
+  font-size:12.5px; font-weight:600; color:var(--alm-cyan);
+  cursor:pointer; font-family:inherit; transition:opacity 120ms;
+}
+.si-step-back:hover { opacity:.72; }
+.si-otp-target {
+  font-size:12.5px; color:var(--text-subtle);
+  text-align:center; margin-bottom:22px; line-height:1.6;
+}
+.si-otp-target strong { color:var(--text-primary); font-weight:600; word-break:break-all; }
+.si-otp-row { display:flex; gap:8px; justify-content:center; margin-bottom:14px; }
+.si-otp-box {
+  width:44px; height:52px; border-radius:var(--r-md);
+  border:1.5px solid var(--border); background:var(--bg-page);
+  text-align:center; font-size:22px; font-weight:700;
+  color:var(--text-primary); font-family:inherit; outline:none;
+  transition:border-color 120ms, background 120ms; caret-color:transparent;
+}
+.si-otp-box:focus { border-color:var(--alm-cyan); background:var(--bg-surface); }
+.si-otp-box.otp-ok { border-color:var(--alm-cyan); background:rgba(0,183,198,.07); }
+html[data-theme="dark"] .si-otp-box { background:var(--bg-page); }
+.si-resend { text-align:center; margin-top:10px; }
+.si-resend-cd { font-size:12px; color:var(--text-subtle); }
+.si-resend-btn {
+  font-size:12px; font-weight:600; color:var(--alm-cyan);
+  background:none; border:none; cursor:pointer;
+  font-family:inherit; padding:0; transition:opacity 120ms; display:none;
+}
+.si-resend-btn:disabled { color:var(--text-subtle); cursor:default; }
+.si-resend-btn:not([disabled]):hover { opacity:.72; }
+
+/* ── My Account section ── */
+#my-account { display:none; background:var(--bg-page); border-top:1px solid var(--border); min-height:70vh; }
+#my-account.ma-open { display:block; }
+.ma-wrap { max-width:520px; margin:0 auto; padding:28px 24px 72px; }
+.ma-topbar { display:flex; align-items:center; margin-bottom:24px; }
+.ma-back {
+  display:inline-flex; align-items:center; gap:6px;
+  background:none; border:none; padding:0;
+  font-size:13px; font-weight:600; color:var(--alm-cyan);
+  cursor:pointer; font-family:inherit; transition:opacity 120ms;
+}
+.ma-back:hover { opacity:.72; }
+.ma-back svg { width:15px; height:15px; }
+.ma-identity {
+  background:var(--bg-surface); border:1px solid var(--border);
+  border-radius:var(--r-xl); padding:20px;
+  margin-bottom:10px; display:flex; align-items:flex-start; gap:14px;
+}
+.ma-avatar {
+  width:56px; height:56px; border-radius:50%;
+  background:linear-gradient(135deg, var(--alm-cyan), var(--alm-dark));
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; font-weight:800; color:#fff;
+  flex-shrink:0; letter-spacing:-1px;
+}
+.ma-identity-info { flex:1; min-width:0; }
+.ma-greeting { font-size:11.5px; color:var(--text-subtle); margin-bottom:2px; }
+.ma-name { font-size:17px; font-weight:800; color:var(--text-primary); margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ma-email { font-size:12px; color:var(--text-subtle); margin-bottom:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ma-ref {
+  display:inline-flex; align-items:center; gap:4px;
+  background:rgba(0,183,198,.10); border:1px solid rgba(0,183,198,.25);
+  border-radius:var(--r-full); padding:3px 10px;
+  font-size:10px; font-weight:700; color:var(--alm-cyan);
+  letter-spacing:.5px; font-family: var(--font);
+}
+.ma-edit-link {
+  display:inline-flex; align-items:center; gap:4px;
+  font-size:12px; font-weight:600; color:var(--alm-cyan);
+  background:none; border:none; cursor:pointer;
+  padding:0; font-family:inherit; transition:opacity 120ms; margin-top:10px;
+}
+.ma-edit-link:hover { opacity:.72; }
+.ma-edit-link svg { width:12px; height:12px; }
+.ma-promo {
+  background:linear-gradient(135deg, var(--alm-dark) 0%, #00516F 100%);
+  border-radius:var(--r-xl); padding:20px 22px;
+  margin-bottom:14px; position:relative; overflow:hidden;
+}
+.ma-promo::before {
+  content:''; position:absolute; top:-40px; inset-inline-end:-30px;
+  width:130px; height:130px; border-radius:50%; background:rgba(0,183,198,.18);
+}
+.ma-promo::after {
+  content:''; position:absolute; bottom:-25px; inset-inline-start:30px;
+  width:90px; height:90px; border-radius:50%; background:rgba(255,255,255,.06);
+}
+.ma-promo-badge {
+  position:absolute; top:16px; inset-inline-end:18px;
+  background:var(--alm-cyan); color:var(--alm-dark);
+  font-size:9.5px; font-weight:800; padding:4px 10px;
+  border-radius:var(--r-full); letter-spacing:.3px;
+}
+.ma-promo-lbl {
+  font-size:10px; font-weight:700; color:rgba(255,255,255,.55);
+  text-transform:uppercase; letter-spacing:.9px; margin-bottom:6px; position:relative;
+}
+.ma-promo-val { font-size:26px; font-weight:800; color:#fff; line-height:1; margin-bottom:4px; position:relative; }
+.ma-promo-sub { font-size:11px; color:rgba(255,255,255,.50); position:relative; }
+.ma-quick {
+  background:var(--bg-surface); border:1px solid var(--border);
+  border-radius:var(--r-xl); margin-bottom:14px; overflow:hidden;
+}
+.ma-quick-row {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 18px; cursor:pointer; transition:background 100ms;
+}
+.ma-quick-row:not(:last-child) { border-bottom:1px solid var(--border); }
+.ma-quick-row:hover { background:rgba(0,183,198,.05); }
+.ma-qicon { width:38px; height:38px; border-radius:var(--r-md); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.ma-qicon svg { width:18px; height:18px; }
+.ma-qbody { flex:1; min-width:0; }
+.ma-qtitle { font-size:14px; font-weight:600; color:var(--text-primary); }
+.ma-qsub { font-size:11.5px; color:var(--text-subtle); margin-top:1px; }
+.ma-qchev { color:var(--text-subtle); }
+.ma-qchev svg { width:14px; height:14px; }
+.ma-menu {
+  background:var(--bg-surface); border:1px solid var(--border);
+  border-radius:var(--r-xl); margin-bottom:14px; overflow:hidden;
+}
+.ma-menu-item {
+  display:flex; align-items:center; gap:12px;
+  padding:13px 18px; cursor:pointer;
+  transition:background 100ms; border-bottom:1px solid var(--border);
+}
+.ma-menu-item:last-child { border-bottom:none; }
+.ma-menu-item:hover { background:rgba(0,183,198,.05); }
+.ma-micon {
+  width:34px; height:34px; border-radius:var(--r-md);
+  background:var(--bg-page); display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.ma-micon svg { width:15px; height:15px; color:var(--text-secondary); }
+.ma-mlabel { flex:1; font-size:13.5px; font-weight:500; color:var(--text-primary); }
+.ma-marrow { color:var(--text-subtle); }
+.ma-marrow svg { width:13px; height:13px; }
+.ma-signout {
+  width:100%; padding:13px; border-radius:var(--r-xl);
+  border:1.5px solid rgba(230,57,70,.25);
+  background:rgba(230,57,70,.05); color:var(--alm-red);
+  font-size:14px; font-weight:700; cursor:pointer;
+  font-family:inherit; transition:all 120ms; margin-bottom:6px;
+}
+.ma-signout:hover { background:rgba(230,57,70,.10); border-color:var(--alm-red); }
+html[data-theme="dark"] .ma-menu-item:hover,
+html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
 </style>
 </head>
@@ -958,6 +1864,79 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
   </div>
 </section>
 
+<!-- ══ STEP 3 — SEARCH RESULTS ══ -->
+<section id="results-section" aria-label="Search results">
+  <div class="rs-wrap">
+    <div class="rs-topbar">
+      <div>
+        <button class="rs-back" id="rs-back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+          <span class="en">Back to search</span><span class="ar">العودة للبحث</span>
+        </button>
+        <div class="rs-count" id="rs-count"></div>
+      </div>
+      <div class="rs-sort-wrap">
+        <span class="rs-sort-lbl en">Sort by:</span>
+        <span class="rs-sort-lbl ar">ترتيب حسب:</span>
+        <select class="rs-sort-sel" id="rs-sort" aria-label="Sort results"></select>
+      </div>
+    </div>
+    <div class="rs-active-filters" id="rs-active-filters"></div>
+    <div class="rs-body">
+      <aside class="rs-filters" id="rs-filters" aria-label="Filters"></aside>
+      <div class="rs-list" id="rs-list" role="list"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DETAILS MODAL ══ -->
+<div id="alm-modal" role="dialog" aria-modal="true" aria-label="Result details">
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <div class="modal-box">
+    <div class="modal-close-row">
+      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ══ STEP 4 — HOTEL DETAIL ══ -->
+<section id="hotel-detail" aria-label="Hotel details">
+  <div class="hd-wrap"><div id="hd-content"></div></div>
+</section>
+
+<!-- ══ STEP 4 — BOOKING SUMMARY ══ -->
+<section id="booking-summary" aria-label="Booking summary">
+  <div class="bk-wrap"><div id="bk-content"></div></div>
+</section>
+
+<!-- ══ STEP 4 — BOOKING CONFIRMATION ══ -->
+<section id="booking-confirm" aria-label="Booking confirmation">
+  <div class="bc-wrap"><div id="bc-content"></div></div>
+</section>
+
+<!-- ══ MY ACCOUNT ══ -->
+<section id="my-account" aria-label="My Account">
+  <div class="ma-wrap" id="ma-content"></div>
+</section>
+
+<!-- DEAL COMING SOON -->
+<section id="deal-coming-soon" aria-label="Coming soon">
+  <div class="dcs-wrap">
+    <button class="dcs-back" id="dcs-back" aria-label="Back to deals">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      <span class="en">Back</span><span class="ar">رجوع</span>
+    </button>
+    <div class="dcs-content" role="status">
+      <div class="dcs-icon" aria-hidden="true">🕐</div>
+      <h2 class="dcs-title">
+        <span class="en">Coming Soon</span>
+        <span class="ar">قريبًا</span>
+      </h2>
+    </div>
+  </div>
+</section>
+
 <!-- DESTINATIONS -->
 <main id="main">
   <div class="section">
@@ -966,7 +1945,7 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
         <h2 class="section-title"><span class="en">Top Destinations</span><span class="ar">أبرز الوجهات</span></h2>
         <p class="section-sub"><span class="en">Hand-picked by our travel experts</span><span class="ar">اختارها خبراء السفر لدينا</span></p>
       </div>
-      <a href="#" class="see-all">
+      <a href="#" class="see-all" id="see-all-dest">
         <span class="en">See all</span><span class="ar">عرض الكل</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
       </a>
@@ -979,7 +1958,7 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
         <div class="dest-img">
           <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80&auto=format&fit=crop"
                alt="Dubai skyline with Burj Khalifa" loading="lazy">
-          <span class="dest-badge badge-hot">🔥 <span class="en">Trending</span><span class="ar">رائج</span></span>
+          <span class="dest-badge badge-hot"><span aria-hidden="true">🔥</span> <span class="en">Trending</span><span class="ar">رائج</span></span>
         </div>
         <div class="dest-body">
           <div class="dest-city"><span class="en">Dubai</span><span class="ar">دبي</span></div>
@@ -1036,6 +2015,116 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
 
     </div>
   </div>
+
+  <!-- DEALS -->
+  <div id="deals-section" class="section deals-section">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">
+          <span class="en">Special deals for you</span>
+          <span class="ar">عروض خاصة لك</span>
+        </h2>
+        <p class="section-sub">
+          <span class="en">Exclusive promo codes — only on Almosafer</span>
+          <span class="ar">رموز خصم حصرية — فقط على المسافر</span>
+        </p>
+      </div>
+      <button class="see-all" id="deals-view-all" aria-label="View all deals">
+        <span class="en">View all</span><span class="ar">عرض الكل</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+
+    <div class="deals-grid">
+
+      <!-- Deal 1: Riyad Bank -->
+      <article class="promo-card" data-deal-id="riyad" tabindex="0" role="button" aria-label="Riyad Bank credit card special — up to 15% off">
+        <div class="promo-img">
+          <img src="https://images.unsplash.com/photo-1559526324-593bc073d938?w=700&q=85&fit=crop&auto=format" alt="Premium airline cabin view above clouds representing Riyad Bank travel offer" loading="lazy">
+          <div class="promo-img-scrim" aria-hidden="true"></div>
+          <span class="promo-disc"><span class="en">Up to 15% off</span><span class="ar">حتى ١٥٪ خصم</span></span>
+          <span class="promo-cat-tag"><span class="en">Bank Offer</span><span class="ar">عرض بنكي</span></span>
+          <div class="promo-accent" style="background:linear-gradient(90deg,#003B6F,#0055A5)" aria-hidden="true"></div>
+        </div>
+        <div class="promo-body">
+          <div class="promo-title"><span class="en">Riyad Bank Credit Card Special</span><span class="ar">عرض بطاقة بنك الرياض</span></div>
+          <div class="promo-desc"><span class="en">Save on flights, stays, and select activities</span><span class="ar">وفر على الرحلات والإقامات والأنشطة المختارة</span></div>
+          <div class="promo-footer-row">
+            <span class="promo-inline-code">
+              <span class="en">Use code:</span><span class="ar">استخدم الكود:</span>
+              <strong>RIYAD</strong>
+              <button class="promo-copy-btn" data-code="RIYAD" aria-label="Copy code RIYAD">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+            </span>
+            <button class="promo-view-btn">
+              <span class="en">View deal</span><span class="ar">التفاصيل</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Deal 2: TRIP -->
+      <article class="promo-card" data-deal-id="trip" tabindex="0" role="button" aria-label="An offer you can't miss — up to 20% off">
+        <div class="promo-img">
+          <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=700&q=85&fit=crop&auto=format" alt="Airplane wing soaring above golden clouds at sunset" loading="lazy">
+          <div class="promo-img-scrim" aria-hidden="true"></div>
+          <span class="promo-disc"><span class="en">Up to 20% off</span><span class="ar">حتى ٢٠٪ خصم</span></span>
+          <span class="promo-cat-tag"><span class="en">Limited Time</span><span class="ar">لفترة محدودة</span></span>
+          <div class="promo-accent" style="background:linear-gradient(90deg,#00B7C6,#00D4E5)" aria-hidden="true"></div>
+        </div>
+        <div class="promo-body">
+          <div class="promo-title"><span class="en">An Offer You Can't Miss</span><span class="ar">عرض لا يُفوَّت</span></div>
+          <div class="promo-desc"><span class="en">Enjoy savings on flights, stays, and activities</span><span class="ar">استمتع بالتوفير على الرحلات والإقامات والأنشطة</span></div>
+          <div class="promo-footer-row">
+            <span class="promo-inline-code">
+              <span class="en">Use code:</span><span class="ar">استخدم الكود:</span>
+              <strong>TRIP</strong>
+              <button class="promo-copy-btn" data-code="TRIP" aria-label="Copy code TRIP">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+            </span>
+            <button class="promo-view-btn">
+              <span class="en">View deal</span><span class="ar">التفاصيل</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Deal 3: Aquarabia SPLASH -->
+      <article class="promo-card" data-deal-id="splash" tabindex="0" role="button" aria-label="Aquarabia Qiddiya City tickets — special price">
+        <div class="promo-img">
+          <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=700&q=85&fit=crop&auto=format" alt="People enjoying water park rides and pools" loading="lazy">
+          <div class="promo-img-scrim" aria-hidden="true"></div>
+          <span class="promo-disc"><span class="en">Special Price</span><span class="ar">سعر مميز</span></span>
+          <span class="promo-cat-tag"><span class="en">Entertainment</span><span class="ar">ترفيه</span></span>
+          <div class="promo-accent" style="background:linear-gradient(90deg,#E63946,#FF6B6B)" aria-hidden="true"></div>
+        </div>
+        <div class="promo-body">
+          <div class="promo-title"><span class="en">Aquarabia Qiddiya City Tickets</span><span class="ar">تذاكر أكوارابيا قدية</span></div>
+          <div class="promo-desc"><span class="en">Get your Aquarabia Qiddiya City tickets today</span><span class="ar">احصل على تذاكر أكوارابيا قدية اليوم</span></div>
+          <div class="promo-footer-row">
+            <span class="promo-inline-code">
+              <span class="en">Use code:</span><span class="ar">استخدم الكود:</span>
+              <strong>SPLASH</strong>
+              <button class="promo-copy-btn" data-code="SPLASH" aria-label="Copy code SPLASH">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+            </span>
+            <button class="promo-view-btn">
+              <span class="en">View deal</span><span class="ar">التفاصيل</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+
 </main>
 
 <!-- FOOTER -->
@@ -1157,6 +2246,135 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
   <button class="pax-done" id="rooms-done"><span class="en">Done</span><span class="ar">تأكيد</span></button>
 </div>
 
+<!-- ══ SIGN-IN MODAL ══ -->
+<div id="signin-modal" role="dialog" aria-modal="true" aria-label="Sign in">
+  <div class="si-overlay" id="si-overlay"></div>
+  <div class="si-box">
+    <button class="si-close" id="si-close" aria-label="Close">✕</button>
+
+    <!-- ── STEP 1: Entry ── -->
+    <div id="si-step1">
+      <div class="si-logo">
+        <div class="si-logo-mark">Alm<span style="background:linear-gradient(90deg,var(--alm-cyan) 50%,var(--alm-red) 50%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">o</span>safer</div>
+      </div>
+      <h2 class="si-title">
+        <span class="en">Sign in or create account</span>
+        <span class="ar">تسجيل الدخول أو إنشاء حساب</span>
+      </h2>
+
+      <!-- Email mode (default) -->
+      <div id="si-email-mode">
+        <form id="si-email-form" novalidate>
+          <div class="si-field">
+            <label class="si-label" for="si-email">
+              <span class="en">Email address</span>
+              <span class="ar">البريد الإلكتروني</span>
+            </label>
+            <input type="email" id="si-email" class="si-input" placeholder="you@example.com" autocomplete="email">
+          </div>
+          <button type="submit" class="si-btn" id="si-email-submit">
+            <span class="en">Continue</span><span class="ar">متابعة</span>
+          </button>
+          <div class="si-err" id="si-email-err" role="alert" aria-live="polite"></div>
+        </form>
+        <div class="si-divider"><span><span class="en">OR</span><span class="ar">أو</span></span></div>
+        <button class="si-phone-btn" id="si-to-phone">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          <span class="en">Continue with mobile</span><span class="ar">متابعة برقم الجوال</span>
+        </button>
+      </div>
+
+      <!-- Phone mode -->
+      <div id="si-phone-mode" style="display:none">
+        <form id="si-phone-form" novalidate>
+          <div class="si-field">
+            <label class="si-label" for="si-phone">
+              <span class="en">Mobile number</span><span class="ar">رقم الجوال</span>
+            </label>
+            <div class="si-phone-row">
+              <select class="si-country-sel" id="si-country" aria-label="Country code">
+                <option value="+966">🇸🇦 +966</option>
+                <option value="+971">🇦🇪 +971</option>
+                <option value="+965">🇰🇼 +965</option>
+                <option value="+974">🇶🇦 +974</option>
+                <option value="+973">🇧🇭 +973</option>
+                <option value="+968">🇴🇲 +968</option>
+                <option value="+20">🇪🇬 +20</option>
+                <option value="+44">🇬🇧 +44</option>
+                <option value="+1">🇺🇸 +1</option>
+              </select>
+              <input type="tel" id="si-phone" class="si-input si-phone-input" placeholder="5XX XXX XXXX" inputmode="numeric" autocomplete="tel-national">
+            </div>
+          </div>
+          <button type="submit" class="si-btn" id="si-phone-submit">
+            <span class="en">Send OTP</span><span class="ar">إرسال الرمز</span>
+          </button>
+          <div class="si-err" id="si-phone-err" role="alert" aria-live="polite"></div>
+        </form>
+        <button class="si-back-link" id="si-back-to-email">
+          <span class="en">← Use email instead</span><span class="ar">← استخدام البريد الإلكتروني</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 2: OTP ── -->
+    <div id="si-step2" style="display:none">
+      <button class="si-step-back" id="si-otp-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="15 18 9 12 15 6"/></svg>
+        <span class="en">Back</span><span class="ar">رجوع</span>
+      </button>
+      <div class="si-logo">
+        <div class="si-logo-mark">Alm<span style="background:linear-gradient(90deg,var(--alm-cyan) 50%,var(--alm-red) 50%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">o</span>safer</div>
+      </div>
+      <h2 class="si-title">
+        <span class="en">Enter your code</span><span class="ar">أدخل الرمز</span>
+      </h2>
+      <p class="si-otp-target" id="si-otp-target"></p>
+      <div class="si-otp-row" id="si-otp-row" role="group" aria-label="OTP code">
+        <input class="si-otp-box" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1">
+        <input class="si-otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2">
+        <input class="si-otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 3">
+        <input class="si-otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 4">
+        <input class="si-otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 5">
+        <input class="si-otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 6">
+      </div>
+      <div class="si-err" id="si-otp-err" role="alert" aria-live="polite"></div>
+      <div class="si-resend">
+        <span class="si-resend-cd" id="si-resend-cd"></span>
+        <button class="si-resend-btn" id="si-resend-btn" disabled></button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ ALL DESTINATIONS OVERLAY ══ -->
+<div id="all-dest-page" class="overlay-page" aria-hidden="true" role="dialog" aria-modal="true" aria-label="All Destinations">
+  <div class="ovp-head">
+    <button class="ovp-back" id="adp-back" aria-label="Back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      <span class="en">Back</span><span class="ar">رجوع</span>
+    </button>
+    <span class="ovp-head-title"><span class="en">All Destinations</span><span class="ar">جميع الوجهات</span></span>
+    <span class="ovp-head-count"><span class="en">8 cities</span><span class="ar">٨ مدن</span></span>
+  </div>
+  <div class="adp-body">
+    <div id="adp-grid" class="adp-grid"></div>
+  </div>
+</div>
+
+<!-- ══ CITY GUIDE OVERLAY ══ -->
+<div id="cg-page" class="overlay-page" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="ovp-head">
+    <button class="ovp-back" id="cg-back" aria-label="Back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      <span class="en">Back</span><span class="ar">رجوع</span>
+    </button>
+    <span class="ovp-head-title" id="cg-head-title"></span>
+  </div>
+  <div id="cg-body"></div>
+</div>
+
 <script>
 (function () {
   'use strict';
@@ -1210,11 +2428,426 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
     });
   }
 
-  /* ── SIGN IN → coming soon toast ── */
+  /* ══════════════════════════════════════════
+     MY ACCOUNT — AUTH + PAGE
+  ══════════════════════════════════════════ */
+
+  /* ── Helpers ── */
+  function escHtml(s) {
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  }
+  function getInitials(name) {
+    if (!name) return 'U';
+    var parts = name.trim().split(/\s+/);
+    return (parts[0].charAt(0) + (parts[1] ? parts[1].charAt(0) : '')).toUpperCase();
+  }
+  function countTrips() {
+    try { return JSON.parse(localStorage.getItem('alm-trips') || '[]').length; } catch(e) { return 0; }
+  }
+
+  /* ── Auth state ── */
+  var ALM_USER = null;
+  try { ALM_USER = JSON.parse(localStorage.getItem('alm-user') || 'null'); } catch(e) {}
   var signinBtn = document.getElementById('signinBtn');
+
+  function updateHeaderAuth() {
+    if (!signinBtn) return;
+    if (ALM_USER) {
+      signinBtn.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" style="flex-shrink:0" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>&thinsp;<span class="en">My Account</span><span class="ar">حسابي</span>';
+    } else {
+      signinBtn.innerHTML = '<span class="en">Sign in</span><span class="ar">تسجيل الدخول</span>';
+    }
+  }
+  updateHeaderAuth();
+
+  /* ── Sign-in modal (passwordless OTP) ── */
+  var siModal      = document.getElementById('signin-modal');
+  var siOverlay    = document.getElementById('si-overlay');
+  var siCloseBtn   = document.getElementById('si-close');
+  var siStep1      = document.getElementById('si-step1');
+  var siStep2      = document.getElementById('si-step2');
+  var siEmailMode  = document.getElementById('si-email-mode');
+  var siPhoneMode  = document.getElementById('si-phone-mode');
+  var siEmailForm  = document.getElementById('si-email-form');
+  var siPhoneForm  = document.getElementById('si-phone-form');
+  var siEmailEl    = document.getElementById('si-email');
+  var siPhoneEl    = document.getElementById('si-phone');
+  var siCountryEl  = document.getElementById('si-country');
+  var siEmailErrEl = document.getElementById('si-email-err');
+  var siPhoneErrEl = document.getElementById('si-phone-err');
+  var siToPhone    = document.getElementById('si-to-phone');
+  var siBackEmail  = document.getElementById('si-back-to-email');
+  var siOtpBack    = document.getElementById('si-otp-back');
+  var siOtpTarget  = document.getElementById('si-otp-target');
+  var siOtpRow     = document.getElementById('si-otp-row');
+  var siOtpBoxes   = siOtpRow ? Array.prototype.slice.call(siOtpRow.querySelectorAll('.si-otp-box')) : [];
+  var siOtpErrEl   = document.getElementById('si-otp-err');
+  var siResendCd   = document.getElementById('si-resend-cd');
+  var siResendBtn  = document.getElementById('si-resend-btn');
+
+  var SI_MODE    = 'email';
+  var SI_CONTACT = '';
+  var siResendTimer = null;
+  var siOtpDone  = false;
+
+  function openSignIn() {
+    if (!siModal) return;
+    resetToStep1('email');
+    siModal.classList.add('si-open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function(){ if (siEmailEl) siEmailEl.focus(); }, 160);
+  }
+
+  function closeSignIn() {
+    if (!siModal) return;
+    siModal.classList.remove('si-open');
+    document.body.style.overflow = '';
+    clearInterval(siResendTimer);
+  }
+
+  function resetToStep1(mode) {
+    siOtpDone = false;
+    if (siStep1) siStep1.style.display = '';
+    if (siStep2) siStep2.style.display = 'none';
+    clearOtpBoxes();
+    if (siEmailErrEl) siEmailErrEl.textContent = '';
+    if (siPhoneErrEl) siPhoneErrEl.textContent = '';
+    if (siOtpErrEl)   siOtpErrEl.textContent   = '';
+    clearInterval(siResendTimer);
+    SI_MODE = mode;
+    if (mode === 'phone') {
+      if (siEmailMode) siEmailMode.style.display = 'none';
+      if (siPhoneMode) siPhoneMode.style.display = '';
+      setTimeout(function(){ if (siPhoneEl) siPhoneEl.focus(); }, 80);
+    } else {
+      if (siEmailMode) siEmailMode.style.display = '';
+      if (siPhoneMode) siPhoneMode.style.display = 'none';
+      setTimeout(function(){ if (siEmailEl) siEmailEl.focus(); }, 80);
+    }
+  }
+
+  function showOtpStep(contact, isPhone) {
+    SI_CONTACT = contact;
+    siOtpDone = false;
+    if (siStep1) siStep1.style.display = 'none';
+    if (siStep2) siStep2.style.display = '';
+    clearOtpBoxes();
+    siOtpBoxes.forEach(function(b){ b.disabled = false; });
+    if (siOtpErrEl) siOtpErrEl.textContent = '';
+    if (siOtpTarget) {
+      var isAr = html.lang === 'ar';
+      var via = isPhone
+        ? (isAr ? 'عبر الرسائل القصيرة على' : 'via SMS to')
+        : (isAr ? 'عبر البريد الإلكتروني على' : 'via Email at');
+      siOtpTarget.innerHTML =
+        (isAr ? 'أدخل الرمز المكوّن من ٦ أرقام المُرسل ' : 'Enter the 6-digit code sent ')
+        + via + ' <strong>' + escHtml(contact) + '</strong>';
+    }
+    startResendCountdown();
+    setTimeout(function(){ if (siOtpBoxes[0]) siOtpBoxes[0].focus(); }, 160);
+  }
+
+  function clearOtpBoxes() {
+    siOtpBoxes.forEach(function(b){ b.value = ''; b.classList.remove('otp-ok'); });
+  }
+
+  function getOtpValue() {
+    return siOtpBoxes.map(function(b){ return b.value; }).join('');
+  }
+
+  function verifyOtp(code) {
+    if (siOtpDone || code.length !== 6) return;
+    siOtpDone = true;
+    if (siOtpErrEl) siOtpErrEl.textContent = '';
+    siOtpBoxes.forEach(function(b){ b.disabled = true; });
+    clearInterval(siResendTimer);
+    setTimeout(function(){ completeSignIn(SI_CONTACT, SI_MODE === 'phone'); }, 600);
+  }
+
+  function completeSignIn(contact, isPhone) {
+    var name;
+    if (isPhone) {
+      name = 'Traveller';
+    } else {
+      var raw = contact.split('@')[0].replace(/[._\-+]/g,' ').replace(/\d+/g,'').trim() || 'Traveller';
+      name = raw.split(' ').map(function(w){ return w ? w.charAt(0).toUpperCase()+w.slice(1):''; }).join(' ').trim() || 'Traveller';
+    }
+    var ch = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', refId = 'ALM-';
+    for (var ri = 0; ri < 7; ri++) refId += ch.charAt(Math.floor(Math.random()*ch.length));
+    ALM_USER = { name:name, email:contact, refId:refId };
+    try { localStorage.setItem('alm-user', JSON.stringify(ALM_USER)); } catch(er) {}
+    updateHeaderAuth();
+    closeSignIn();
+    setTimeout(openMyAccount, 220);
+  }
+
+  /* OTP box interaction */
+  siOtpBoxes.forEach(function(box, idx) {
+    box.addEventListener('input', function() {
+      var v = box.value.replace(/\D/g,'');
+      box.value = v ? v.charAt(0) : '';
+      box.classList.toggle('otp-ok', !!box.value);
+      if (box.value && idx < siOtpBoxes.length - 1) siOtpBoxes[idx+1].focus();
+      var code = getOtpValue();
+      if (code.length === 6) verifyOtp(code);
+    });
+    box.addEventListener('keydown', function(e) {
+      if (e.key === 'Backspace' && !box.value && idx > 0) {
+        siOtpBoxes[idx-1].value = '';
+        siOtpBoxes[idx-1].classList.remove('otp-ok');
+        siOtpBoxes[idx-1].focus();
+      }
+      if (e.key === 'ArrowLeft'  && idx > 0) siOtpBoxes[idx-1].focus();
+      if (e.key === 'ArrowRight' && idx < siOtpBoxes.length-1) siOtpBoxes[idx+1].focus();
+    });
+    box.addEventListener('paste', function(e) {
+      e.preventDefault();
+      var pasted = (e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6);
+      pasted.split('').forEach(function(ch, i) {
+        if (siOtpBoxes[idx+i]) { siOtpBoxes[idx+i].value=ch; siOtpBoxes[idx+i].classList.add('otp-ok'); }
+      });
+      var last = Math.min(idx+pasted.length, siOtpBoxes.length-1);
+      siOtpBoxes[last].focus();
+      var code = getOtpValue();
+      if (code.length === 6) verifyOtp(code);
+    });
+    /* Allow re-click to clear and retype */
+    box.addEventListener('click', function(){ box.select && box.select(); });
+  });
+
+  /* Resend countdown */
+  function startResendCountdown() {
+    var secs = 30;
+    if (siResendCd)  { siResendCd.style.display = ''; }
+    if (siResendBtn) { siResendBtn.style.display = 'none'; siResendBtn.disabled = true; }
+    clearInterval(siResendTimer);
+    function tick() {
+      var isAr = html.lang === 'ar';
+      if (siResendCd) siResendCd.textContent = (isAr?'إعادة الإرسال بعد ':'Resend in ') + secs + (isAr?'ث':'s');
+      secs--;
+      if (secs < 0) {
+        clearInterval(siResendTimer);
+        if (siResendCd)  siResendCd.style.display = 'none';
+        if (siResendBtn) {
+          var isAr2 = html.lang === 'ar';
+          siResendBtn.style.display = '';
+          siResendBtn.disabled = false;
+          siResendBtn.textContent = isAr2 ? 'إعادة إرسال الرمز' : 'Resend code';
+        }
+      }
+    }
+    tick();
+    siResendTimer = setInterval(tick, 1000);
+  }
+
+  if (siResendBtn) siResendBtn.addEventListener('click', function() {
+    siOtpDone = false;
+    clearOtpBoxes();
+    siOtpBoxes.forEach(function(b){ b.disabled = false; });
+    if (siOtpErrEl) siOtpErrEl.textContent = '';
+    startResendCountdown();
+    setTimeout(function(){ if (siOtpBoxes[0]) siOtpBoxes[0].focus(); }, 80);
+  });
+
+  /* Email form */
+  if (siEmailForm) siEmailForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var isAr = html.lang === 'ar';
+    var email = siEmailEl ? siEmailEl.value.trim() : '';
+    if (siEmailErrEl) siEmailErrEl.textContent = '';
+    if (!email) {
+      if (siEmailErrEl) siEmailErrEl.textContent = isAr ? 'يرجى إدخال بريدك الإلكتروني' : 'Please enter your email address';
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      if (siEmailErrEl) siEmailErrEl.textContent = isAr ? 'بريد إلكتروني غير صحيح' : 'Please enter a valid email address';
+      return;
+    }
+    var btn = document.getElementById('si-email-submit');
+    if (btn) { btn.disabled = true; btn.textContent = isAr ? 'جارٍ الإرسال...' : 'Sending...'; }
+    setTimeout(function() {
+      if (btn) { btn.disabled = false; btn.innerHTML = '<span class="en">Continue</span><span class="ar">متابعة</span>'; }
+      showOtpStep(email, false);
+    }, 600);
+  });
+
+  /* Phone form */
+  if (siPhoneForm) siPhoneForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var isAr  = html.lang === 'ar';
+    var phone = siPhoneEl ? siPhoneEl.value.replace(/\D/g,'') : '';
+    var code  = siCountryEl ? siCountryEl.value : '+966';
+    if (siPhoneErrEl) siPhoneErrEl.textContent = '';
+    if (!phone || phone.length < 7) {
+      if (siPhoneErrEl) siPhoneErrEl.textContent = isAr ? 'يرجى إدخال رقم جوال صحيح' : 'Please enter a valid mobile number';
+      return;
+    }
+    var full = code + ' ' + phone;
+    var btn  = document.getElementById('si-phone-submit');
+    if (btn) { btn.disabled = true; btn.textContent = isAr ? 'جارٍ الإرسال...' : 'Sending...'; }
+    setTimeout(function() {
+      if (btn) { btn.disabled = false; btn.innerHTML = '<span class="en">Send OTP</span><span class="ar">إرسال الرمز</span>'; }
+      showOtpStep(full, true);
+    }, 600);
+  });
+
+  /* Mode switches */
+  if (siToPhone)   siToPhone.addEventListener('click',   function(){ resetToStep1('phone'); });
+  if (siBackEmail) siBackEmail.addEventListener('click',  function(){ resetToStep1('email'); });
+  if (siOtpBack)   siOtpBack.addEventListener('click',   function() {
+    siOtpBoxes.forEach(function(b){ b.disabled = false; });
+    clearInterval(siResendTimer);
+    siOtpDone = false;
+    if (siStep2) siStep2.style.display = 'none';
+    if (siStep1) siStep1.style.display = '';
+    if (SI_MODE === 'phone') {
+      if (siEmailMode) siEmailMode.style.display = 'none';
+      if (siPhoneMode) siPhoneMode.style.display = '';
+    } else {
+      if (siEmailMode) siEmailMode.style.display = '';
+      if (siPhoneMode) siPhoneMode.style.display = 'none';
+    }
+  });
+
+  if (siCloseBtn) siCloseBtn.addEventListener('click', closeSignIn);
+  if (siOverlay)  siOverlay.addEventListener('click',  closeSignIn);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && siModal && siModal.classList.contains('si-open')) closeSignIn();
+  });
+
+  /* ── My Account section ── */
+  var maSection = document.getElementById('my-account');
+  var maContent = document.getElementById('ma-content');
+
+  function openMyAccount() {
+    if (!maSection || !ALM_USER) return;
+    renderMyAccount();
+    /* Hide any open section */
+    var rsS = document.getElementById('results-section');
+    var hdS = document.getElementById('hotel-detail');
+    var bkS = document.getElementById('booking-summary');
+    var bcS = document.getElementById('booking-confirm');
+    var dcs = document.getElementById('deal-coming-soon');
+    if (rsS) rsS.classList.remove('rs-open');
+    if (hdS) hdS.classList.remove('hd-open');
+    if (bkS) bkS.classList.remove('bk-open');
+    if (bcS) bcS.classList.remove('bc-open');
+    if (dcs) dcs.classList.remove('dcs-open');
+    if (mainEl) mainEl.style.display = 'none';
+    maSection.classList.add('ma-open');
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+
+  function closeMyAccount() {
+    if (maSection) maSection.classList.remove('ma-open');
+    if (mainEl)    mainEl.style.display = '';
+  }
+
+  function renderMyAccount() {
+    if (!maContent || !ALM_USER) return;
+    var isAr = html.lang === 'ar';
+    var u = ALM_USER;
+    var initials = getInitials(u.name);
+    var trips = countTrips();
+
+    var MENU = [
+      { en:'Profile',             ar:'الملف الشخصي',     d:'<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>' },
+      { en:'Travellers',          ar:'المسافرون',         d:'<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>' },
+      { en:'Travel Preferences',  ar:'تفضيلات السفر',    d:'<path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>' },
+      { en:'Loyalty Programs',    ar:'برامج الولاء',      d:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>' },
+      { en:'Payment Preferences', ar:'طرق الدفع',         d:'<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>' },
+      { en:'Security',            ar:'الأمان',            d:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>' }
+    ];
+
+    var chev = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="9 18 15 12 9 6"/></svg>';
+    var out = '';
+
+    /* Top bar */
+    out += '<div class="ma-topbar">';
+    out += '<button class="ma-back" id="ma-back-btn">';
+    out += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><polyline points="15 18 9 12 15 6"/></svg>';
+    out += '<span class="en">Home</span><span class="ar">الرئيسية</span>';
+    out += '</button></div>';
+
+    /* Identity card */
+    out += '<div class="ma-identity">';
+    out += '<div class="ma-avatar">'+escHtml(initials)+'</div>';
+    out += '<div class="ma-identity-info">';
+    out += '<div class="ma-greeting">'+(isAr?'مرحباً بك،':'Welcome back,')+'</div>';
+    out += '<div class="ma-name">'+escHtml(u.name)+'</div>';
+    out += '<div class="ma-email">'+escHtml(u.email)+'</div>';
+    out += '<div class="ma-ref">'+escHtml(u.refId)+'</div>';
+    out += '<button class="ma-edit-link" id="ma-edit-btn">';
+    out += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+    out += '<span class="en">Edit Profile</span><span class="ar">تعديل الملف الشخصي</span>';
+    out += '</button></div></div>';
+
+    /* Promo / wallet card */
+    out += '<div class="ma-promo">';
+    out += '<div class="ma-promo-badge">Nusuk +</div>';
+    out += '<div class="ma-promo-lbl">'+(isAr?'رصيد المحفظة':'Wallet Balance')+'</div>';
+    out += '<div class="ma-promo-val">SAR 0<span style="font-size:16px;font-weight:600">.00</span></div>';
+    out += '<div class="ma-promo-sub">'+(trips ? trips+' '+(isAr?'رحلة محجوزة':(trips===1?'booking saved':'bookings saved')) : (isAr?'لا توجد حجوزات بعد — ابدأ رحلتك!':'No bookings yet — start your journey!'))+'</div>';
+    out += '</div>';
+
+    /* Quick rows */
+    out += '<div class="ma-quick">';
+    out += '<div class="ma-quick-row" id="ma-trips-row">';
+    out += '<div class="ma-qicon" style="background:rgba(0,183,198,.12)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--alm-cyan)" stroke-width="1.8" width="18" height="18"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg></div>';
+    out += '<div class="ma-qbody"><div class="ma-qtitle">'+(isAr?'رحلاتي':'My Trips')+'</div><div class="ma-qsub">'+trips+' '+(isAr?'حجز':(trips===1?'booking':'bookings'))+'</div></div>';
+    out += '<div class="ma-qchev">'+chev+'</div></div>';
+    out += '<div class="ma-quick-row" id="ma-wallet-row">';
+    out += '<div class="ma-qicon" style="background:rgba(230,57,70,.10)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--alm-red)" stroke-width="1.8" width="18" height="18"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>';
+    out += '<div class="ma-qbody"><div class="ma-qtitle">'+(isAr?'محفظتي':'My Wallet')+'</div><div class="ma-qsub">SAR 0.00</div></div>';
+    out += '<div class="ma-qchev">'+chev+'</div></div></div>';
+
+    /* Account menu */
+    out += '<div class="ma-menu">';
+    MENU.forEach(function(item) {
+      out += '<div class="ma-menu-item">';
+      out += '<div class="ma-micon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15">'+item.d+'</svg></div>';
+      out += '<div class="ma-mlabel">'+(isAr ? item.ar : item.en)+'</div>';
+      out += '<div class="ma-marrow">'+chev+'</div></div>';
+    });
+    out += '</div>';
+
+    /* Sign out */
+    out += '<button class="ma-signout" id="ma-signout-btn"><span class="en">Sign Out</span><span class="ar">تسجيل الخروج</span></button>';
+
+    maContent.innerHTML = out;
+
+    /* Wire events */
+    document.getElementById('ma-back-btn').addEventListener('click', closeMyAccount);
+    document.getElementById('ma-edit-btn').addEventListener('click', function(){
+      showToast(html.lang==='ar'?'تعديل الملف الشخصي قريباً':'Profile editing coming soon');
+    });
+    document.getElementById('ma-trips-row').addEventListener('click', function(){
+      showToast(html.lang==='ar'?'رحلاتي قريباً':'My Trips coming soon');
+    });
+    document.getElementById('ma-wallet-row').addEventListener('click', function(){
+      showToast(html.lang==='ar'?'المحفظة قريباً':'Wallet coming soon');
+    });
+    maContent.querySelectorAll('.ma-menu-item').forEach(function(el){
+      el.addEventListener('click', function(){
+        showToast(html.lang==='ar'?'قريباً':'Coming soon');
+      });
+    });
+    document.getElementById('ma-signout-btn').addEventListener('click', function(){
+      ALM_USER = null;
+      try { localStorage.removeItem('alm-user'); } catch(er) {}
+      updateHeaderAuth();
+      closeMyAccount();
+      showToast(html.lang==='ar'?'تم تسجيل الخروج بنجاح':'Signed out successfully');
+    });
+  }
+
+  /* ── Header sign-in / my-account button ── */
   if (signinBtn) {
-    signinBtn.addEventListener('click', function () {
-      showToast(html.lang === 'ar' ? 'تسجيل الدخول قريباً' : 'Sign in — coming soon');
+    signinBtn.addEventListener('click', function() {
+      if (ALM_USER) { openMyAccount(); } else { openSignIn(); }
     });
   }
 
@@ -2105,15 +3738,17 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
     }
   });
 
-  /* ── Search button loading state ── */
+  /* ── Search button → show results ── */
   document.querySelectorAll('.sf-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       if (btn.classList.contains('mc-add-link')) return;
       btn.classList.add('sf-loading');
+      var activeTabBtn = document.querySelector('.sh-tab.active');
+      var activeTab = activeTabBtn ? activeTabBtn.getAttribute('data-sh-tab') : 'flights';
       setTimeout(function () {
         btn.classList.remove('sf-loading');
-        showToast(html.lang === 'ar' ? 'نتائج البحث قادمة في الخطوة ٣ 🚀' : 'Search results coming in Step 3 🚀');
-      }, 1800);
+        showResults(activeTab);
+      }, 1100);
     });
   });
 
@@ -2135,6 +3770,1346 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
     closeAllPanels();
     closeSuggest();
   }, { passive: true });
+
+  /* ══════════════════════════════════════════
+     STEP 3 — RESULTS, FILTERS, SORTING
+  ══════════════════════════════════════════ */
+
+  var FLIGHT_DATA = [
+    { id:1,  airline:'Saudia',        code:'SV', fn:'SV 511', orig:'RUH', dest:'DXB', origCity:'Riyadh',  destCity:'Dubai',    dep:'06:20', arr:'08:35', dur:135, stops:0, price:890,  baggage:true,  cls:'Economy' },
+    { id:2,  airline:'flydubai',      code:'FZ', fn:'FZ 871', orig:'RUH', dest:'DXB', origCity:'Riyadh',  destCity:'Dubai',    dep:'10:15', arr:'12:30', dur:135, stops:0, price:720,  baggage:false, cls:'Economy' },
+    { id:3,  airline:'Emirates',      code:'EK', fn:'EK 804', orig:'RUH', dest:'DXB', origCity:'Riyadh',  destCity:'Dubai',    dep:'14:00', arr:'16:10', dur:130, stops:0, price:1150, baggage:true,  cls:'Economy' },
+    { id:4,  airline:'flynas',        code:'XY', fn:'XY 203', orig:'RUH', dest:'DXB', origCity:'Riyadh',  destCity:'Dubai',    dep:'08:30', arr:'12:00', dur:210, stops:1, price:640,  baggage:false, cls:'Economy' },
+    { id:5,  airline:'Air Arabia',    code:'G9', fn:'G9 410', orig:'RUH', dest:'DXB', origCity:'Riyadh',  destCity:'Dubai',    dep:'16:45', arr:'19:00', dur:135, stops:0, price:760,  baggage:false, cls:'Economy' },
+    { id:6,  airline:'Saudia',        code:'SV', fn:'SV 523', orig:'RUH', dest:'IST', origCity:'Riyadh',  destCity:'Istanbul', dep:'09:00', arr:'13:30', dur:270, stops:0, price:1480, baggage:true,  cls:'Economy' },
+    { id:7,  airline:'Turkish Air.',  code:'TK', fn:'TK 132', orig:'RUH', dest:'IST', origCity:'Riyadh',  destCity:'Istanbul', dep:'23:45', arr:'05:20', dur:335, stops:1, price:1240, baggage:true,  cls:'Economy' },
+    { id:8,  airline:'flynas',        code:'XY', fn:'XY 301', orig:'RUH', dest:'CAI', origCity:'Riyadh',  destCity:'Cairo',    dep:'07:00', arr:'09:15', dur:135, stops:0, price:580,  baggage:false, cls:'Economy' },
+    { id:9,  airline:'Saudia',        code:'SV', fn:'SV 601', orig:'RUH', dest:'LHR', origCity:'Riyadh',  destCity:'London',   dep:'02:30', arr:'10:00', dur:450, stops:0, price:3200, baggage:true,  cls:'Business' },
+    { id:10, airline:'Qatar Airways', code:'QR', fn:'QR1177', orig:'RUH', dest:'BKK', origCity:'Riyadh',  destCity:'Bangkok',  dep:'11:00', arr:'22:40', dur:460, stops:1, price:2100, baggage:true,  cls:'Economy' }
+  ];
+
+  var STAY_DATA = [
+    { id:1, name:'Burj Al Arab',          nameAr:'برج العرب',              city:'Dubai',     cityAr:'دبي',              stars:5, score:9.6, scoreLbl:'Exceptional', price:3800, amenities:['Pool','WiFi','Gym','Breakfast'], img:'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80&fit=crop&auto=format' },
+    { id:2, name:'Four Seasons Riyadh',   nameAr:'فور سيزونز الرياض',      city:'Riyadh',    cityAr:'الرياض',           stars:5, score:9.2, scoreLbl:'Exceptional', price:1850, amenities:['Pool','WiFi','Gym','Spa'],       img:'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80&fit=crop&auto=format' },
+    { id:3, name:'Waldorf Astoria DIFC',  nameAr:'والدورف أستوريا',        city:'Dubai',     cityAr:'دبي',              stars:5, score:9.0, scoreLbl:'Wonderful',   price:2100, amenities:['Pool','WiFi','Spa','Breakfast'], img:'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&q=80&fit=crop&auto=format' },
+    { id:4, name:'JW Marriott Riyadh',    nameAr:'ماريوت الرياض',          city:'Riyadh',    cityAr:'الرياض',           stars:5, score:8.8, scoreLbl:'Excellent',   price:980,  amenities:['WiFi','Gym','Pool'],             img:'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&q=80&fit=crop&auto=format' },
+    { id:5, name:'Raffles Jeddah',        nameAr:'رافلز جدة',              city:'Jeddah',    cityAr:'جدة',              stars:5, score:9.1, scoreLbl:'Exceptional', price:1650, amenities:['Pool','WiFi','Breakfast','Spa'], img:'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80&fit=crop&auto=format' },
+    { id:6, name:'Ritz-Carlton Istanbul', nameAr:'ريتز كارلتون إسطنبول',   city:'Istanbul',  cityAr:'إسطنبول',          stars:5, score:8.9, scoreLbl:'Excellent',   price:1320, amenities:['WiFi','Gym','Spa'],              img:'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=600&q=80&fit=crop&auto=format' },
+    { id:7, name:'Mövenpick Madinah',     nameAr:'موفنبيك المدينة',        city:'Madinah',   cityAr:'المدينة المنورة',  stars:4, score:8.7, scoreLbl:'Excellent',   price:720,  amenities:['WiFi','Breakfast'],              img:'https://images.unsplash.com/photo-1576354302919-96748cb8299e?w=600&q=80&fit=crop&auto=format' },
+    { id:8, name:'Conrad Abu Dhabi',      nameAr:'كونراد أبوظبي',          city:'Abu Dhabi', cityAr:'أبوظبي',           stars:5, score:8.5, scoreLbl:'Very Good',   price:1100, amenities:['Pool','WiFi','Gym'],             img:'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80&fit=crop&auto=format' },
+    { id:9, name:'Anantara Al Jabal',     nameAr:'أنانتارا الجبل الأخضر', city:'Muscat',    cityAr:'مسقط',             stars:5, score:9.3, scoreLbl:'Exceptional', price:2400, amenities:['Pool','WiFi','Spa','Breakfast'], img:'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=600&q=80&fit=crop&auto=format' }
+  ];
+
+  var ACT_DATA = [
+    { id:1, name:'Desert Safari Dubai',       nameAr:'سفاري الصحراء دبي',              city:'Dubai',      cityAr:'دبي',        cat:'adventure', dur:'Half-day', durAr:'نصف يوم',  dh:4, price:350,  rating:4.8, reviews:2400, img:'https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=600&q=80&fit=crop&auto=format' },
+    { id:2, name:'Bosphorus Sunset Cruise',   nameAr:'جولة البوسفور عند الغروب',      city:'Istanbul',   cityAr:'إسطنبول',   cat:'experience', dur:'3 hours',  durAr:'٣ ساعات', dh:3, price:220,  rating:4.7, reviews:1800, img:'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=600&q=80&fit=crop&auto=format' },
+    { id:3, name:'AlUla Heritage Trail',      nameAr:'درب العُلا التراثي',             city:'AlUla',      cityAr:'العُلا',     cat:'tour',       dur:'Full-day', durAr:'يوم كامل', dh:8, price:480,  rating:4.9, reviews:680,  img:'https://images.unsplash.com/photo-1568797629192-c4afb3a82acb?w=600&q=80&fit=crop&auto=format' },
+    { id:4, name:'Louvre Abu Dhabi',          nameAr:'متحف اللوفر أبوظبي',            city:'Abu Dhabi',  cityAr:'أبوظبي',    cat:'museum',     dur:'3 hours',  durAr:'٣ ساعات', dh:3, price:160,  rating:4.6, reviews:3100, img:'https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?w=600&q=80&fit=crop&auto=format' },
+    { id:5, name:'Hot Air Balloon Cappadocia',nameAr:'بالون هواء كابادوكيا',          city:'Cappadocia', cityAr:'كابادوكيا', cat:'adventure',  dur:'2 hours',  durAr:'٢ ساعتان', dh:2, price:1200, rating:4.9, reviews:4200, img:'https://images.unsplash.com/photo-1527004013197-933b3041df9f?w=600&q=80&fit=crop&auto=format' },
+    { id:6, name:'Diriyah Heritage Tour',     nameAr:'جولة الدرعية التراثية',         city:'Riyadh',     cityAr:'الرياض',     cat:'tour',       dur:'Half-day', durAr:'نصف يوم',  dh:3, price:120,  rating:4.5, reviews:920,  img:'https://images.unsplash.com/photo-1599693564379-0f02e6adb302?w=600&q=80&fit=crop&auto=format' },
+    { id:7, name:'Edge Walk Sky Views Dubai', nameAr:'جولة الحافة سكاي فيوز دبي',    city:'Dubai',      cityAr:'دبي',        cat:'experience', dur:'2 hours',  durAr:'٢ ساعتان', dh:2, price:680,  rating:4.8, reviews:1560, img:'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80&fit=crop&auto=format' },
+    { id:8, name:'Maldives Snorkeling Tour',  nameAr:'الغطس في المالديف',             city:'Maldives',   cityAr:'المالديف',   cat:'adventure',  dur:'Full-day', durAr:'يوم كامل', dh:6, price:890,  rating:4.7, reviews:2200, img:'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80&fit=crop&auto=format' },
+    { id:9, name:'Hagia Sophia & Old City',   nameAr:'جولة آيا صوفيا والمدينة القديمة',city:'Istanbul', cityAr:'إسطنبول',   cat:'museum',     dur:'Full-day', durAr:'يوم كامل', dh:7, price:290,  rating:4.6, reviews:2800, img:'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=600&q=80&fit=crop&auto=format' }
+  ];
+
+  /* ── Airline brand colors (IATA → brand identity) ── */
+  var AIRLINE_META = {
+    SV: { color:'#00843D', text:'#fff' },   /* Saudia — green */
+    FZ: { color:'#006F51', text:'#fff' },   /* flydubai — dark teal */
+    EK: { color:'#C8102E', text:'#fff' },   /* Emirates — red */
+    XY: { color:'#F15C22', text:'#fff' },   /* flynas — orange */
+    G9: { color:'#CE0E2D', text:'#fff' },   /* Air Arabia — red */
+    TK: { color:'#C8102E', text:'#fff' },   /* Turkish Airlines — red */
+    QR: { color:'#5C0632', text:'#fff' }    /* Qatar Airways — maroon */
+  };
+
+  /* ── Hotel chain brands (STAY_DATA id → chain) ── */
+  var HOTEL_BRANDS = {
+    1: { name:'Jumeirah',     color:'#9B7D3F' },
+    2: { name:'Four Seasons', color:'#6B4F3A' },
+    3: { name:'Hilton',       color:'#003F7F' },
+    4: { name:'Marriott',     color:'#C8102E' },
+    5: { name:'Raffles',      color:'#9B8B5A' },
+    6: { name:'Marriott',     color:'#C8102E' },
+    7: { name:'Accor',        color:'#1A3A6B' },
+    8: { name:'Hilton',       color:'#003F7F' },
+    9: { name:'Anantara',     color:'#C4965A' }
+  };
+
+  /* Filter state */
+  var FLT = {
+    flight: { stops:[], airlines:[], maxPrice:99999, sort:'cheapest' },
+    stay:   { stars:[], amenities:[], maxPrice:99999, sort:'price' },
+    act:    { cats:[], dur:[], maxPrice:99999, sort:'price' }
+  };
+  var currentResultTab = 'flights';
+
+  /* DOM refs */
+  var rsSection   = document.getElementById('results-section');
+  var rsCount     = document.getElementById('rs-count');
+  var rsSort      = document.getElementById('rs-sort');
+  var rsFilters   = document.getElementById('rs-filters');
+  var rsList      = document.getElementById('rs-list');
+  var rsActiveF   = document.getElementById('rs-active-filters');
+  var rsBack      = document.getElementById('rs-back');
+  var almModal    = document.getElementById('alm-modal');
+  var modalBody2  = document.getElementById('modal-body');
+  var modalOverlay= document.getElementById('modal-overlay');
+  var modalCloseBtn = document.getElementById('modal-close');
+
+  /* Helpers */
+  function durStr(mins) { var h=Math.floor(mins/60), m=mins%60; return h+'h'+(m?' '+m+'m':''); }
+  function starsHTML(n) { var s=''; for(var i=0;i<n;i++) s+='★'; return s; }
+  function fmtN(n) { return n.toLocaleString(); }
+
+  /* ─── SORT OPTIONS ─── */
+  var SORT_OPTS = {
+    flights: [ {v:'cheapest',en:'Cheapest first',ar:'الأرخص أولاً'}, {v:'fastest',en:'Fastest',ar:'الأسرع'}, {v:'best',en:'Best value',ar:'أفضل قيمة'} ],
+    stays:   [ {v:'price',en:'Price: low to high',ar:'السعر: من الأقل'}, {v:'score',en:'Top rated',ar:'الأعلى تقييماً'}, {v:'popular',en:'Most popular',ar:'الأكثر شعبية'} ],
+    activities:[ {v:'price',en:'Price: low to high',ar:'السعر: من الأقل'}, {v:'rating',en:'Top rated',ar:'الأعلى تقييماً'}, {v:'popular',en:'Most popular',ar:'الأكثر شعبية'} ]
+  };
+
+  function buildSortSel(tab) {
+    if (!rsSort) return;
+    var isAr = html.lang==='ar';
+    var opts = SORT_OPTS[tab] || SORT_OPTS.flights;
+    var cur  = tab==='flights' ? FLT.flight.sort : (tab==='stays' ? FLT.stay.sort : FLT.act.sort);
+    rsSort.innerHTML = opts.map(function(o){
+      return '<option value="'+o.v+'"'+(o.v===cur?' selected':'')+'>'+( isAr?o.ar:o.en )+'</option>';
+    }).join('');
+  }
+
+  /* ─── FILTER SIDEBAR ─── */
+  function buildFilters(tab) {
+    var isAr = html.lang==='ar';
+    var out = '<div class="rs-filter-head"><span class="rs-filter-title">'+(isAr?'الفلاتر':'Filters')+'</span><button class="rs-clear-all" id="flt-clear">'+(isAr?'مسح الكل':'Clear all')+'</button></div>';
+
+    if (tab==='flights') {
+      var f = FLT.flight;
+      var airlines=[]; FLIGHT_DATA.forEach(function(x){ if(airlines.indexOf(x.airline)===-1) airlines.push(x.airline); });
+      var maxP = Math.max.apply(null,FLIGHT_DATA.map(function(x){return x.price;}));
+      var cv = Math.min(f.maxPrice,maxP), pct=Math.round(cv/maxP*100);
+      /* Stops */
+      out += '<div class="flt-group"><div class="flt-ttl">'+(isAr?'التوقفات':'Stops')+'</div>';
+      [['0',isAr?'مباشر':'Direct'],['1',isAr?'توقف واحد':'1 Stop'],['2+',isAr?'٢+ توقف':'2+ Stops']].forEach(function(p){
+        out += '<label class="flt-check"><input type="checkbox" data-fk="stops" value="'+p[0]+'"'+(f.stops.indexOf(p[0])!==-1?' checked':'')+'>'+p[1]+'</label>';
+      });
+      out += '</div>';
+      /* Airlines */
+      out += '<div class="flt-group"><div class="flt-ttl">'+(isAr?'شركات الطيران':'Airlines')+'</div>';
+      airlines.forEach(function(a){
+        out += '<label class="flt-check"><input type="checkbox" data-fk="airline" value="'+a+'"'+(f.airlines.indexOf(a)!==-1?' checked':'')+'>'+a+'</label>';
+      });
+      out += '</div>';
+      /* Price */
+      out += '<div class="flt-group"><div class="flt-ttl">'+(isAr?'الحد الأقصى للسعر':'Max Price')+'</div><div class="flt-price-val" id="fv">SAR '+fmtN(cv)+'</div><input type="range" class="flt-range" id="fr" min="0" max="'+maxP+'" value="'+cv+'" style="--pct:'+pct+'%"></div>';
+    }
+
+    if (tab==='stays') {
+      var fs=FLT.stay;
+      var maxPs=Math.max.apply(null,STAY_DATA.map(function(x){return x.price;}));
+      var cvs=Math.min(fs.maxPrice,maxPs), pcts=Math.round(cvs/maxPs*100);
+      /* Stars */
+      out += '<div class="flt-group"><div class="flt-ttl">'+(isAr?'تقييم النجوم':'Star Rating')+'</div>';
+      [5,4,3].forEach(function(n){
+        out += '<label class="flt-check"><input type="checkbox" data-fk="stars" value="'+n+'"'+(fs.stars.indexOf(n)!==-1?' checked':'')+'><span style="color:#FFC53D">'+starsHTML(n)+'</span></label>';
+      });
+      out += '</div>';
+      /* Amenities */
+      out += '<div class="flt-group"><div class="flt-ttl">'+(isAr?'المرافق':'Amenities')+'</div>';
+      [['Pool',isAr?'مسبح':'Pool'],['WiFi','WiFi'],['Gym',isAr?'صالة رياضية':'Gym'],['Breakfast',isAr?'إفطار':'Breakfast'],['Spa','Spa']].forEach(function(p){
+        out += '<label class="flt-check"><input type="checkbox" data-fk="amenity" value="'+p[0]+'"'+(fs.amenities.indexOf(p[0])!==-1?' checked':'')+'>'+p[1]+'</label>';
+      });
+      out += '</div>';
+      out += '<div class="flt-group"><div class="flt-ttl">'+(isAr?'الحد الأقصى للسعر/ليلة':'Max Price/Night')+'</div><div class="flt-price-val" id="fv">SAR '+fmtN(cvs)+'</div><input type="range" class="flt-range" id="fr" min="0" max="'+maxPs+'" value="'+cvs+'" style="--pct:'+pcts+'%"></div>';
+    }
+
+    if (tab==='activities') {
+      var fa=FLT.act;
+      var maxPa=Math.max.apply(null,ACT_DATA.map(function(x){return x.price;}));
+      var cva=Math.min(fa.maxPrice,maxPa), pcta=Math.round(cva/maxPa*100);
+      /* Category */
+      out += '<div class="flt-group"><div class="flt-ttl">'+(isAr?'الفئة':'Category')+'</div>';
+      [['adventure',isAr?'مغامرة':'Adventure'],['experience',isAr?'تجربة':'Experience'],['tour',isAr?'جولة':'Tour'],['museum',isAr?'متحف':'Museum']].forEach(function(p){
+        out += '<label class="flt-check"><input type="checkbox" data-fk="cat" value="'+p[0]+'"'+(fa.cats.indexOf(p[0])!==-1?' checked':'')+'>'+p[1]+'</label>';
+      });
+      out += '</div>';
+      /* Duration */
+      out += '<div class="flt-group"><div class="flt-ttl">'+(isAr?'المدة':'Duration')+'</div>';
+      [['half',isAr?'نصف يوم':'Half-day (≤4h)'],['full',isAr?'يوم كامل':'Full-day (>4h)']].forEach(function(p){
+        out += '<label class="flt-check"><input type="checkbox" data-fk="dur" value="'+p[0]+'"'+(fa.dur.indexOf(p[0])!==-1?' checked':'')+'>'+p[1]+'</label>';
+      });
+      out += '</div>';
+      out += '<div class="flt-group"><div class="flt-ttl">'+(isAr?'الحد الأقصى للسعر':'Max Price')+'</div><div class="flt-price-val" id="fv">SAR '+fmtN(cva)+'</div><input type="range" class="flt-range" id="fr" min="0" max="'+maxPa+'" value="'+cva+'" style="--pct:'+pcta+'%"></div>';
+    }
+
+    rsFilters.innerHTML = out;
+    bindFilterEvents(tab);
+  }
+
+  function bindFilterEvents(tab) {
+    var clearBtn = document.getElementById('flt-clear');
+    if (clearBtn) clearBtn.addEventListener('click', function(){
+      if(tab==='flights'){ FLT.flight.stops=[]; FLT.flight.airlines=[]; FLT.flight.maxPrice=99999; }
+      if(tab==='stays')  { FLT.stay.stars=[]; FLT.stay.amenities=[]; FLT.stay.maxPrice=99999; }
+      if(tab==='activities'){ FLT.act.cats=[]; FLT.act.dur=[]; FLT.act.maxPrice=99999; }
+      buildFilters(tab);
+      renderResults(tab, true);
+    });
+
+    rsFilters.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
+      cb.addEventListener('change', function(){
+        var fk=cb.getAttribute('data-fk'), v=cb.value;
+        var arr;
+        if(tab==='flights'){ if(fk==='stops') arr=FLT.flight.stops; if(fk==='airline') arr=FLT.flight.airlines; }
+        if(tab==='stays')  { if(fk==='stars'){ arr=FLT.stay.stars; v=parseInt(v,10); } if(fk==='amenity') arr=FLT.stay.amenities; }
+        if(tab==='activities'){ if(fk==='cat') arr=FLT.act.cats; if(fk==='dur') arr=FLT.act.dur; }
+        if(arr){ var idx=arr.indexOf(v); if(cb.checked&&idx===-1) arr.push(v); else if(!cb.checked&&idx!==-1) arr.splice(idx,1); }
+        renderResults(tab, true);
+        renderChips(tab);
+      });
+    });
+
+    var frEl=document.getElementById('fr'), fvEl=document.getElementById('fv');
+    if(frEl) {
+      frEl.addEventListener('input', function(){
+        var v=parseInt(frEl.value,10), mx=parseInt(frEl.max,10), pct=Math.round(v/mx*100);
+        frEl.style.setProperty('--pct',pct+'%');
+        if(fvEl) fvEl.textContent='SAR '+fmtN(v);
+        if(tab==='flights') FLT.flight.maxPrice=v;
+        if(tab==='stays')   FLT.stay.maxPrice=v;
+        if(tab==='activities') FLT.act.maxPrice=v;
+      });
+      frEl.addEventListener('change', function(){ renderResults(tab, true); renderChips(tab); });
+    }
+  }
+
+  /* ─── SORT CHANGE ─── */
+  if(rsSort) rsSort.addEventListener('change', function(){
+    var tab=currentResultTab;
+    if(tab==='flights') FLT.flight.sort=rsSort.value;
+    if(tab==='stays')   FLT.stay.sort=rsSort.value;
+    if(tab==='activities') FLT.act.sort=rsSort.value;
+    renderResults(tab, true);
+  });
+
+  /* ─── FILTER + SORT ─── */
+  function applyFlightFlt() {
+    var f=FLT.flight, d=FLIGHT_DATA.slice();
+    if(f.stops.length) d=d.filter(function(x){
+      var s=x.stops>=2?'2+':String(x.stops);
+      return f.stops.indexOf(s)!==-1;
+    });
+    if(f.airlines.length) d=d.filter(function(x){ return f.airlines.indexOf(x.airline)!==-1; });
+    if(f.maxPrice<99999) d=d.filter(function(x){ return x.price<=f.maxPrice; });
+    if(f.sort==='cheapest') d.sort(function(a,b){ return a.price-b.price; });
+    else if(f.sort==='fastest') d.sort(function(a,b){ return a.dur-b.dur; });
+    else d.sort(function(a,b){ return (a.price/a.dur)-(b.price/b.dur); });
+    return d;
+  }
+  function applyStayFlt() {
+    var f=FLT.stay, d=STAY_DATA.slice();
+    if(f.stars.length) d=d.filter(function(x){ return f.stars.indexOf(x.stars)!==-1; });
+    if(f.amenities.length) d=d.filter(function(x){ return f.amenities.every(function(a){ return x.amenities.indexOf(a)!==-1; }); });
+    if(f.maxPrice<99999) d=d.filter(function(x){ return x.price<=f.maxPrice; });
+    if(f.sort==='price') d.sort(function(a,b){ return a.price-b.price; });
+    else d.sort(function(a,b){ return b.score-a.score; });
+    return d;
+  }
+  function applyActFlt() {
+    var f=FLT.act, d=ACT_DATA.slice();
+    if(f.cats.length) d=d.filter(function(x){ return f.cats.indexOf(x.cat)!==-1; });
+    if(f.dur.length) d=d.filter(function(x){ var h=x.dh<=4; return (f.dur.indexOf('half')!==-1&&h)||(f.dur.indexOf('full')!==-1&&!h); });
+    if(f.maxPrice<99999) d=d.filter(function(x){ return x.price<=f.maxPrice; });
+    if(f.sort==='price') d.sort(function(a,b){ return a.price-b.price; });
+    else if(f.sort==='rating') d.sort(function(a,b){ return b.rating-a.rating; });
+    else d.sort(function(a,b){ return b.reviews-a.reviews; });
+    return d;
+  }
+
+  /* ─── ACTIVE CHIPS ─── */
+  function renderChips(tab) {
+    if(!rsActiveF) return;
+    var isAr=html.lang==='ar', chips=[];
+    if(tab==='flights'){
+      var f=FLT.flight;
+      f.stops.forEach(function(s){ var l=s==='0'?(isAr?'مباشر':'Direct'):s==='1'?(isAr?'توقف واحد':'1 Stop'):(isAr?'٢+ توقف':'2+'); chips.push({l:l,rm:function(){f.stops.splice(f.stops.indexOf(s),1);}}); });
+      f.airlines.forEach(function(a){ chips.push({l:a,rm:function(){f.airlines.splice(f.airlines.indexOf(a),1);}}); });
+      if(f.maxPrice<99999) chips.push({l:'SAR ≤'+fmtN(f.maxPrice),rm:function(){f.maxPrice=99999;}});
+    }
+    if(tab==='stays'){
+      var fs=FLT.stay;
+      fs.stars.forEach(function(n){ chips.push({l:starsHTML(n),rm:function(){fs.stars.splice(fs.stars.indexOf(n),1);}}); });
+      fs.amenities.forEach(function(a){ chips.push({l:a,rm:function(){fs.amenities.splice(fs.amenities.indexOf(a),1);}}); });
+      if(fs.maxPrice<99999) chips.push({l:'SAR ≤'+fmtN(fs.maxPrice),rm:function(){fs.maxPrice=99999;}});
+    }
+    if(tab==='activities'){
+      var fa=FLT.act;
+      fa.cats.forEach(function(c){ var l=isAr?{adventure:'مغامرة',experience:'تجربة',tour:'جولة',museum:'متحف'}[c]:c.charAt(0).toUpperCase()+c.slice(1); chips.push({l:l,rm:function(){fa.cats.splice(fa.cats.indexOf(c),1);}}); });
+      fa.dur.forEach(function(d){ var l=d==='half'?(isAr?'نصف يوم':'Half-day'):(isAr?'يوم كامل':'Full-day'); chips.push({l:l,rm:function(){fa.dur.splice(fa.dur.indexOf(d),1);}}); });
+      if(fa.maxPrice<99999) chips.push({l:'SAR ≤'+fmtN(fa.maxPrice),rm:function(){fa.maxPrice=99999;}});
+    }
+    rsActiveF.innerHTML = chips.map(function(c,i){ return '<span class="af-chip" data-ci="'+i+'">'+c.l+' <span class="af-chip-x">✕</span></span>'; }).join('');
+    rsActiveF.querySelectorAll('.af-chip').forEach(function(el,i){
+      el.addEventListener('click', function(){ chips[i].rm(); buildFilters(tab); renderResults(tab,true); renderChips(tab); });
+    });
+  }
+
+  /* ─── CARD HTML ─── */
+  function flightCard(f,isAr){
+    var sc=f.stops===0?'direct':(f.stops===1?'one':'multi');
+    var sl=f.stops===0?(isAr?'مباشر':'Direct'):(f.stops===1?(isAr?'توقف واحد':'1 Stop'):(isAr?'٢+ توقف':'2+ Stops'));
+    var am=AIRLINE_META[f.code];
+    var badgeStyle=am?' style="background:'+am.color+'"':'';
+    return '<div class="rc-flight" data-id="'+f.id+'" data-type="flight" role="listitem">'+
+      '<div class="rc-airline"><div class="rc-airline-badge"'+badgeStyle+' title="'+f.airline+'">'+f.code+'</div><div class="rc-airline-name">'+f.airline+'</div></div>'+
+      '<div class="rc-times">'+
+        '<div class="rc-time-block"><div class="rc-time">'+f.dep+'</div><div class="rc-iata">'+f.orig+'</div></div>'+
+        '<div class="rc-route-mid"><div class="rc-dur">'+durStr(f.dur)+'</div><div class="rc-route-line"></div><div class="rc-stops '+sc+'">'+sl+'</div></div>'+
+        '<div class="rc-time-block"><div class="rc-time">'+f.arr+'</div><div class="rc-iata">'+f.dest+'</div></div>'+
+      '</div>'+
+      '<div class="rc-tags">'+
+        (f.baggage?'<span class="rc-tag rc-tag-bag">'+(isAr?'أمتعة مشمولة':'Baggage incl.')+'</span>':'')+
+        '<span class="rc-tag rc-tag-cls">'+f.cls+'</span>'+
+      '</div>'+
+      '<div class="rc-price-block"><div class="rc-price-from">'+(isAr?'من':'from')+'</div>'+
+        '<div class="rc-price-num"><span class="rc-price-curr">SAR </span>'+fmtN(f.price)+'</div>'+
+        '<button class="rc-select-btn">'+(isAr?'اختر':'Select')+'</button>'+
+      '</div>'+
+    '</div>';
+  }
+
+  function stayCard(s,isAr){
+    var nm=isAr?s.nameAr:s.name, cy=isAr?s.cityAr:s.city;
+    var ams=s.amenities.map(function(a){ return '<span class="rc-amenity">'+a+'</span>'; }).join('');
+    var hb=HOTEL_BRANDS[s.id];
+    var brandHtml=hb?'<div class="rc-chain-badge"><span class="rc-chain-name" style="color:'+hb.color+'">'+hb.name+'</span></div>':'';
+    return '<div class="rc-stay" data-id="'+s.id+'" data-type="stay" role="listitem">'+
+      '<div class="rc-stay-img"><img src="'+s.img+'" alt="'+nm+'" loading="lazy"></div>'+
+      '<div class="rc-stay-body">'+
+        '<div class="rc-stay-info">'+
+          brandHtml+
+          '<div class="rc-stay-name">'+nm+'</div>'+
+          '<div class="rc-stars">'+starsHTML(s.stars)+'</div>'+
+          '<div class="rc-stay-city">'+cy+'</div>'+
+          '<div class="rc-amenities">'+ams+'</div>'+
+        '</div>'+
+        '<div class="rc-stay-right">'+
+          '<div class="rc-score-badge"><span class="rc-score-num">'+s.score+'</span><div><div class="rc-score-lbl">'+s.scoreLbl+'</div></div></div>'+
+          '<div>'+
+            '<div class="rc-nightly">'+(isAr?'من/ليلة':'from/night')+'</div>'+
+            '<div class="rc-nightly-price"><span class="rc-nightly-curr">SAR </span>'+fmtN(s.price)+'</div>'+
+            '<button class="rc-view-btn">'+(isAr?'اعرض':'View deal')+'</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  function actCard(a,isAr){
+    var nm=isAr?a.nameAr:a.name, cy=isAr?a.cityAr:a.city, dr=isAr?a.durAr:a.dur;
+    var cl={adventure:'cat-adventure',experience:'cat-experience',tour:'cat-tour',museum:'cat-museum'}[a.cat]||'cat-tour';
+    var clbl=isAr?{adventure:'مغامرة',experience:'تجربة',tour:'جولة',museum:'متحف'}[a.cat]:(a.cat.charAt(0).toUpperCase()+a.cat.slice(1));
+    return '<div class="rc-act" data-id="'+a.id+'" data-type="activity" role="listitem">'+
+      '<div class="rc-act-img"><img src="'+a.img+'" alt="'+nm+'" loading="lazy"></div>'+
+      '<div class="rc-act-body">'+
+        '<div class="rc-act-info">'+
+          '<span class="rc-act-cat '+cl+'">'+clbl+'</span>'+
+          '<div class="rc-act-name">'+nm+'</div>'+
+          '<div class="rc-act-meta">'+cy+' · '+dr+'</div>'+
+          '<div class="rc-act-rating"><span class="stars">★</span> '+a.rating+' <span class="rev">('+fmtN(a.reviews)+')</span></div>'+
+        '</div>'+
+        '<div class="rc-act-right">'+
+          '<div class="rc-act-pp">'+(isAr?'من/شخص':'from/person')+'</div>'+
+          '<div class="rc-act-price"><span class="rc-act-curr">SAR </span>'+fmtN(a.price)+'</div>'+
+          '<button class="rc-book-btn">'+(isAr?'احجز':'Book')+'</button>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  /* ─── RENDER RESULTS ─── */
+  function renderResults(tab, withLoading) {
+    if(!rsList) return;
+    var isAr=html.lang==='ar';
+
+    function doRender(){
+      var data, out;
+      if(tab==='flights'){ data=applyFlightFlt(); out=data.map(function(f){ return flightCard(f,isAr); }).join(''); }
+      else if(tab==='stays'){ data=applyStayFlt(); out=data.map(function(s){ return stayCard(s,isAr); }).join(''); }
+      else { data=applyActFlt(); out=data.map(function(a){ return actCard(a,isAr); }).join(''); }
+
+      if(data.length===0){
+        out='<div class="rs-empty">'+
+          '<div class="rs-empty-icon">🔍</div>'+
+          '<div class="rs-empty-title"><span class="en">No results found</span><span class="ar">لا توجد نتائج</span></div>'+
+          '<div class="rs-empty-sub"><span class="en">Try adjusting or clearing your filters</span><span class="ar">جرّب تعديل الفلاتر أو مسحها</span></div>'+
+          '<button class="rs-empty-btn" id="empty-clr"><span class="en">Clear filters</span><span class="ar">مسح الفلاتر</span></button>'+
+        '</div>';
+      }
+      rsList.innerHTML = out;
+      if(rsCount) rsCount.innerHTML = data.length>0 ? '<strong>'+data.length+'</strong> '+(isAr?'نتيجة':(data.length===1?'result':'results')) : '';
+
+      /* Empty clear */
+      var ec=document.getElementById('empty-clr');
+      if(ec) ec.addEventListener('click', function(){
+        if(tab==='flights'){ FLT.flight.stops=[]; FLT.flight.airlines=[]; FLT.flight.maxPrice=99999; }
+        if(tab==='stays')  { FLT.stay.stars=[];   FLT.stay.amenities=[]; FLT.stay.maxPrice=99999; }
+        if(tab==='activities'){ FLT.act.cats=[];  FLT.act.dur=[];        FLT.act.maxPrice=99999; }
+        buildFilters(tab); renderResults(tab,false); renderChips(tab);
+      });
+
+      /* Card clicks — stays open hotel detail, others open modal */
+      rsList.querySelectorAll('[data-type]').forEach(function(card){
+        card.addEventListener('click', function(e){
+          if(e.target.tagName==='BUTTON') return;
+          var t=card.getAttribute('data-type'), id=parseInt(card.getAttribute('data-id'),10);
+          if(t==='stay'){ openHotelDetail(id); return; }
+          openModal(t, id);
+        });
+        var cta=card.querySelector('button');
+        if(cta) cta.addEventListener('click', function(e){
+          e.stopPropagation();
+          var t=card.getAttribute('data-type'), id=parseInt(card.getAttribute('data-id'),10);
+          if(t==='stay'){ openHotelDetail(id); return; }
+          openModal(t, id);
+        });
+      });
+    }
+
+    if(withLoading){
+      rsList.classList.add('rs-loading');
+      setTimeout(function(){ doRender(); rsList.classList.remove('rs-loading'); }, 260);
+    } else { doRender(); }
+  }
+
+  /* ─── SHOW RESULTS ─── */
+  function showResults(tab) {
+    currentResultTab = tab;
+    buildSortSel(tab);
+    buildFilters(tab);
+    renderResults(tab, false);
+    renderChips(tab);
+    rsSection.classList.add('rs-open');
+    setTimeout(function(){ rsSection.scrollIntoView({behavior:'smooth',block:'start'}); }, 50);
+  }
+
+  /* Back button */
+  if(rsBack) rsBack.addEventListener('click', function(){
+    rsSection.classList.remove('rs-open');
+    document.querySelector('.hero').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+
+  /* ─── MODAL ─── */
+  function openModal(type, id) {
+    var isAr=html.lang==='ar', out='';
+    if(type==='flight'){
+      var f=FLIGHT_DATA.filter(function(x){return x.id===id;})[0]; if(!f) return;
+      out='<div class="mdl-badge mdl-badge-flight">✈ '+f.fn+'</div>'+
+        '<div class="mdl-title">'+f.airline+'</div>'+
+        '<div class="mdl-sub">'+f.origCity+' → '+f.destCity+'</div>'+
+        '<div class="mdl-grid">'+
+          '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'المغادرة':'Departure')+'</div><div class="mdl-stat-val">'+f.dep+' · '+f.orig+'</div></div>'+
+          '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'الوصول':'Arrival')+'</div><div class="mdl-stat-val">'+f.arr+' · '+f.dest+'</div></div>'+
+          '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'مدة الرحلة':'Duration')+'</div><div class="mdl-stat-val">'+durStr(f.dur)+'</div></div>'+
+          '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'التوقفات':'Stops')+'</div><div class="mdl-stat-val">'+(f.stops===0?(isAr?'مباشر':'Direct'):f.stops+(isAr?' توقف':' stop(s)'))+'</div></div>'+
+          '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'الدرجة':'Cabin')+'</div><div class="mdl-stat-val">'+f.cls+'</div></div>'+
+          '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'الأمتعة':'Baggage')+'</div><div class="mdl-stat-val">'+(f.baggage?(isAr?'مشمولة':'Included'):(isAr?'غير مشمولة':'Not included'))+'</div></div>'+
+        '</div>'+
+        '<div class="mdl-price-row"><div class="mdl-total-lbl">'+(isAr?'السعر الإجمالي':'Total price')+'</div><div class="mdl-total-price">SAR '+fmtN(f.price)+'</div></div>'+
+        '<button class="mdl-cta" id="mdl-cta-btn">'+(isAr?'احجز الآن':'Book Now — Coming Soon')+'</button>';
+    }
+    if(type==='stay'){
+      var s=STAY_DATA.filter(function(x){return x.id===id;})[0]; if(!s) return;
+      var nm=isAr?s.nameAr:s.name, cy=isAr?s.cityAr:s.city;
+      out='<img class="mdl-img" src="'+s.img+'" alt="'+nm+'" loading="lazy">'+
+        '<div class="mdl-badge mdl-badge-stay">🏨 '+(isAr?'فندق':'Hotel')+'</div>'+
+        '<div class="mdl-title">'+nm+'</div>'+
+        '<div class="mdl-sub"><span style="color:#FFC53D">'+starsHTML(s.stars)+'</span> · '+cy+'</div>'+
+        '<div class="mdl-grid">'+
+          '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'التقييم':'Review Score')+'</div><div class="mdl-stat-val">'+s.score+' / 10</div></div>'+
+          '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'النجوم':'Stars')+'</div><div class="mdl-stat-val">'+s.stars+'★</div></div>'+
+          '<div class="mdl-stat" style="grid-column:1/-1"><div class="mdl-stat-lbl">'+(isAr?'المرافق':'Amenities')+'</div><div class="mdl-stat-val">'+s.amenities.join(' · ')+'</div></div>'+
+        '</div>'+
+        '<div class="mdl-price-row"><div class="mdl-total-lbl">'+(isAr?'من / ليلة':'from / night')+'</div><div class="mdl-total-price">SAR '+fmtN(s.price)+'</div></div>'+
+        '<button class="mdl-cta" id="mdl-cta-btn">'+(isAr?'اعرض التوفر':'View Availability — Coming Soon')+'</button>';
+    }
+    if(type==='activity'){
+      var a=ACT_DATA.filter(function(x){return x.id===id;})[0]; if(!a) return;
+      var anm=isAr?a.nameAr:a.name, acy=isAr?a.cityAr:a.city, adr=isAr?a.durAr:a.dur;
+      var aclbl=isAr?{adventure:'مغامرة',experience:'تجربة',tour:'جولة',museum:'متحف'}[a.cat]:(a.cat.charAt(0).toUpperCase()+a.cat.slice(1));
+      out='<img class="mdl-img" src="'+a.img+'" alt="'+anm+'" loading="lazy">'+
+        '<div class="mdl-badge mdl-badge-act">★ '+aclbl+'</div>'+
+        '<div class="mdl-title">'+anm+'</div>'+
+        '<div class="mdl-sub">'+acy+'</div>'+
+        '<div class="mdl-grid">'+
+          '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'التقييم':'Rating')+'</div><div class="mdl-stat-val">★ '+a.rating+'</div></div>'+
+          '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'التقييمات':'Reviews')+'</div><div class="mdl-stat-val">'+fmtN(a.reviews)+'</div></div>'+
+          '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'المدة':'Duration')+'</div><div class="mdl-stat-val">'+adr+'</div></div>'+
+          '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'الفئة':'Category')+'</div><div class="mdl-stat-val">'+aclbl+'</div></div>'+
+        '</div>'+
+        '<div class="mdl-price-row"><div class="mdl-total-lbl">'+(isAr?'من / شخص':'from / person')+'</div><div class="mdl-total-price">SAR '+fmtN(a.price)+'</div></div>'+
+        '<button class="mdl-cta" id="mdl-cta-btn">'+(isAr?'احجز الآن':'Book Now — Coming Soon')+'</button>';
+    }
+    if(modalBody2) modalBody2.innerHTML = out;
+    if(almModal) almModal.classList.add('modal-open');
+    document.body.style.overflow='hidden';
+    /* Wire CTA */
+    var ctaBtn=document.getElementById('mdl-cta-btn');
+    if(ctaBtn) ctaBtn.addEventListener('click', function(){ showToast(isAr?'الحجز قادم قريباً!':'Booking coming soon!'); closeModal(); });
+  }
+
+  function closeModal() {
+    if(almModal) almModal.classList.remove('modal-open');
+    document.body.style.overflow='';
+  }
+
+  if(modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
+  if(modalOverlay)  modalOverlay.addEventListener('click', closeModal);
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape' && almModal && almModal.classList.contains('modal-open')) closeModal();
+  });
+
+  /* ══════════════════════════════════════════
+     STEP 4 — HOTEL DETAIL & BOOKING FLOW
+  ══════════════════════════════════════════ */
+
+  var ROOM_TYPES = [
+    { id:'std', name:'Standard Room',    nameAr:'غرفة قياسية',    beds:'1 King Bed',                   bedsAr:'سرير ملكي',                         size:'32 m²', feats:['Free WiFi','Air conditioning','Smart TV','Safe'],                featsAr:['واي فاي','تكييف','تلفاز ذكي','خزنة'],              mult:1.0  },
+    { id:'dlx', name:'Deluxe Room',      nameAr:'غرفة ديلوكس',    beds:'1 King Bed · City view',       bedsAr:'سرير ملكي · إطلالة المدينة',         size:'46 m²', feats:['Free WiFi','Air conditioning','City view','Minibar'],            featsAr:['واي فاي','تكييف','إطلالة المدينة','ميني بار'],     mult:1.38 },
+    { id:'ste', name:'Executive Suite',  nameAr:'جناح تنفيذي',    beds:'2 King Beds · Living room',    bedsAr:'سريران ملكيان · صالة معيشة',         size:'78 m²', feats:['Free WiFi','Panoramic view','Minibar','Lounge access'],          featsAr:['واي فاي','إطلالة بانورامية','ميني بار','صالة تنفيذية'], mult:1.75 }
+  ];
+
+  var SEC_IMGS = [
+    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=500&q=75&fit=crop&auto=format',
+    'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=500&q=75&fit=crop&auto=format',
+    'https://images.unsplash.com/photo-1444201983204-c43cbd584d93?w=500&q=75&fit=crop&auto=format',
+    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=500&q=75&fit=crop&auto=format',
+    'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=500&q=75&fit=crop&auto=format'
+  ];
+
+  var BOOK = { hotel:null, room:null };
+
+  var hdSection = document.getElementById('hotel-detail');
+  var hdContent = document.getElementById('hd-content');
+  var bkSection = document.getElementById('booking-summary');
+  var bkContent = document.getElementById('bk-content');
+  var bcSection = document.getElementById('booking-confirm');
+  var bcContent = document.getElementById('bc-content');
+
+  function bookDates() {
+    var now=new Date();
+    return {
+      cin:  W.checkin  || new Date(now.getFullYear(),now.getMonth(),now.getDate()+1),
+      cout: W.checkout || new Date(now.getFullYear(),now.getMonth(),now.getDate()+3)
+    };
+  }
+  function getNights(a,b){ return Math.max(1,Math.round((b-a)/86400000)); }
+
+  function amenSvg(a) {
+    var p = {
+      'Pool':         '<path d="M2 13c2-3 4-3 6 0s4 3 6 0 4-3 6 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>',
+      'WiFi':         '<path d="M5 13a11 11 0 0114 0M1 9a16 16 0 0122 0M8.5 17a6 6 0 017 0M12 21h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>',
+      'Gym':          '<rect x="5" y="9" width="14" height="6" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><line x1="2" y1="12" x2="5" y2="12" stroke="currentColor" stroke-width="1.8"/><line x1="19" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1.8"/>',
+      'Breakfast':    '<path d="M18 8h1a4 4 0 010 8h-1M3 8h15v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z" stroke="currentColor" stroke-width="1.8" fill="none"/>',
+      'Spa':          '<path d="M12 22v-9m0 0c0-5-7-6-7-6s0 5 7 6zm0 0c0-5 7-6 7-6s0 5-7 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>',
+      'Lounge access':'<path d="M3 20h18M5 20V10l7-7 7 7v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>',
+      'Minibar':      '<rect x="4" y="6" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><line x1="4" y1="11" x2="20" y2="11" stroke="currentColor" stroke-width="1.8"/>'
+    };
+    return '<svg viewBox="0 0 24 24" width="13" height="13">'+(p[a]||'<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" fill="none"/>')+'</svg>';
+  }
+
+  /* ─── OPEN HOTEL DETAIL ─── */
+  function openHotelDetail(id) {
+    BOOK.hotel = STAY_DATA.filter(function(x){return x.id===id;})[0];
+    BOOK.room  = null;
+    if(!BOOK.hotel||!hdContent) return;
+    renderHotelDetail();
+    rsSection.classList.remove('rs-open');
+    hdSection.classList.add('hd-open');
+    setTimeout(function(){ hdSection.scrollIntoView({behavior:'smooth',block:'start'}); }, 50);
+  }
+
+  function renderHotelDetail() {
+    var h=BOOK.hotel, isAr=html.lang==='ar';
+    var nm=isAr?h.nameAr:h.name, cy=isAr?h.cityAr:h.city;
+    var sec1=SEC_IMGS[(h.id-1)%SEC_IMGS.length], sec2=SEC_IMGS[h.id%SEC_IMGS.length];
+    var dates=bookDates(), nights=getNights(dates.cin,dates.cout);
+    var rooms=RM.rooms||1, adults=RM.adults||2, kids=RM.children||0;
+
+    var out='<button class="rs-back" id="hd-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>'+(isAr?'العودة إلى النتائج':'Back to results')+'</button>';
+
+    out+='<div class="hd-gallery">'+
+      '<div class="hd-gallery-main"><img src="'+h.img+'" alt="'+nm+'" loading="lazy"></div>'+
+      '<div class="hd-gallery-sec"><img src="'+sec1+'" alt="room" loading="lazy"></div>'+
+      '<div class="hd-gallery-sec"><img src="'+sec2+'" alt="view" loading="lazy"></div>'+
+    '</div>';
+
+    out+='<div class="hd-header-top">'+
+      '<div><div class="hd-name">'+nm+'</div>'+
+      '<div class="hd-meta"><span class="hd-stars">'+starsHTML(h.stars)+'</span><span class="hd-city">📍 '+cy+'</span></div></div>'+
+      '<div class="hd-score-big">'+
+        '<div class="hd-score-num-big">'+h.score+'</div>'+
+        '<div class="hd-score-info"><div class="hd-score-lbl">'+h.scoreLbl+'</div><div class="hd-score-cnt">'+(isAr?'تقييم الضيوف':'Guest score')+'</div></div>'+
+      '</div>'+
+    '</div>';
+
+    out+='<div class="hd-section-title">'+(isAr?'المرافق والخدمات':'Amenities &amp; Services')+'</div><div class="hd-amenities">';
+    h.amenities.forEach(function(a){ out+='<span class="hd-amenity">'+amenSvg(a)+' '+a+'</span>'; });
+    out+='</div>';
+
+    out+='<div class="hd-dates-bar">'+
+      '<span><span class="hd-dates-lbl">'+(isAr?'الوصول:':'Check-in:')+'</span> '+fmtDate(dates.cin)+'</span>'+
+      '<span class="hd-dates-sep">→</span>'+
+      '<span><span class="hd-dates-lbl">'+(isAr?'المغادرة:':'Check-out:')+'</span> '+fmtDate(dates.cout)+'</span>'+
+      '<span><strong>'+nights+'</strong> '+(isAr?(nights===1?'ليلة':'ليالٍ'):(nights===1?'night':'nights'))+'</span>'+
+      '<span>'+rooms+(isAr?' غرفة':' room'+(rooms>1?'s:':':'))+' '+adults+(isAr?' بالغ':' adult'+(adults>1?'s':''))+(kids>0?' + '+kids+(isAr?' طفل':' child'+(kids>1?'ren':'')):'')+'</span>'+
+    '</div>';
+
+    out+='<div class="hd-section-title">'+(isAr?'اختر غرفتك':'Choose Your Room')+'</div><div class="hd-rooms" id="hd-rooms-list">';
+    ROOM_TYPES.forEach(function(r){
+      var rp=Math.round(h.price*r.mult), rnm=isAr?r.nameAr:r.name, rbd=isAr?r.bedsAr:r.beds, rft=isAr?r.featsAr:r.feats;
+      var sel=BOOK.room&&BOOK.room.id===r.id;
+      out+='<div class="hd-room'+(sel?' selected':'')+'" data-room="'+r.id+'">'+
+        '<div class="hd-room-radio"></div>'+
+        '<div class="hd-room-info">'+
+          '<div class="hd-room-name">'+rnm+'</div>'+
+          '<div class="hd-room-meta">'+rbd+' · '+r.size+'</div>'+
+          '<div class="hd-room-features">'+rft.map(function(f){return'<span class="hd-room-feat">'+f+'</span>';}).join('')+'</div>'+
+        '</div>'+
+        '<div class="hd-room-price">'+
+          '<div class="hd-room-per">'+(isAr?'من/ليلة':'from/night')+'</div>'+
+          '<div class="hd-room-amount"><span class="hd-room-curr">SAR </span>'+fmtN(rp)+'</div>'+
+          '<div class="hd-room-avail">'+(isAr?'✓ متاح':'✓ Available')+'</div>'+
+        '</div>'+
+      '</div>';
+    });
+    out+='</div>';
+
+    var selName=BOOK.room?(isAr?BOOK.room.nameAr:BOOK.room.name):'';
+    out+='<div class="hd-continue-bar">'+
+      '<div class="hd-sel-info" id="hd-sel-info">'+(BOOK.room?(isAr?'المختارة: ':'Selected: ')+'<strong>'+selName+'</strong>':(isAr?'يرجى اختيار غرفة للمتابعة':'Please select a room to continue'))+'</div>'+
+      '<button class="hd-continue-btn" id="hd-continue"'+(BOOK.room?'':' disabled')+'>'+(isAr?'متابعة':'Continue')+'</button>'+
+    '</div>';
+
+    hdContent.innerHTML=out;
+
+    document.getElementById('hd-back').addEventListener('click',function(){
+      hdSection.classList.remove('hd-open');
+      rsSection.classList.add('rs-open');
+      setTimeout(function(){ rsSection.scrollIntoView({behavior:'smooth',block:'start'}); },50);
+    });
+
+    hdContent.querySelectorAll('.hd-room').forEach(function(card){
+      card.addEventListener('click',function(){
+        var rid=card.getAttribute('data-room');
+        BOOK.room=ROOM_TYPES.filter(function(r){return r.id===rid;})[0];
+        hdContent.querySelectorAll('.hd-room').forEach(function(c){c.classList.remove('selected');});
+        card.classList.add('selected');
+        var si=document.getElementById('hd-sel-info'), cb=document.getElementById('hd-continue');
+        if(si) si.innerHTML=(isAr?'المختارة: ':'Selected: ')+'<strong>'+(isAr?BOOK.room.nameAr:BOOK.room.name)+'</strong>';
+        if(cb) cb.disabled=false;
+      });
+    });
+
+    document.getElementById('hd-continue').addEventListener('click',function(){
+      if(BOOK.room) proceedToBooking();
+    });
+  }
+
+  /* ─── BOOKING SUMMARY ─── */
+  function proceedToBooking() {
+    var h=BOOK.hotel, r=BOOK.room, isAr=html.lang==='ar';
+    var nm=isAr?h.nameAr:h.name, cy=isAr?h.cityAr:h.city, rnm=isAr?r.nameAr:r.name;
+    var dates=bookDates(), nights=getNights(dates.cin,dates.cout);
+    var rooms=RM.rooms||1, adults=RM.adults||2, kids=RM.children||0;
+    var rp=Math.round(h.price*r.mult);
+    var sub=rp*nights*rooms, tax=Math.round(sub*0.15), svc=50, total=sub+tax+svc;
+
+    var out='<button class="rs-back" id="bk-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>'+(isAr?'العودة إلى التفاصيل':'Back to hotel details')+'</button>';
+    out+='<h2 class="bk-page-title">'+(isAr?'ملخص الحجز':'Booking Summary')+'</h2>';
+
+    out+='<div class="bk-card"><div class="bk-card-title">'+(isAr?'الفندق المختار':'Selected Hotel')+'</div>'+
+      '<div class="bk-hotel-row">'+
+        '<div class="bk-hotel-img"><img src="'+h.img+'" alt="'+nm+'" loading="lazy"></div>'+
+        '<div><div class="bk-hotel-name">'+nm+'</div><div class="rc-stars" style="font-size:11px">'+starsHTML(h.stars)+'</div><div class="bk-hotel-meta">'+cy+' · '+rnm+'</div></div>'+
+      '</div></div>';
+
+    out+='<div class="bk-card"><div class="bk-card-title">'+(isAr?'تفاصيل الإقامة':'Stay Details')+'</div>'+
+      '<div class="bk-row"><span class="bk-row-lbl">'+(isAr?'تسجيل الوصول':'Check-in')+'</span><span class="bk-row-val">'+fmtDate(dates.cin)+'</span></div>'+
+      '<div class="bk-row"><span class="bk-row-lbl">'+(isAr?'تسجيل المغادرة':'Check-out')+'</span><span class="bk-row-val">'+fmtDate(dates.cout)+'</span></div>'+
+      '<div class="bk-row"><span class="bk-row-lbl">'+(isAr?'عدد الليالي':'Nights')+'</span><span class="bk-row-val">'+nights+'</span></div>'+
+      '<div class="bk-row"><span class="bk-row-lbl">'+(isAr?'عدد الغرف':'Rooms')+'</span><span class="bk-row-val">'+rooms+'</span></div>'+
+      '<div class="bk-row"><span class="bk-row-lbl">'+(isAr?'الضيوف':'Guests')+'</span><span class="bk-row-val">'+adults+(isAr?' بالغ':' adult'+(adults>1?'s':''))+(kids>0?' + '+kids+(isAr?' طفل':' child'+(kids>1?'ren':'')):'')+'</span></div>'+
+    '</div>';
+
+    out+='<div class="bk-card"><div class="bk-card-title">'+(isAr?'تفاصيل السعر':'Price Breakdown')+'</div>'+
+      '<div class="bk-row"><span class="bk-row-lbl">SAR '+fmtN(rp)+' × '+nights+(nights===1?(isAr?' ليلة':' night'):(isAr?' ليالٍ':' nights'))+' × '+rooms+(rooms===1?(isAr?' غرفة':' room'):(isAr?' غرف':' rooms'))+'</span><span class="bk-row-val">SAR '+fmtN(sub)+'</span></div>'+
+      '<div class="bk-row"><span class="bk-row-lbl">'+(isAr?'ضريبة القيمة المضافة (١٥٪)':'VAT (15%)')+'</span><span class="bk-row-val">SAR '+fmtN(tax)+'</span></div>'+
+      '<div class="bk-row"><span class="bk-row-lbl">'+(isAr?'رسوم الخدمة':'Service fee')+'</span><span class="bk-row-val">SAR '+fmtN(svc)+'</span></div>'+
+      '<div class="bk-total-row"><span class="bk-total-lbl">'+(isAr?'الإجمالي':'Total')+'</span><span class="bk-total-price">SAR '+fmtN(total)+'</span></div>'+
+    '</div>';
+
+    out+='<button class="bk-confirm-btn" id="bk-confirm">'+(isAr?'تأكيد الحجز':'Confirm Booking')+'</button>'+
+      '<p class="bk-note">'+(isAr?'بالنقر على تأكيد الحجز، أنت توافق على شروط وأحكام المسافر':'By confirming, you agree to Almosafer\'s Terms &amp; Conditions')+'</p>';
+
+    bkContent.innerHTML=out;
+    hdSection.classList.remove('hd-open');
+    bkSection.classList.add('bk-open');
+    setTimeout(function(){ bkSection.scrollIntoView({behavior:'smooth',block:'start'}); },50);
+
+    document.getElementById('bk-back').addEventListener('click',function(){
+      bkSection.classList.remove('bk-open');
+      hdSection.classList.add('hd-open');
+      setTimeout(function(){ hdSection.scrollIntoView({behavior:'smooth',block:'start'}); },50);
+    });
+
+    document.getElementById('bk-confirm').addEventListener('click',function(){
+      /* brief loading */
+      var btn=this; btn.textContent=isAr?'جارٍ التأكيد...':'Confirming...'; btn.disabled=true;
+      setTimeout(function(){ confirmBooking(total,nights,rooms,adults,kids,dates,rp,tax,svc); },900);
+    });
+  }
+
+  /* ─── BOOKING CONFIRMATION ─── */
+  function confirmBooking(total,nights,rooms,adults,kids,dates,rp,tax,svc) {
+    var h=BOOK.hotel, r=BOOK.room, isAr=html.lang==='ar';
+    var nm=isAr?h.nameAr:h.name, cy=isAr?h.cityAr:h.city, rnm=isAr?r.nameAr:r.name;
+
+    var ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789', ref='ALM';
+    for(var i=0;i<6;i++) ref+=ch.charAt(Math.floor(Math.random()*ch.length));
+
+    var trips=[]; try{trips=JSON.parse(localStorage.getItem('alm-trips')||'[]');}catch(e){}
+    trips.unshift({ref:ref,type:'stay',hotelName:h.name,hotelNameAr:h.nameAr,roomName:r.name,roomNameAr:r.nameAr,city:h.city,cityAr:h.cityAr,checkin:dates.cin.toISOString(),checkout:dates.cout.toISOString(),nights:nights,rooms:rooms,adults:adults,children:kids,pricePerNight:rp,tax:tax,svcFee:svc,total:total,bookedAt:new Date().toISOString()});
+    try{localStorage.setItem('alm-trips',JSON.stringify(trips));}catch(e){}
+
+    var out='<div class="bc-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>'+
+      '<div class="bc-title">'+(isAr?'تم الحجز بنجاح! 🎉':'Booking Confirmed! 🎉')+'</div>'+
+      '<div class="bc-sub">'+(isAr?'شكراً لك! سيصلك تأكيد الحجز على بريدك الإلكتروني.':'Thank you! A confirmation will be sent to your email.')+'</div>'+
+      '<div class="bc-ref"><div class="bc-ref-lbl">'+(isAr?'رقم الحجز':'Booking Reference')+'</div><div class="bc-ref-num">'+ref+'</div></div>'+
+      '<div class="bc-details">'+
+        '<div class="bc-det-row"><span class="bc-det-lbl">'+(isAr?'الفندق':'Hotel')+'</span><span class="bc-det-val">'+nm+'</span></div>'+
+        '<div class="bc-det-row"><span class="bc-det-lbl">'+(isAr?'الغرفة':'Room')+'</span><span class="bc-det-val">'+rnm+'</span></div>'+
+        '<div class="bc-det-row"><span class="bc-det-lbl">'+(isAr?'الوجهة':'Destination')+'</span><span class="bc-det-val">'+cy+'</span></div>'+
+        '<div class="bc-det-row"><span class="bc-det-lbl">'+(isAr?'تسجيل الوصول':'Check-in')+'</span><span class="bc-det-val">'+fmtDate(dates.cin)+'</span></div>'+
+        '<div class="bc-det-row"><span class="bc-det-lbl">'+(isAr?'تسجيل المغادرة':'Check-out')+'</span><span class="bc-det-val">'+fmtDate(dates.cout)+'</span></div>'+
+        '<div class="bc-det-row"><span class="bc-det-lbl">'+(isAr?'الليالي':'Nights')+'</span><span class="bc-det-val">'+nights+'</span></div>'+
+        '<div class="bc-det-row"><span class="bc-det-lbl">'+(isAr?'الإجمالي المدفوع':'Total Paid')+'</span><span class="bc-det-val" style="color:var(--alm-cyan);font-size:16px">SAR '+fmtN(total)+'</span></div>'+
+      '</div>'+
+      '<div class="bc-actions">'+
+        '<button class="bc-btn-trips" id="bc-trips">'+(isAr?'رحلاتي':'My Trips')+'</button>'+
+        '<button class="bc-btn-home" id="bc-home">'+(isAr?'العودة للرئيسية':'Back to Home')+'</button>'+
+      '</div>';
+
+    bcContent.innerHTML=out;
+    bkSection.classList.remove('bk-open');
+    bcSection.classList.add('bc-open');
+    setTimeout(function(){ bcSection.scrollIntoView({behavior:'smooth',block:'start'}); },50);
+
+    document.getElementById('bc-trips').addEventListener('click',function(){
+      showToast(isAr?'رحلاتي — قادمة في الخطوة ٥!':'My Trips — coming in Step 5!');
+    });
+    document.getElementById('bc-home').addEventListener('click',function(){
+      bcSection.classList.remove('bc-open');
+      rsSection.classList.remove('rs-open');
+      hdSection.classList.remove('hd-open');
+      bkSection.classList.remove('bk-open');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  }
+
+  /* ══════════════════════════════════════════
+     DEALS — copy code + coming soon
+  ══════════════════════════════════════════ */
+  var dcsSection = document.getElementById('deal-coming-soon');
+  var dcsBack    = document.getElementById('dcs-back');
+  var mainEl     = document.getElementById('main');
+
+  function showDealComingSoon() {
+    if (mainEl)     mainEl.style.display = 'none';
+    if (dcsSection) { dcsSection.classList.add('dcs-open'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  }
+
+  function hideDealComingSoon() {
+    if (dcsSection) dcsSection.classList.remove('dcs-open');
+    if (mainEl)     mainEl.style.display = '';
+    var dealsEl = document.getElementById('deals-section');
+    if (dealsEl) setTimeout(function(){ dealsEl.scrollIntoView({ behavior:'smooth', block:'start' }); }, 50);
+  }
+
+  if (dcsBack) dcsBack.addEventListener('click', hideDealComingSoon);
+
+  /* Copy icon buttons */
+  document.querySelectorAll('.promo-copy-btn').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var code = btn.getAttribute('data-code') || '';
+      try { navigator.clipboard.writeText(code); } catch(err){}
+      showToast(html.lang === 'ar' ? 'تم نسخ الكود' : 'Code copied');
+    });
+  });
+
+  /* Card body + "View deal" → coming soon */
+  document.querySelectorAll('.promo-card').forEach(function(card){
+    function goComingSoon(e) {
+      if (e.target.closest('.promo-copy-btn')) return;
+      showDealComingSoon();
+    }
+    card.addEventListener('click', goComingSoon);
+    card.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showDealComingSoon(); }
+    });
+    var vb = card.querySelector('.promo-view-btn');
+    if (vb) vb.addEventListener('click', function(e){ e.stopPropagation(); showDealComingSoon(); });
+  });
+
+  /* "View all" → coming soon */
+  var vaDealBtn = document.getElementById('deals-view-all');
+  if (vaDealBtn) vaDealBtn.addEventListener('click', showDealComingSoon);
+
+  /* ═══════════════════════════════════════════════════
+     CITY GUIDE — DATA + OVERLAY NAVIGATION
+  ═══════════════════════════════════════════════════ */
+
+  var CITIES_DATA = [
+    {
+      id:'dubai', nameEn:'Dubai', nameAr:'دبي',
+      countryEn:'United Arab Emirates', countryAr:'الإمارات العربية المتحدة',
+      price:890, badge:'hot', badgeLabelEn:'Trending', badgeLabelAr:'رائج',
+      heroImg:'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&q=80&auto=format&fit=crop',
+      thumbImg:'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80&auto=format&fit=crop',
+      introEn:'Dubai is the crown jewel of the UAE — a city where futuristic architecture meets ancient desert culture. From the world\'s tallest tower to sprawling gold souks, every corner delivers an experience at a different scale.',
+      introAr:'دبي جوهرة الإمارات، مدينة تجمع بين العمارة المستقبلية والتراث الصحراوي الأصيل. من أطول أبراج العالم إلى أسواق الذهب الرائعة.',
+      bestTimeEn:'November – March', bestTimeAr:'نوفمبر – مارس',
+      attractions:[
+        {nameEn:'Burj Khalifa',nameAr:'برج خليفة',descEn:'World\'s tallest building with observation decks at floors 124 and 148.',descAr:'أطول مبنى في العالم مع منصات مراقبة في الطابقين 124 و148.'},
+        {nameEn:'Dubai Mall',nameAr:'دبي مول',descEn:'Over 1,200 stores, an aquarium, VR park, and indoor ice rink.',descAr:'أكثر من 1200 متجر وحوض أسماك وحلبة جليد داخلية.'},
+        {nameEn:'Palm Jumeirah',nameAr:'نخلة جميرا',descEn:'Iconic man-made island with luxury resorts and the Atlantis hotel.',descAr:'جزيرة اصطناعية أيقونية بمنتجعات فاخرة وفندق أتلانتس.'},
+        {nameEn:'Museum of the Future',nameAr:'متحف المستقبل',descEn:'A stunning torus-shaped building exploring life in 2071.',descAr:'مبنى طوقي مذهل يستكشف الحياة عام 2071.'}
+      ],
+      hotels:[
+        {nameEn:'Atlantis The Palm',stars:5,priceSAR:3200},
+        {nameEn:'Address Downtown Dubai',stars:5,priceSAR:1800},
+        {nameEn:'Burj Al Arab',stars:7,priceSAR:8500},
+        {nameEn:'JW Marriott Marquis',stars:5,priceSAR:1200}
+      ],
+      flightsFromRUH:[
+        {airlineEn:'Saudia',dep:'06:20',arr:'08:35',stops:0,priceSAR:890},
+        {airlineEn:'flydubai',dep:'10:15',arr:'12:30',stops:0,priceSAR:720},
+        {airlineEn:'Emirates',dep:'14:00',arr:'16:10',stops:0,priceSAR:1150}
+      ],
+      todoEn:['Desert safari at sunset','Dhow Creek cruise at night','Ski Dubai at Mall of the Emirates','Gold Souk walk in Deira','Dubai Frame panoramic views'],
+      todoAr:['سفاري الصحراء عند الغروب','جولة بالسفينة التقليدية ليلاً','التزلج في سكي دبي','التجول في سوق الذهب بديرة','مناظر إطار دبي البانورامية'],
+      tipsEn:['Dress modestly in malls and public areas.','Uber and Careem are widely available.','Friday is the weekly holiday; malls open from 2PM.','Tap water is safe to drink.'],
+      tipsAr:['ارتدِ ملابس محتشمة في المراكز التجارية والأماكن العامة.','أوبر وكريم متاحان على نطاق واسع.','الجمعة عطلة أسبوعية والمراكز تفتح من 2 م.','مياه الصنبور آمنة للشرب.']
+    },
+    {
+      id:'istanbul', nameEn:'Istanbul', nameAr:'إسطنبول',
+      countryEn:'Turkey', countryAr:'تركيا',
+      price:1240, badge:'deal', badgeLabelEn:'Great Deal', badgeLabelAr:'عرض رائع',
+      heroImg:'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=1200&q=80&auto=format&fit=crop',
+      thumbImg:'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=600&q=80&auto=format&fit=crop',
+      introEn:'Istanbul is the only city in the world that spans two continents. Its skyline of minarets and domes, Byzantine heritage, and vibrant bazaars make it one of the most captivating destinations on the planet.',
+      introAr:'إسطنبول المدينة الوحيدة في العالم التي تمتد على قارتين، تُبهر بأفق مآذنها وقبابها والتراث البيزنطي والأسواق النابضة بالحياة.',
+      bestTimeEn:'April – June, September – November', bestTimeAr:'أبريل – يونيو، سبتمبر – نوفمبر',
+      attractions:[
+        {nameEn:'Hagia Sophia',nameAr:'آيا صوفيا',descEn:'A 1,500-year-old architectural masterpiece — once a cathedral, then a mosque.',descAr:'تحفة معمارية عمرها 1500 عام، كانت كاتدرائية ثم مسجداً.'},
+        {nameEn:'Grand Bazaar',nameAr:'البازار الكبير',descEn:'One of the world\'s oldest and largest covered markets with 4,000+ shops.',descAr:'من أقدم وأكبر الأسواق المغطاة في العالم بأكثر من 4000 محل.'},
+        {nameEn:'Bosphorus Strait',nameAr:'مضيق البوسفور',descEn:'A scenic waterway dividing Europe and Asia — best from a sunset cruise.',descAr:'ممر مائي خلاب يفصل أوروبا عن آسيا، أجمل من جولة عند الغروب.'},
+        {nameEn:'Topkapi Palace',nameAr:'قصر طوب قبي',descEn:'Seat of the Ottoman Empire for 400 years, housing priceless treasures.',descAr:'مقر الإمبراطورية العثمانية لـ400 عام ويضم كنوزاً لا تقدر بثمن.'}
+      ],
+      hotels:[
+        {nameEn:'Four Seasons Sultanahmet',stars:5,priceSAR:2100},
+        {nameEn:'Ciragan Palace Kempinski',stars:5,priceSAR:2800},
+        {nameEn:'Ritz-Carlton Istanbul',stars:5,priceSAR:1600},
+        {nameEn:'Swissôtel The Bosphorus',stars:5,priceSAR:1100}
+      ],
+      flightsFromRUH:[
+        {airlineEn:'Saudia',dep:'09:00',arr:'13:30',stops:0,priceSAR:1480},
+        {airlineEn:'Turkish Airlines',dep:'23:45',arr:'05:20+1',stops:1,priceSAR:1240},
+        {airlineEn:'flynas',dep:'14:00',arr:'18:10',stops:0,priceSAR:1100}
+      ],
+      todoEn:['Bosphorus sunset cruise','Spice Bazaar shopping','Traditional Turkish hammam','Fish sandwich by the Galata Bridge','Princes\' Islands day trip'],
+      todoAr:['جولة البوسفور عند الغروب','التسوق في بازار التوابل','تجربة الحمام التركي','ساندويش السمك عند جسر غلطة','رحلة يومية إلى جزر الأمراء'],
+      tipsEn:['Turkish lira is local; USD and EUR are widely accepted.','Tap water is not safe — buy bottled water.','Dress conservatively when visiting mosques.','The İstanbulkart covers metro, tram, and ferry.'],
+      tipsAr:['الليرة التركية عملة محلية، والدولار واليورو مقبولان.','مياه الصنبور غير آمنة، اشترِ المياه المعبأة.','ارتدِ ملابس محتشمة عند زيارة المساجد.','بطاقة إسطنبولكارت تغطي المترو والترام والعبّارة.']
+    },
+    {
+      id:'maldives', nameEn:'Maldives', nameAr:'جزر المالديف',
+      countryEn:'Indian Ocean', countryAr:'المحيط الهندي',
+      price:3200, badge:'luxury', badgeLabelEn:'Luxury', badgeLabelAr:'فاخر',
+      heroImg:'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=1200&q=80&auto=format&fit=crop',
+      thumbImg:'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80&auto=format&fit=crop',
+      introEn:'The Maldives is the ultimate luxury escape — a nation of 1,200 coral islands in the Indian Ocean, famous for overwater bungalows, crystal-clear lagoons, and world-class diving.',
+      introAr:'جزر المالديف وجهة الفخامة بامتياز، 1200 جزيرة مرجانية في المحيط الهندي تشتهر ببنغالواتها فوق المياه وشعابها المرجانية الخلابة.',
+      bestTimeEn:'November – April', bestTimeAr:'نوفمبر – أبريل',
+      attractions:[
+        {nameEn:'Overwater Bungalows',nameAr:'بنغالوات فوق الماء',descEn:'Glass-floor villas perched above crystal-clear turquoise lagoons.',descAr:'فيلات بأرضية زجاجية فوق البحيرات الفيروزية الشفافة.'},
+        {nameEn:'Baa Atoll Biosphere',nameAr:'محمية بحر Baa المرجاني',descEn:'A UNESCO Biosphere Reserve, home to manta rays and whale sharks.',descAr:'محمية يونسكو تضم أسماك المانتا وحيتان القرش.'},
+        {nameEn:'Maafushi Island',nameAr:'جزيرة مافوشي',descEn:'A budget-friendly local island with stunning beaches and reef snorkelling.',descAr:'جزيرة محلية اقتصادية بشواطئ خلابة وشعاب مرجانية للغطس.'},
+        {nameEn:'Malé Capital',nameAr:'العاصمة ماليه',descEn:'A vibrant compact capital with colourful buildings and a lively fish market.',descAr:'عاصمة نابضة ومضغوطة بمبانٍ ملونة وسوق أسماك شهير.'}
+      ],
+      hotels:[
+        {nameEn:'Soneva Fushi',stars:5,priceSAR:12000},
+        {nameEn:'Four Seasons Kuda Huraa',stars:5,priceSAR:7500},
+        {nameEn:'Velaa Private Island',stars:5,priceSAR:18000},
+        {nameEn:'Atmosphere Kanifushi',stars:5,priceSAR:4200}
+      ],
+      flightsFromRUH:[
+        {airlineEn:'Saudia + Maldivian',dep:'Via Colombo',arr:'',stops:1,priceSAR:3200},
+        {airlineEn:'Emirates',dep:'Via Dubai',arr:'',stops:1,priceSAR:3800},
+        {airlineEn:'Qatar Airways',dep:'Via Doha',arr:'',stops:1,priceSAR:3500}
+      ],
+      todoEn:['Sunrise snorkelling on a house reef','Sunset dolphin cruise','Seaplane transfer between islands','Bioluminescent beach walk at night','Over-water spa treatments'],
+      todoAr:['الغطس الصباحي على الشعاب المرجانية','جولة مشاهدة الدلافين عند الغروب','التنقل بالطائرة المائية بين الجزر','نزهة الشاطئ الفسفوري ليلاً','العلاجات السبا فوق المياه'],
+      tipsEn:['Alcohol available at resorts only, not local islands.','Transfers between atolls are by speedboat or seaplane.','Use reef-safe sunscreen — chemicals harm coral.','Book resorts 6–12 months ahead for peak season.'],
+      tipsAr:['الكحول متاح في المنتجعات فقط، ليس الجزر المحلية.','التنقل بين البحار بزورق سريع أو طائرة مائية.','استخدم كريم حماية آمناً للشعاب المرجانية.','احجز قبل 6-12 شهراً في موسم الذروة.']
+    },
+    {
+      id:'london', nameEn:'London', nameAr:'لندن',
+      countryEn:'United Kingdom', countryAr:'المملكة المتحدة',
+      price:2100, badge:'deal', badgeLabelEn:'Top Pick', badgeLabelAr:'اختيار مميز',
+      heroImg:'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200&q=80&auto=format&fit=crop',
+      thumbImg:'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&q=80&auto=format&fit=crop',
+      introEn:'London is one of the great global cities — a magnificent blend of history and modernity. From royal palaces and world-class museums to eclectic markets and West End theatres, the city never stops surprising.',
+      introAr:'لندن من أعظم مدن العالم، مزيج رائع من التاريخ والحداثة، من القصور الملكية والمتاحف العالمية إلى الأسواق المتنوعة ومسارح ويست إند.',
+      bestTimeEn:'June – August', bestTimeAr:'يونيو – أغسطس',
+      attractions:[
+        {nameEn:'Tower of London',nameAr:'برج لندن',descEn:'A UNESCO World Heritage Site and home to the Crown Jewels, with 1,000 years of history.',descAr:'موقع التراث العالمي لليونسكو وموطن جواهر التاج، مع 1000 عام من التاريخ.'},
+        {nameEn:'British Museum',nameAr:'المتحف البريطاني',descEn:'Home to 8 million works spanning 2 million years of human history — and it\'s free.',descAr:'يضم 8 ملايين قطعة تمتد عبر 2 مليون سنة من التاريخ البشري، ومجاني.'},
+        {nameEn:'Buckingham Palace',nameAr:'قصر باكنغهام',descEn:'Official residence of the King — witness the famous Changing of the Guard ceremony.',descAr:'المقر الرسمي للملك، اشهد حفل تغيير الحرس الملكي الشهير.'},
+        {nameEn:'Hyde Park',nameAr:'حديقة هايد بارك',descEn:'350 acres of gardens, lakes, and outdoor entertainment in central London.',descAr:'350 فداناً من الحدائق والبحيرات والترفيه في وسط لندن.'}
+      ],
+      hotels:[
+        {nameEn:'The Ritz London',stars:5,priceSAR:4200},
+        {nameEn:'Claridge\'s',stars:5,priceSAR:3800},
+        {nameEn:'The Savoy',stars:5,priceSAR:3500},
+        {nameEn:'citizenM Tower of London',stars:4,priceSAR:900}
+      ],
+      flightsFromRUH:[
+        {airlineEn:'Saudia',dep:'02:30',arr:'10:00',stops:0,priceSAR:2800},
+        {airlineEn:'British Airways',dep:'09:15',arr:'16:40',stops:0,priceSAR:3200},
+        {airlineEn:'Emirates via Dubai',dep:'14:00',arr:'06:00+1',stops:1,priceSAR:2100}
+      ],
+      todoEn:['Afternoon tea at Fortnum & Mason','Thames riverboat cruise','West End show in the evening','Camden Market on weekends','Notting Hill neighbourhood walk'],
+      todoAr:['شاي بعد الظهر في فورتنام وماسون','جولة بالزورق على نهر التيمز','عرض مسرحي في ويست إند مساءً','سوق كامدن في عطلة نهاية الأسبوع','نزهة في حي نوتينغ هيل'],
+      tipsEn:['Oyster card or contactless payment covers all transport.','Tip 10–15% in restaurants.','Weather changes rapidly — carry a light jacket.','Most national museums are completely free.'],
+      tipsAr:['بطاقة أويستر أو الدفع اللاتلامسي يغطي جميع وسائل النقل.','أضف 10-15% إكرامية في المطاعم.','الطقس يتغير بسرعة، احمل سترة خفيفة.','معظم المتاحف الوطنية مجانية تماماً.']
+    },
+    {
+      id:'cairo', nameEn:'Cairo', nameAr:'القاهرة',
+      countryEn:'Egypt', countryAr:'مصر',
+      price:680, badge:'hot', badgeLabelEn:'Popular', badgeLabelAr:'الأكثر طلباً',
+      heroImg:'https://images.unsplash.com/photo-1541769740-098e80269166?w=1200&q=80&auto=format&fit=crop',
+      thumbImg:'https://images.unsplash.com/photo-1541769740-098e80269166?w=600&q=80&auto=format&fit=crop',
+      introEn:'Cairo is where ancient wonders and modern Arab life collide. The city is the gateway to the Pyramids, home to the world\'s greatest antiquity collection, and alive with the energy of 20 million people.',
+      introAr:'القاهرة حيث تلتقي العجائب القديمة والحياة العربية المعاصرة، بوابة إلى الأهرامات وموطن أعظم مجموعة آثار في العالم.',
+      bestTimeEn:'October – April', bestTimeAr:'أكتوبر – أبريل',
+      attractions:[
+        {nameEn:'Pyramids of Giza',nameAr:'أهرامات الجيزة',descEn:'The last surviving wonder of the ancient world — 4,500 years of awe-inspiring history.',descAr:'آخر عجائب العالم القديم السبع الباقية، 4500 عام من التاريخ المهيب.'},
+        {nameEn:'Egyptian Museum',nameAr:'المتحف المصري',descEn:'Over 120,000 ancient artefacts including Tutankhamun\'s golden mask.',descAr:'أكثر من 120,000 قطعة أثرية تشمل قناع توت عنخ آمون الذهبي.'},
+        {nameEn:'Khan el-Khalili Bazaar',nameAr:'سوق خان الخليلي',descEn:'A medieval bazaar bustling with spice merchants, jewellers, and craftsmen.',descAr:'سوق تاريخي يعج بتجار التوابل والجواهر والحرفيين المحليين.'},
+        {nameEn:'Al-Azhar Park',nameAr:'حديقة الأزهر',descEn:'A stunning garden with panoramic views over Islamic Cairo\'s historic skyline.',descAr:'حديقة خلابة بإطلالات بانورامية على أفق القاهرة الإسلامية التاريخي.'}
+      ],
+      hotels:[
+        {nameEn:'Four Seasons Nile Plaza',stars:5,priceSAR:1800},
+        {nameEn:'St. Regis Cairo',stars:5,priceSAR:2100},
+        {nameEn:'Marriott Mena House',stars:5,priceSAR:1400},
+        {nameEn:'Kempinski Nile Hotel',stars:5,priceSAR:1100}
+      ],
+      flightsFromRUH:[
+        {airlineEn:'flynas',dep:'07:00',arr:'09:15',stops:0,priceSAR:580},
+        {airlineEn:'Saudia',dep:'10:30',arr:'12:45',stops:0,priceSAR:680},
+        {airlineEn:'EgyptAir',dep:'15:00',arr:'17:20',stops:0,priceSAR:640}
+      ],
+      todoEn:['Horse ride around the Pyramids at dawn','Nile sunset felucca sail','Sound and Light Show at Giza','Old Cairo Coptic churches walk','Khan el-Khalili evening stroll'],
+      todoAr:['ركوب الخيل حول الأهرامات عند الفجر','الإبحار بالفلوكة على النيل عند الغروب','عرض الصوت والضوء في الجيزة','جولة كنائس القاهرة القديمة','نزهة مسائية في خان الخليلي'],
+      tipsEn:['Egyptian pound is the currency; USD accepted at tourist sites.','Bargaining is expected in souks.','Book Pyramids tickets online to skip queues.','Avoid tap water — bottled water is cheap.'],
+      tipsAr:['الجنيه المصري هو العملة، والدولار مقبول في المواقع السياحية.','المساومة متوقعة في الأسواق.','احجز تذاكر الأهرامات أونلاين لتجنب الطوابير.','تجنب مياه الصنبور، المعبأة رخيصة ومتوفرة.']
+    },
+    {
+      id:'riyadh', nameEn:'Riyadh', nameAr:'الرياض',
+      countryEn:'Saudi Arabia', countryAr:'المملكة العربية السعودية',
+      price:350, badge:'hot', badgeLabelEn:'Local Gem', badgeLabelAr:'جوهرة محلية',
+      heroImg:'https://images.unsplash.com/photo-1694018359679-49465b4c0d61?w=1200&q=80&auto=format&fit=crop',
+      thumbImg:'https://images.unsplash.com/photo-1694018359679-49465b4c0d61?w=600&q=80&auto=format&fit=crop',
+      introEn:'Riyadh is transforming into one of the Middle East\'s most dynamic cities. Saudi Arabia\'s capital blends ancient heritage sites like Diriyah with ultra-modern skyscrapers and a burgeoning arts and dining scene.',
+      introAr:'الرياض تتحول إلى واحدة من أكثر مدن الشرق الأوسط ديناميكية، تجمع بين مواقع تراثية كالدرعية وناطحات السحاب الحديثة ومشهد فني وغذائي متنامٍ.',
+      bestTimeEn:'October – March', bestTimeAr:'أكتوبر – مارس',
+      attractions:[
+        {nameEn:'Diriyah Heritage Site',nameAr:'موقع الدرعية التراثي',descEn:'A UNESCO World Heritage Site and birthplace of the Saudi state — stunning mud-brick ruins.',descAr:'موقع التراث العالمي لليونسكو ومهد الدولة السعودية، أطلال طوب لبن مذهلة.'},
+        {nameEn:'Kingdom Centre Tower',nameAr:'برج مركز المملكة',descEn:'The iconic sky bridge at 300m offers panoramic views over the capital.',descAr:'الجسر السماوي الأيقوني على ارتفاع 300 متر بإطلالات بانورامية على العاصمة.'},
+        {nameEn:'National Museum',nameAr:'المتحف الوطني',descEn:'Eight galleries tracing the Arabian Peninsula\'s history from prehistory to modern times.',descAr:'ثماني قاعات تتتبع تاريخ شبه الجزيرة العربية من عصور ما قبل التاريخ حتى الحداثة.'},
+        {nameEn:'Riyadh Front',nameAr:'رياض فرونت',descEn:'A major entertainment destination with 250+ restaurants and outdoor spaces.',descAr:'وجهة ترفيهية كبرى تضم أكثر من 250 مطعماً ومساحات خارجية.'}
+      ],
+      hotels:[
+        {nameEn:'Four Seasons Riyadh',stars:5,priceSAR:1850},
+        {nameEn:'Rosewood Riyadh',stars:5,priceSAR:2100},
+        {nameEn:'Al Faisaliah Hotel',stars:5,priceSAR:1200},
+        {nameEn:'JW Marriott Riyadh',stars:5,priceSAR:980}
+      ],
+      flightsFromRUH:[
+        {airlineEn:'Saudia',dep:'Domestic hub',arr:'',stops:0,priceSAR:350},
+        {airlineEn:'flynas',dep:'Multiple daily',arr:'',stops:0,priceSAR:280},
+        {airlineEn:'flyadeal',dep:'Multiple daily',arr:'',stops:0,priceSAR:220}
+      ],
+      todoEn:['Diriyah At-Turaif by night','Boulevard Riyadh City walk','Camel souk at Al-Batha market','Stargazing in the nearby desert','Riyadh Season events & concerts'],
+      todoAr:['الدرعية التراثية ليلاً','المشي في شارع بوليفار الرياض','سوق الإبل في البطحاء','رصد النجوم في الصحراء القريبة','فعاليات وحفلات موسم الرياض'],
+      tipsEn:['Riyadh is family-friendly with many entertainment options under Vision 2030.','Riyadh Metro is modern, clean, and affordable.','Uber and Careem are widely used.','Most attractions stay open until midnight on weekends.'],
+      tipsAr:['الرياض مناسبة للعائلات مع خيارات ترفيه كثيرة في إطار رؤية 2030.','مترو الرياض حديث ونظيف وبأسعار معقولة.','أوبر وكريم متاحان على نطاق واسع.','معظم المعالم مفتوحة حتى منتصف الليل نهاية الأسبوع.']
+    },
+    {
+      id:'jeddah', nameEn:'Jeddah', nameAr:'جدة',
+      countryEn:'Saudi Arabia', countryAr:'المملكة العربية السعودية',
+      price:290, badge:'saudi', badgeLabelEn:'Saudi Gem', badgeLabelAr:'جوهرة سعودية',
+      heroImg:'https://images.unsplash.com/photo-1578895101408-1a36b834405b?w=1200&q=80&auto=format&fit=crop',
+      thumbImg:'https://images.unsplash.com/photo-1578895101408-1a36b834405b?w=600&q=80&auto=format&fit=crop',
+      introEn:'Jeddah is the cosmopolitan gateway to the Kingdom — a Red Sea coastal city where a UNESCO World Heritage old town meets a modern waterfront, world-class diving, and one of the world\'s tallest fountains.',
+      introAr:'جدة البوابة الكوزموبوليتانية للمملكة، مدينة ساحلية على البحر الأحمر تجمع بين بلدة قديمة مدرجة في اليونسكو وكورنيش حديث وغطس بحري عالمي.',
+      bestTimeEn:'October – April', bestTimeAr:'أكتوبر – أبريل',
+      attractions:[
+        {nameEn:'Al-Balad Historic District',nameAr:'حي البلد التاريخي',descEn:'UNESCO World Heritage Site with coral-built towers and carved wooden balconies.',descAr:'موقع التراث العالمي لليونسكو، أبراج مرجانية وشرفات خشبية منحوتة.'},
+        {nameEn:'King Fahd Fountain',nameAr:'نافورة الملك فهد',descEn:'The world\'s tallest fountain at 312 metres — best at sunset from the Corniche.',descAr:'أعلى نافورة في العالم بارتفاع 312 متراً، أجمل من الكورنيش عند الغروب.'},
+        {nameEn:'Red Sea Reefs',nameAr:'شعاب البحر الأحمر',descEn:'Some of the world\'s most vibrant coral reefs — dive and snorkel from city beaches.',descAr:'من أكثر الشعاب المرجانية في العالم حيوية، يمكن الغطس منها من شواطئ المدينة.'},
+        {nameEn:'Jeddah Corniche',nameAr:'كورنيش جدة',descEn:'A 30km waterfront promenade with parks, sculptures, and seafood restaurants.',descAr:'كورنيش بطول 30 كم مع حدائق ومنحوتات ومطاعم مأكولات بحرية.'}
+      ],
+      hotels:[
+        {nameEn:'Waldorf Astoria Jeddah',stars:5,priceSAR:2200},
+        {nameEn:'Rosewood Jeddah',stars:5,priceSAR:1900},
+        {nameEn:'Park Hyatt Jeddah',stars:5,priceSAR:1400},
+        {nameEn:'Mövenpick Hotel Jeddah',stars:4,priceSAR:680}
+      ],
+      flightsFromRUH:[
+        {airlineEn:'Saudia',dep:'06:30',arr:'08:00',stops:0,priceSAR:290},
+        {airlineEn:'flynas',dep:'09:00',arr:'10:30',stops:0,priceSAR:250},
+        {airlineEn:'flyadeal',dep:'14:00',arr:'15:30',stops:0,priceSAR:220}
+      ],
+      todoEn:['Sunset walk on the Corniche','Scuba diving in Red Sea reefs','Al-Balad heritage walk with a guide','Friday night street food market','Jeddah Art Week galleries'],
+      todoAr:['جولة غروب على الكورنيش','الغطس في شعاب البحر الأحمر','جولة تراثية في البلد مع مرشد','سوق الطعام الليلي في يوم الجمعة','معارض أسبوع جدة للفن'],
+      tipsEn:['Jeddah is the most cosmopolitan Saudi city — dress code is relatively relaxed.','Best seafood: Fish Market near the Corniche.','Summer (Jun–Sep) is very hot and humid — plan indoor activities.','Taxis and Uber are widely available.'],
+      tipsAr:['جدة من أكثر المدن السعودية تعدداً، قواعد اللباس مرنة نسبياً.','أفضل المأكولات البحرية: سوق السمك قرب الكورنيش.','الصيف (يونيو-سبتمبر) حار ورطب جداً، خطط للأنشطة الداخلية.','سيارات الأجرة وأوبر متاحة على نطاق واسع.']
+    },
+    {
+      id:'paris', nameEn:'Paris', nameAr:'باريس',
+      countryEn:'France', countryAr:'فرنسا',
+      price:2400, badge:'deal', badgeLabelEn:'Top Pick', badgeLabelAr:'اختيار مميز',
+      heroImg:'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=1200&q=80&auto=format&fit=crop',
+      thumbImg:'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&q=80&auto=format&fit=crop',
+      introEn:'Paris is the city of light, love, and haute cuisine. Few cities match its density of world-class art, historic architecture, and culinary excellence — from the Eiffel Tower to the hidden passages of Le Marais.',
+      introAr:'باريس مدينة النور والحب والمطبخ الراقي. قلة من المدن تضاهي كثافتها من الفن العالمي والمعمار التاريخي والتميز الطهوي.',
+      bestTimeEn:'April – June, September', bestTimeAr:'أبريل – يونيو، سبتمبر',
+      attractions:[
+        {nameEn:'Eiffel Tower',nameAr:'برج إيفل',descEn:'The wrought-iron symbol of Paris, with three viewing levels — save the summit for clear days.',descAr:'رمز باريس الحديدي، ثلاثة مستويات مشاهدة، احتفظ بالقمة للأيام الصافية.'},
+        {nameEn:'The Louvre',nameAr:'متحف اللوفر',descEn:'World\'s most visited museum, home to the Mona Lisa and over 35,000 works of art.',descAr:'أكثر متاحف العالم زيارة، موطن الموناليزا وأكثر من 35,000 عمل فني.'},
+        {nameEn:'Palace of Versailles',nameAr:'قصر فرساي',descEn:'A royal château of extraordinary grandeur, 45 minutes from Paris by RER.',descAr:'قصر ملكي بضخامة استثنائية، على بعد 45 دقيقة من باريس بالقطار.'},
+        {nameEn:'Musée d\'Orsay',nameAr:'متحف أورساي',descEn:'The world\'s finest Impressionist collection in a stunning converted train station.',descAr:'أروع مجموعة للفن الانطباعي في العالم بمحطة قطارات محوّلة مذهلة.'}
+      ],
+      hotels:[
+        {nameEn:'Four Seasons George V',stars:5,priceSAR:6200},
+        {nameEn:'Hôtel de Crillon',stars:5,priceSAR:5500},
+        {nameEn:'Le Bristol Paris',stars:5,priceSAR:4800},
+        {nameEn:'Hotel Fabric (Boutique)',stars:4,priceSAR:800}
+      ],
+      flightsFromRUH:[
+        {airlineEn:'Saudia',dep:'10:00',arr:'16:30',stops:0,priceSAR:2800},
+        {airlineEn:'Air France',dep:'14:45',arr:'21:00',stops:0,priceSAR:3200},
+        {airlineEn:'Emirates via Dubai',dep:'06:00',arr:'17:30',stops:1,priceSAR:2400}
+      ],
+      todoEn:['Seine river cruise at night','Montmartre art district walk','Versailles gardens day trip','Macarons tasting tour in Le Marais','Champagne bar in Saint-Germain'],
+      todoAr:['جولة نهرية على السين ليلاً','جولة سير في حي مونمارتر للفن','رحلة يومية إلى حدائق فرساي','تذوق الماكارون في لو ماريه','بار الشمبانيا في سان جيرمان'],
+      tipsEn:['Navigo pass: unlimited weekly metro and RER travel.','Most cafés add a service charge; 5–10% tip appreciated.','National museums are free on the first Sunday of each month.','Book Eiffel Tower and Versailles online — queues can exceed 3 hours.'],
+      tipsAr:['بطاقة Navigo: سفر أسبوعي غير محدود بالمترو والقطار.','معظم المقاهي تضيف رسوم خدمة، وإكرامية 5-10% محل تقدير.','المتاحف الوطنية مجانية أول أحد من كل شهر.','احجز أونلاين لبرج إيفل وفرساي، قد تصل طوابير لأكثر من 3 ساعات.']
+    }
+  ];
+
+  /* ── Overlay state ── */
+  var ovAllDest   = document.getElementById('all-dest-page');
+  var ovCityGuide = document.getElementById('cg-page');
+  var _prevFocusCG  = null;
+  var _cgFromAllDest = false;
+
+  function _openOverlay(el) {
+    el.scrollTop = 0;
+    el.removeAttribute('aria-hidden');
+    requestAnimationFrame(function() { el.classList.add('ovp-open'); });
+    document.body.style.overflow = 'hidden';
+  }
+
+  function _closeOverlay(el, cb) {
+    el.classList.remove('ovp-open');
+    function onEnd(e) {
+      if (e.propertyName !== 'opacity') return;
+      el.removeEventListener('transitionend', onEnd);
+      el.setAttribute('aria-hidden', 'true');
+      if (!document.querySelector('.overlay-page.ovp-open')) document.body.style.overflow = '';
+      if (cb) cb();
+    }
+    el.addEventListener('transitionend', onEnd);
+  }
+
+  function _hideInstant(el) {
+    var prev = el.style.transition;
+    el.style.transition = 'none';
+    el.classList.remove('ovp-open');
+    el.setAttribute('aria-hidden', 'true');
+    void el.offsetWidth;
+    el.style.transition = prev;
+  }
+
+  function _showInstant(el) {
+    var prev = el.style.transition;
+    el.style.transition = 'none';
+    el.removeAttribute('aria-hidden');
+    el.classList.add('ovp-open');
+    void el.offsetWidth;
+    el.style.transition = prev;
+  }
+
+  function openAllDestinations() {
+    _prevFocusCG = document.activeElement;
+    renderAllDestinations();
+    _openOverlay(ovAllDest);
+  }
+
+  function closeAllDestinations() {
+    _closeOverlay(ovAllDest, function() {
+      if (_prevFocusCG) _prevFocusCG.focus();
+    });
+  }
+
+  function openCityGuide(cityId, fromAllDest) {
+    var city = CITIES_DATA.filter(function(c){ return c.id === cityId; })[0];
+    if (!city) return;
+    if (!fromAllDest) _prevFocusCG = document.activeElement;
+    _cgFromAllDest = !!fromAllDest;
+    renderCityGuide(city);
+    if (fromAllDest) _hideInstant(ovAllDest);
+    _openOverlay(ovCityGuide);
+  }
+
+  function closeCityGuide() {
+    _closeOverlay(ovCityGuide, function() {
+      if (_cgFromAllDest) {
+        _showInstant(ovAllDest);
+      } else {
+        if (_prevFocusCG) _prevFocusCG.focus();
+      }
+    });
+  }
+
+  function fillAndClose(cityId, mode) {
+    var city = CITIES_DATA.filter(function(c){ return c.id === cityId; })[0];
+    if (!city) return;
+    var isAr = html.lang === 'ar';
+    var cityName = isAr ? city.nameAr : city.nameEn;
+    if (mode === 'flights') {
+      var destEl = document.getElementById('destVal');
+      if (destEl) { destEl.textContent = cityName; destEl.classList.remove('sf-muted'); }
+      var flightsTab = document.querySelector('.sh-tab[data-sh-tab="flights"]');
+      if (flightsTab && !flightsTab.classList.contains('active')) flightsTab.click();
+    } else {
+      var stayEl = document.getElementById('stayQVal');
+      if (stayEl) { stayEl.textContent = cityName; stayEl.classList.remove('sf-muted'); }
+      var staysTab = document.querySelector('.sh-tab[data-sh-tab="stays"]');
+      if (staysTab && !staysTab.classList.contains('active')) staysTab.click();
+    }
+    _hideInstant(ovCityGuide);
+    _hideInstant(ovAllDest);
+    document.body.style.overflow = '';
+    var hero = document.querySelector('.hero');
+    if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ── Render helpers ── */
+  function _starsHtml(n) {
+    var s = ''; for (var i = 0; i < Math.min(n, 5); i++) s += '★'; return s;
+  }
+
+  function _badgeClass(badge) {
+    if (badge === 'hot')    return 'badge-hot';
+    if (badge === 'deal')   return 'badge-deal';
+    return 'badge-saudi';
+  }
+
+  function renderAllDestinations() {
+    var isAr = html.lang === 'ar';
+    var grid = document.getElementById('adp-grid');
+    var out = '';
+    CITIES_DATA.forEach(function(city) {
+      var badgeLabel = isAr ? city.badgeLabelAr : city.badgeLabelEn;
+      out += '<article class="dest-card" tabindex="0" data-city-id="' + city.id + '">' +
+        '<div class="dest-img">' +
+          '<img src="' + city.thumbImg + '" alt="' + (isAr ? city.nameAr : city.nameEn) + '" loading="lazy">' +
+          '<span class="dest-badge ' + _badgeClass(city.badge) + '">' + badgeLabel + '</span>' +
+        '</div>' +
+        '<div class="dest-body">' +
+          '<div class="dest-city">' + (isAr ? city.nameAr : city.nameEn) + '</div>' +
+          '<div class="dest-country">' + (isAr ? city.countryAr : city.countryEn) + '</div>' +
+          '<div class="dest-footer">' +
+            '<div><span class="dest-price-label">' + (isAr ? 'من' : 'from') + '</span>' +
+            '<span class="dest-price">SAR ' + city.price.toLocaleString() + '</span></div>' +
+            '<button class="dest-cta">' + (isAr ? 'استكشف' : 'Explore') + '</button>' +
+          '</div>' +
+        '</div>' +
+      '</article>';
+    });
+    grid.innerHTML = out;
+  }
+
+  function renderCityGuide(city) {
+    var isAr = html.lang === 'ar';
+    document.getElementById('cg-head-title').textContent = isAr ? city.nameAr : city.nameEn;
+
+    var introText  = isAr ? city.introAr : city.introEn;
+    var bestTime   = isAr ? city.bestTimeAr : city.bestTimeEn;
+    var todoArr    = isAr ? city.todoAr : city.todoEn;
+    var tipsArr    = isAr ? city.tipsAr : city.tipsEn;
+
+    var attrsHtml = city.attractions.map(function(a) {
+      return '<div class="cg-attr-card">' +
+        '<div class="cg-attr-name">' + (isAr ? a.nameAr : a.nameEn) + '</div>' +
+        '<div class="cg-attr-desc">' + (isAr ? a.descAr : a.descEn) + '</div>' +
+      '</div>';
+    }).join('');
+
+    var hotelsHtml = city.hotels.map(function(h) {
+      return '<div class="cg-hotel-row">' +
+        '<div><div class="cg-hotel-name">' + h.nameEn + '</div>' +
+        '<div class="cg-hotel-stars">' + _starsHtml(h.stars) + '</div></div>' +
+        '<div class="cg-hotel-price"><span class="cg-price-from">' + (isAr ? 'من' : 'from') + '</span>SAR ' + h.priceSAR.toLocaleString() + '</div>' +
+      '</div>';
+    }).join('');
+
+    var flightsHtml = city.flightsFromRUH.map(function(f) {
+      var sc = f.stops === 0 ? 'direct' : 'one';
+      var sl = f.stops === 0 ? (isAr ? 'مباشر' : 'Direct') : (isAr ? 'توقف واحد' : '1 stop');
+      var timeStr = (f.dep && f.dep.indexOf(':') !== -1) ? '<span class="cg-fl-time">' + f.dep + ' → ' + f.arr + '</span>' : '<span class="cg-fl-time">' + f.dep + '</span>';
+      return '<div class="cg-flight-row">' +
+        '<span class="cg-fl-airline">' + f.airlineEn + '</span>' +
+        timeStr +
+        '<span class="cg-fl-stops ' + sc + '">' + sl + '</span>' +
+        '<span class="cg-fl-price">SAR ' + f.priceSAR.toLocaleString() + '</span>' +
+      '</div>';
+    }).join('');
+
+    var todoHtml = todoArr.map(function(t) {
+      return '<div class="cg-todo-item"><div class="cg-todo-dot" aria-hidden="true"></div>' + t + '</div>';
+    }).join('');
+
+    var tipsHtml = tipsArr.map(function(t) {
+      return '<div class="cg-tip">' +
+        '<svg class="cg-tip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' +
+        t + '</div>';
+    }).join('');
+
+    var flightSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 16l-9-13L3 16M3 16h18M3 16l4-2m14 2l-4-2"/></svg>';
+    var staysSvg  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
+    var clockSvg  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+
+    var ctaBar = function(cityId) {
+      return '<div class="cg-cta-bar">' +
+        '<button class="cg-btn cg-btn-flights" data-city-id="' + cityId + '">' + flightSvg +
+          '<span class="en">Search flights</span><span class="ar">ابحث عن رحلات</span></button>' +
+        '<button class="cg-btn cg-btn-stays" data-city-id="' + cityId + '">' + staysSvg +
+          '<span class="en">Search stays</span><span class="ar">ابحث عن إقامات</span></button>' +
+      '</div>';
+    };
+
+    document.getElementById('cg-body').innerHTML =
+      '<div class="cg-hero">' +
+        '<img src="' + city.heroImg + '" alt="' + (isAr ? city.nameAr : city.nameEn) + '">' +
+        '<div class="cg-hero-scrim" aria-hidden="true"></div>' +
+        '<div class="cg-hero-text">' +
+          '<div class="cg-city-name">' + (isAr ? city.nameAr : city.nameEn) + '</div>' +
+          '<div class="cg-country-label">' + (isAr ? city.countryAr : city.countryEn) + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cg-content">' +
+        ctaBar(city.id) +
+        '<p class="cg-intro-text">' + introText + '</p>' +
+        '<div class="cg-best-time">' + clockSvg +
+          '<span><span class="en">Best time to visit: </span><span class="ar">أفضل وقت للزيارة: </span><strong>' + bestTime + '</strong></span>' +
+        '</div>' +
+        '<section class="cg-section">' +
+          '<h2 class="cg-section-title"><span class="en">Top Attractions</span><span class="ar">أبرز المعالم</span></h2>' +
+          '<div class="cg-attractions">' + attrsHtml + '</div>' +
+        '</section>' +
+        '<section class="cg-section">' +
+          '<h2 class="cg-section-title"><span class="en">Popular Hotels</span><span class="ar">فنادق شائعة</span></h2>' +
+          '<div class="cg-hotels">' + hotelsHtml + '</div>' +
+        '</section>' +
+        '<section class="cg-section">' +
+          '<h2 class="cg-section-title"><span class="en">Flights from Riyadh</span><span class="ar">رحلات من الرياض</span></h2>' +
+          '<div class="cg-flights">' + flightsHtml + '</div>' +
+        '</section>' +
+        '<section class="cg-section">' +
+          '<h2 class="cg-section-title"><span class="en">Things to Do</span><span class="ar">أنشطة يجب تجربتها</span></h2>' +
+          '<div class="cg-todo">' + todoHtml + '</div>' +
+        '</section>' +
+        '<section class="cg-section">' +
+          '<h2 class="cg-section-title"><span class="en">Travel Tips</span><span class="ar">نصائح السفر</span></h2>' +
+          '<div class="cg-tips">' + tipsHtml + '</div>' +
+        '</section>' +
+        '<div class="cg-footer-cta">' +
+          '<button class="cg-btn cg-btn-flights" data-city-id="' + city.id + '">' + flightSvg +
+            '<span class="en">Search flights to ' + city.nameEn + '</span>' +
+            '<span class="ar">ابحث عن رحلات إلى ' + city.nameAr + '</span>' +
+          '</button>' +
+          '<button class="cg-btn cg-btn-stays" data-city-id="' + city.id + '">' + staysSvg +
+            '<span class="en">Search stays in ' + city.nameEn + '</span>' +
+            '<span class="ar">ابحث عن إقامات في ' + city.nameAr + '</span>' +
+          '</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  /* ── Event delegation — all-dest grid ── */
+  ovAllDest.addEventListener('click', function(e) {
+    var card = e.target.closest('.dest-card[data-city-id]');
+    if (card) openCityGuide(card.getAttribute('data-city-id'), true);
+  });
+  ovAllDest.addEventListener('keydown', function(e) {
+    var card = e.target.closest('.dest-card[data-city-id]');
+    if (card && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openCityGuide(card.getAttribute('data-city-id'), true); }
+  });
+
+  /* ── Event delegation — city guide CTAs ── */
+  ovCityGuide.addEventListener('click', function(e) {
+    var fb = e.target.closest('.cg-btn-flights[data-city-id]');
+    if (fb) { fillAndClose(fb.getAttribute('data-city-id'), 'flights'); return; }
+    var sb = e.target.closest('.cg-btn-stays[data-city-id]');
+    if (sb) { fillAndClose(sb.getAttribute('data-city-id'), 'stays'); }
+  });
+
+  /* ── Wire up main page dest-cards ── */
+  document.querySelectorAll('#main .dest-card').forEach(function(card) {
+    var en = card.querySelector('.dest-city .en');
+    if (!en) return;
+    var match = CITIES_DATA.filter(function(c) { return c.nameEn === en.textContent.trim(); })[0];
+    if (!match) return;
+    card.setAttribute('data-city-id', match.id);
+    card.addEventListener('click', function() { openCityGuide(match.id, false); });
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') openCityGuide(match.id, false);
+    });
+  });
+
+  /* ── "See all" button ── */
+  var seeAllDestBtn = document.getElementById('see-all-dest');
+  if (seeAllDestBtn) {
+    seeAllDestBtn.addEventListener('click', function(e) { e.preventDefault(); openAllDestinations(); });
+  }
+
+  /* ── Back buttons ── */
+  document.getElementById('adp-back').addEventListener('click', closeAllDestinations);
+  document.getElementById('cg-back').addEventListener('click', closeCityGuide);
+
+  /* ── Escape closes topmost overlay ── */
+  document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Escape') return;
+    if (ovCityGuide.classList.contains('ovp-open')) { closeCityGuide(); return; }
+    if (ovAllDest.classList.contains('ovp-open'))   { closeAllDestinations(); }
+  });
 
 }());
 </script>
