@@ -1445,7 +1445,7 @@ html[data-theme="dark"] .si-divider span { background:var(--bg-surface); }
 }
 .si-cc-btn:hover, .si-cc-btn:focus { border-color:var(--alm-cyan); }
 .si-cc-btn[aria-expanded="true"] { border-color:var(--alm-cyan); }
-.si-cc-flag { font-size:18px; line-height:1; }
+.si-cc-flag { display:block; border-radius:2px; object-fit:cover; }
 .si-cc-code { font-weight:600; font-size:13px; }
 .si-cc-chevron { transition:transform 200ms; color:var(--text-subtle); flex-shrink:0; }
 .si-cc-btn[aria-expanded="true"] .si-cc-chevron { transform:rotate(180deg); }
@@ -2358,20 +2358,20 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
             <div class="si-phone-row">
               <div class="si-cc-wrap" id="si-cc-wrap">
                 <button type="button" class="si-cc-btn" id="si-cc-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Country code">
-                  <span class="si-cc-flag" id="si-cc-flag">🇸🇦</span>
+                  <img class="si-cc-flag" id="si-cc-flag" src="https://flagcdn.com/24x18/sa.png" width="24" height="18" alt="SA">
                   <span class="si-cc-code" id="si-cc-code">+966</span>
                   <svg class="si-cc-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" width="10" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
                 </button>
                 <ul class="si-cc-drop" id="si-cc-drop" role="listbox" aria-label="Country code">
-                  <li class="si-cc-opt" role="option" data-code="+966" data-flag="🇸🇦" aria-selected="true"><span>🇸🇦</span><span>+966</span></li>
-                  <li class="si-cc-opt" role="option" data-code="+971" data-flag="🇦🇪"><span>🇦🇪</span><span>+971</span></li>
-                  <li class="si-cc-opt" role="option" data-code="+965" data-flag="🇰🇼"><span>🇰🇼</span><span>+965</span></li>
-                  <li class="si-cc-opt" role="option" data-code="+974" data-flag="🇶🇦"><span>🇶🇦</span><span>+974</span></li>
-                  <li class="si-cc-opt" role="option" data-code="+973" data-flag="🇧🇭"><span>🇧🇭</span><span>+973</span></li>
-                  <li class="si-cc-opt" role="option" data-code="+968" data-flag="🇴🇲"><span>🇴🇲</span><span>+968</span></li>
-                  <li class="si-cc-opt" role="option" data-code="+20"  data-flag="🇪🇬"><span>🇪🇬</span><span>+20</span></li>
-                  <li class="si-cc-opt" role="option" data-code="+44"  data-flag="🇬🇧"><span>🇬🇧</span><span>+44</span></li>
-                  <li class="si-cc-opt" role="option" data-code="+1"   data-flag="🇺🇸"><span>🇺🇸</span><span>+1</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+966" data-iso="sa" aria-selected="true"><img src="https://flagcdn.com/24x18/sa.png" width="24" height="18" alt="SA"><span>+966</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+971" data-iso="ae"><img src="https://flagcdn.com/24x18/ae.png" width="24" height="18" alt="AE"><span>+971</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+965" data-iso="kw"><img src="https://flagcdn.com/24x18/kw.png" width="24" height="18" alt="KW"><span>+965</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+974" data-iso="qa"><img src="https://flagcdn.com/24x18/qa.png" width="24" height="18" alt="QA"><span>+974</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+973" data-iso="bh"><img src="https://flagcdn.com/24x18/bh.png" width="24" height="18" alt="BH"><span>+973</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+968" data-iso="om"><img src="https://flagcdn.com/24x18/om.png" width="24" height="18" alt="OM"><span>+968</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+20"  data-iso="eg"><img src="https://flagcdn.com/24x18/eg.png" width="24" height="18" alt="EG"><span>+20</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+44"  data-iso="gb"><img src="https://flagcdn.com/24x18/gb.png" width="24" height="18" alt="GB"><span>+44</span></li>
+                  <li class="si-cc-opt" role="option" data-code="+1"   data-iso="us"><img src="https://flagcdn.com/24x18/us.png" width="24" height="18" alt="US"><span>+1</span></li>
                 </ul>
               </div>
               <input type="tel" id="si-phone" class="si-input si-phone-input" placeholder="5XX XXX XXXX" inputmode="numeric" autocomplete="tel-national">
@@ -2579,7 +2579,11 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   function siCcSelect(opt) {
     siCcOpts.forEach(function(o){ o.removeAttribute('aria-selected'); });
     opt.setAttribute('aria-selected', 'true');
-    if (siCcFlagEl) siCcFlagEl.textContent = opt.getAttribute('data-flag');
+    var iso = opt.getAttribute('data-iso');
+    if (siCcFlagEl) {
+      siCcFlagEl.src = 'https://flagcdn.com/24x18/' + iso + '.png';
+      siCcFlagEl.alt = iso.toUpperCase();
+    }
     if (siCcCodeEl) siCcCodeEl.textContent = opt.getAttribute('data-code');
     siCcClose();
   }
