@@ -454,7 +454,7 @@ a:focus:not(:focus-visible) { outline: none; }
 }
 .hero-title {
   font-size: clamp(22px, 3.5vw, 38px); font-weight: 700;
-  color: #fff; line-height: 1.15; margin-bottom: 8px;
+  color: var(--alm-white); line-height: 1.15; margin-bottom: 8px;
 }
 .hero-sub {
   font-size: clamp(13px, 1.6vw, 15px); color: rgba(255,255,255,0.68);
@@ -562,11 +562,11 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
   display: flex; align-items: center; gap: 10px;
   padding: 12px 12px; border-radius: var(--r-md);
   min-height: var(--sf-h);
-  border: 1.5px solid var(--border); background: #F4F8FA;
+  border: 1.5px solid var(--border); background: var(--color-background-subtle);
   cursor: pointer;
-  transition: border-color 120ms, background 120ms; position: relative;
+  transition: border-color var(--motion-fast), background var(--motion-fast); position: relative;
 }
-.sf-input:hover { border-color: var(--alm-cyan); background: #fff; }
+.sf-input:hover { border-color: var(--alm-cyan); background: var(--color-background-surface); }
 .sf-input > svg { width: 16px; height: 16px; color: inherit; flex-shrink: 0; }
 .sf-input:has(.sf-muted) > svg { color: var(--text-subtle); }
 .sf-val { font-size: 12px; font-weight: 400; color: var(--text-primary); display: block; line-height: 1.25; }
@@ -580,13 +580,13 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
 /* Clear button inside a field — icon-button.md: button element, aria-label required */
 .sf-clear {
   margin-inline-start: auto; width: 20px; height: 20px; border-radius: 50%;
-  background: #E0E8EC; color: var(--text-subtle);
+  background: var(--color-background-disabled); color: var(--color-text-subtle);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; cursor: pointer; font-size: 10px; font-weight: 700;
   transition: background var(--motion-fast), color var(--motion-fast); line-height: 1;
   border: none; font-family: inherit; /* button reset */
 }
-.sf-clear:hover { background: #C8D8DE; color: var(--color-text-primary); }
+.sf-clear:hover { background: var(--color-border-strong); color: var(--color-text-primary); }
 .sf-clear:focus-visible {
   outline: var(--border-width-focus) solid var(--color-border-focus);
   outline-offset: 2px;
@@ -777,7 +777,7 @@ html[data-theme="dark"] .cls-opt.active { color: var(--alm-cyan); }
   border-radius: var(--r-md); font-size: 13px; font-weight: 600;
   cursor: pointer; font-family: inherit; transition: background 120ms;
 }
-.pax-done:hover { background: #d4323e; }
+.pax-done:hover { background: var(--alm-red-dark); }
 
 /* ── MC remove button ── */
 .mc-rm { display: flex; align-items: center; padding-bottom: 0; justify-content: center; }
@@ -957,7 +957,7 @@ html[data-theme="dark"] .ovp-head { background: #030e14; }
 .ovp-back:hover { color: var(--alm-cyan); }
 .ovp-back svg { width: 16px; height: 16px; }
 html[dir="rtl"] .ovp-back svg { transform: scaleX(-1); }
-.ovp-head-title { font-size: 15px; font-weight: 600; color: #fff; }
+.ovp-head-title { font-size: 15px; font-weight: 600; color: var(--alm-white); }
 .ovp-head-count { font-size: 12px; color: rgba(255,255,255,0.38); margin-inline-start: auto; }
 
 /* All-destinations grid */
@@ -979,7 +979,7 @@ html[dir="rtl"] .ovp-back svg { transform: scaleX(-1); }
   position: absolute; bottom: 28px;
   inset-inline-start: 0; inset-inline-end: 0; padding: 0 32px;
 }
-.cg-city-name { font-size: clamp(26px, 4vw, 40px); font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 5px; }
+.cg-city-name { font-size: clamp(26px, 4vw, 40px); font-weight: 700; color: var(--alm-white); line-height: 1.1; margin-bottom: 5px; }
 .cg-country-label { font-size: 14px; color: rgba(255,255,255,0.68); }
 
 /* City guide content */
@@ -1069,7 +1069,7 @@ html[data-theme="dark"] .cg-tip { background: rgba(0,183,198,0.07); }
 @media (max-width: 500px)  { .footer-inner { grid-template-columns: 1fr; } }
 
 .footer-brand-logo { display: flex; align-items: center; margin-bottom: 14px; }
-.footer-logo-wordmark { font-size: 17px; font-weight: var(--font-weight-semibold); color: #fff; display: flex; align-items: baseline; }
+.footer-logo-wordmark { font-size: 17px; font-weight: var(--font-weight-semibold); color: var(--alm-white); display: flex; align-items: baseline; }
 .footer-logo-ar {
   background: linear-gradient(to right, #fff 63%, var(--alm-red) 63% 73%, var(--alm-cyan) 73% 83%, #fff 83%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
@@ -1086,7 +1086,7 @@ html[data-theme="dark"] .cg-tip { background: rgba(0,183,198,0.07); }
 .s-btn:hover { background: var(--alm-cyan); border-color: var(--alm-cyan); color: var(--alm-dark); }
 .s-btn svg { width: 14px; height: 14px; }
 
-.footer-col h4 { font-size: 11px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+.footer-col h4 { font-size: 11px; font-weight: 700; color: var(--alm-white); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
 .footer-links { display: flex; flex-direction: column; gap: 10px; }
 .footer-links a { font-size: 13px; color: rgba(255,255,255,0.72); transition: color 120ms; }
 .footer-links a:hover { color: #fff; }
@@ -4481,12 +4481,13 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       else { data=applyActFlt(); out=data.map(function(a){ return actCard(a,isAr); }).join(''); }
 
       if(data.length===0){
-        out='<div class="rs-empty">'+
-          '<div class="rs-empty-icon">🔍</div>'+
-          '<div class="rs-empty-title"><span class="en">No results found</span><span class="ar">لا توجد نتائج</span></div>'+
-          '<div class="rs-empty-sub"><span class="en">Try adjusting or clearing your filters</span><span class="ar">جرّب تعديل الفلاتر أو مسحها</span></div>'+
-          '<button class="rs-empty-btn" id="empty-clr"><span class="en">Clear filters</span><span class="ar">مسح الفلاتر</span></button>'+
-        '</div>';
+        /* empty-state.md: section with label; title must be a heading; icon aria-hidden */
+        out='<section class="rs-empty" aria-label="'+(isAr?'نتائج البحث — لا توجد نتائج':'Search results — no results found')+'">'+
+          '<div class="rs-empty-icon" aria-hidden="true">🔍</div>'+
+          '<h2 class="rs-empty-title"><span class="en">No results found</span><span class="ar">لا توجد نتائج</span></h2>'+
+          '<p class="rs-empty-sub"><span class="en">Try adjusting or clearing your filters</span><span class="ar">جرّب تعديل الفلاتر أو مسحها</span></p>'+
+          '<button class="rs-empty-btn" id="empty-clr" type="button"><span class="en">Clear filters</span><span class="ar">مسح الفلاتر</span></button>'+
+        '</section>';
       }
       rsList.innerHTML = out;
       if(rsCount) rsCount.innerHTML = data.length>0 ? '<strong>'+data.length+'</strong> '+(isAr?'نتيجة':(data.length===1?'result':'results')) : '';
