@@ -4666,14 +4666,21 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   var dcsBack    = document.getElementById('dcs-back');
   var mainEl     = document.getElementById('main');
 
+  var heroEl = document.querySelector('.hero');
+  function setHeroVisible(visible) {
+    if (heroEl) heroEl.style.display = visible ? '' : 'none';
+  }
+
   function showDealComingSoon() {
     if (mainEl)     mainEl.style.display = 'none';
+    setHeroVisible(false);
     if (dcsSection) { dcsSection.classList.add('dcs-open'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
   }
 
   function hideDealComingSoon() {
     if (dcsSection) dcsSection.classList.remove('dcs-open');
     if (mainEl)     mainEl.style.display = '';
+    setHeroVisible(true);
     var dealsEl = document.getElementById('deals-section');
     if (dealsEl) setTimeout(function(){ dealsEl.scrollIntoView({ behavior:'smooth', block:'start' }); }, 50);
   }
@@ -5009,11 +5016,13 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   function openAllDestinations() {
     _prevFocusCG = document.activeElement;
     renderAllDestinations();
+    setHeroVisible(false);
     _openOverlay(ovAllDest);
   }
 
   function closeAllDestinations() {
     _closeOverlay(ovAllDest, function() {
+      setHeroVisible(true);
       if (_prevFocusCG) _prevFocusCG.focus();
     });
   }
@@ -5021,7 +5030,10 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   function openCityGuide(cityId, fromAllDest) {
     var city = CITIES_DATA.filter(function(c){ return c.id === cityId; })[0];
     if (!city) return;
-    if (!fromAllDest) _prevFocusCG = document.activeElement;
+    if (!fromAllDest) {
+      _prevFocusCG = document.activeElement;
+      setHeroVisible(false);
+    }
     _cgFromAllDest = !!fromAllDest;
     renderCityGuide(city);
     if (fromAllDest) _hideInstant(ovAllDest);
@@ -5032,7 +5044,9 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     _closeOverlay(ovCityGuide, function() {
       if (_cgFromAllDest) {
         _showInstant(ovAllDest);
+        /* hero stays hidden — all-destinations overlay is still open */
       } else {
+        setHeroVisible(true);
         if (_prevFocusCG) _prevFocusCG.focus();
       }
     });
@@ -5057,8 +5071,8 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     _hideInstant(ovCityGuide);
     _hideInstant(ovAllDest);
     document.body.style.overflow = '';
-    var hero = document.querySelector('.hero');
-    if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setHeroVisible(true);
+    if (heroEl) heroEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   /* ── Render helpers ── */
