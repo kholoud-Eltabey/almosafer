@@ -1297,21 +1297,27 @@ html[data-theme="dark"] .promo-card { background:var(--bg-surface); }
   background:linear-gradient(to top, rgba(0,10,25,.55) 0%, rgba(0,10,25,.06) 55%, transparent 100%);
 }
 
-/* Discount bubble — top-left of image */
+/* Discount bubble — Danger variant (badge.md §6) — top-left of image */
 .promo-disc {
   position:absolute; top:12px; inset-inline-start:12px;
+  display:inline-flex; align-items:center;
   background:var(--alm-red); color:#fff;
-  font-size:11px; font-weight:800; letter-spacing:.2px;
-  padding:5px 11px; border-radius:var(--r-full);
-  box-shadow:0 2px 8px rgba(230,57,70,.45);
-  line-height:1;
+  font-size:var(--text-caption-size); font-weight:var(--font-weight-medium);
+  letter-spacing:.2px; white-space:nowrap;
+  padding:4px 10px; border-radius:var(--radius-full);
+  border:var(--border-width-default) solid var(--alm-red);
+  line-height:var(--line-height-normal);
 }
-/* Category tag — top-right */
+/* Category tag — Neutral variant (badge.md §6) — top-right */
 .promo-cat-tag {
   position:absolute; top:12px; inset-inline-end:12px;
+  display:inline-flex; align-items:center;
   background:rgba(0,0,0,.48); backdrop-filter:blur(10px);
-  color:rgba(255,255,255,.92); font-size:9.5px; font-weight:700;
-  padding:4px 10px; border-radius:var(--r-full); letter-spacing:.3px;
+  color:rgba(255,255,255,.92);
+  font-size:var(--text-caption-size); font-weight:var(--font-weight-medium);
+  padding:4px 10px; border-radius:var(--radius-full);
+  border:var(--border-width-default) solid rgba(255,255,255,0.18);
+  letter-spacing:.3px; white-space:nowrap;
 }
 /* Colored accent stripe at bottom of image */
 .promo-accent {
@@ -1637,11 +1643,16 @@ html[dir="rtl"] .ma-back svg { transform: scaleX(-1); }
   content:''; position:absolute; bottom:-25px; inset-inline-start:30px;
   width:90px; height:90px; border-radius:50%; background:rgba(255,255,255,.06);
 }
+/* Nusuk+ badge — Brand variant (badge.md §6) */
 .ma-promo-badge {
   position:absolute; top:16px; inset-inline-end:18px;
+  display:inline-flex; align-items:center;
   background:var(--alm-cyan); color:var(--alm-dark);
-  font-size:9.5px; font-weight:800; padding:4px 10px;
-  border-radius:var(--r-full); letter-spacing:.3px;
+  font-size:var(--text-caption-size); font-weight:var(--font-weight-medium);
+  padding:4px 10px;
+  border-radius:var(--radius-full);
+  border:var(--border-width-default) solid var(--alm-cyan);
+  letter-spacing:.3px; white-space:nowrap;
 }
 .ma-promo-lbl {
   font-size:10px; font-weight:700; color:rgba(255,255,255,.55);
