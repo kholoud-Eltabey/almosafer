@@ -182,6 +182,22 @@ input, select, textarea { font-family: inherit; }
 [lang="ar"] .ar { display: inline; }
 [lang="ar"] .en { display: none; }
 
+/* navigation.md: skip link — visually hidden until focused */
+.skip-link {
+  position: absolute; top: -100%; left: 0;
+  padding: 10px 20px; background: var(--alm-dark); color: #fff;
+  font-size: var(--text-body-sm-size); font-weight: var(--font-weight-semibold);
+  z-index: 9999; border-radius: 0 0 var(--radius-lg) 0;
+  text-decoration: none; white-space: nowrap;
+}
+.skip-link:focus { top: 0; outline: var(--border-width-focus) solid var(--color-border-focus); }
+
+/* Visually-hidden utility — accessible text, hidden from view (catalog-card.md, form.md, label.md) */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
+}
+
 /* ── HEADER ── */
 .header {
   position: sticky; top: 0; z-index: 100;
@@ -805,6 +821,8 @@ html[data-theme="dark"] .cls-opt.active { color: var(--alm-cyan); }
   user-select: none;
 }
 .sug-item:hover { background: rgba(0,183,198,0.08); }
+/* search.md: aria-selected highlight for keyboard-navigated option */
+.sug-item[aria-selected="true"] { background: var(--color-background-selected); }
 .sug-icon {
   width: 28px; height: 28px; flex-shrink: 0;
   border-radius: var(--r-md); background: rgba(0,183,198,0.10);
@@ -1837,6 +1855,8 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 <!-- Supabase Auth -->
 </head>
 <body>
+<!-- navigation.md: skip link — first focusable element, hidden until focused -->
+<a href="#main" class="skip-link"><span class="en">Skip to main content</span><span class="ar">تخطى إلى المحتوى الرئيسي</span></a>
 
 <!-- HEADER -->
 <header class="header">
@@ -1851,18 +1871,19 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     </a>
 
 
-<div class="header-right">
+<!-- navigation.md: nav landmark for header controls -->
+    <nav class="header-right" aria-label="Site controls">
       <button class="btn-theme" id="themeBtn" aria-label="Switch to dark mode">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
       </button>
-      <button class="btn-lang" id="langBtn" aria-label="Switch language">
+      <button class="btn-lang" id="langBtn" aria-label="Switch language to Arabic">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
       </button>
       <button class="btn-signin" id="signinBtn">
         <span class="en">Sign in</span><span class="ar">تسجيل الدخول</span>
       </button>
-    </div>
+    </nav>
   </div>
 </header>
 
@@ -1884,19 +1905,19 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
       <!-- TABS — float over hero image -->
       <div class="sh-tabs" role="tablist">
-        <button class="sh-tab active" role="tab" aria-selected="true" data-sh-tab="flights">
+        <button class="sh-tab active" role="tab" aria-selected="true" aria-controls="sh-flights" id="tab-flights" data-sh-tab="flights">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
             <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
           </svg>
           <span class="en">Flights</span><span class="ar">رحلات جوية</span>
         </button>
-        <button class="sh-tab" role="tab" aria-selected="false" data-sh-tab="stays">
+        <button class="sh-tab" role="tab" aria-selected="false" aria-controls="sh-stays" id="tab-stays" data-sh-tab="stays">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
             <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
           </svg>
           <span class="en">Stays</span><span class="ar">إقامة</span>
         </button>
-        <button class="sh-tab" role="tab" aria-selected="false" data-sh-tab="activities">
+        <button class="sh-tab" role="tab" aria-selected="false" aria-controls="sh-activities" id="tab-activities" data-sh-tab="activities">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
           </svg>
@@ -1908,7 +1929,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       <div class="sh-panel" id="shPanel" data-corner="0">
 
         <!-- ── FLIGHTS ── -->
-        <div class="sh-form active" id="sh-flights">
+        <div class="sh-form active" id="sh-flights" role="tabpanel" aria-labelledby="tab-flights">
 
           <!-- Trip type + options row -->
           <div class="sf-options">
@@ -2034,7 +2055,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
         </div>
 
         <!-- ── STAYS ── -->
-        <div class="sh-form" id="sh-stays">
+        <div class="sh-form" id="sh-stays" role="tabpanel" aria-labelledby="tab-stays">
           <div class="sf-row">
             <div class="sf-field" style="flex:1.6">
               <label id="lbl-stay-q"><span class="en">SEARCH FOR</span><span class="ar">ابحث عن</span></label>
@@ -2080,7 +2101,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
         </div>
 
         <!-- ── ACTIVITIES ── -->
-        <div class="sh-form" id="sh-activities">
+        <div class="sh-form" id="sh-activities" role="tabpanel" aria-labelledby="tab-activities">
           <div class="sf-row">
             <div class="sf-field">
               <label id="lbl-act-q"><span class="en">SEARCH ACTIVITIES</span><span class="ar">ابحث عن أنشطة</span></label>
@@ -2113,7 +2134,8 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
           <span class="en">Back to search</span><span class="ar">العودة للبحث</span>
         </button>
-        <div class="rs-count" id="rs-count"></div>
+        <!-- catalog-list.md: aria-live announces result count to screen readers -->
+        <div class="rs-count" id="rs-count" aria-live="polite" aria-atomic="true"></div>
       </div>
       <div class="rs-sort-wrap">
         <span class="rs-sort-lbl en">Sort by:</span>
@@ -2134,7 +2156,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   <div class="modal-overlay" id="modal-overlay"></div>
   <div class="modal-box">
     <div class="modal-close-row">
-      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+      <button class="modal-close" id="modal-close" aria-label="Close result details">✕</button>
     </div>
     <div class="modal-body" id="modal-body"></div>
   </div>
@@ -2151,8 +2173,9 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 </section>
 
 <!-- ══ STEP 4 — BOOKING CONFIRMATION ══ -->
+<!-- order-confirmation.md: aria-live announces confirmation on render -->
 <section id="booking-confirm" aria-label="Booking confirmation">
-  <div class="bc-wrap"><div id="bc-content"></div></div>
+  <div class="bc-wrap"><div id="bc-content" aria-live="polite" aria-atomic="true"></div></div>
 </section>
 
 <!-- ══ MY ACCOUNT ══ -->
@@ -2379,7 +2402,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 <div id="alm-picker" role="dialog" aria-modal="true" aria-label="Date picker"></div>
 
 <!-- Travellers & Class panel -->
-<div id="alm-pax" role="dialog" aria-modal="true">
+<div id="alm-pax" role="dialog" aria-modal="true" aria-label="Travellers and class">
   <div class="pax-ttl"><span class="en">Travellers</span><span class="ar">المسافرون</span></div>
   <div class="pax-row">
     <div><div class="pax-lbl"><span class="en">Adults</span><span class="ar">بالغون</span></div><div class="pax-sub"><span class="en">Age 12+</span><span class="ar">١٢ سنة فأكثر</span></div></div>
@@ -2407,7 +2430,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 <div id="alm-suggest" role="listbox" aria-label="Suggestions"></div>
 
 <!-- Rooms & Guests panel -->
-<div id="alm-rooms" role="dialog" aria-modal="true">
+<div id="alm-rooms" role="dialog" aria-modal="true" aria-label="Rooms and guests">
   <div class="pax-ttl"><span class="en">Rooms &amp; Guests</span><span class="ar">الغرف والضيوف</span></div>
   <div class="pax-row">
     <div><div class="pax-lbl"><span class="en">Rooms</span><span class="ar">غرف</span></div></div>
@@ -2428,7 +2451,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 <div id="signin-modal" role="dialog" aria-modal="true" aria-label="Sign in">
   <div class="si-overlay" id="si-overlay"></div>
   <div class="si-box">
-    <button class="si-close" id="si-close" aria-label="Close">✕</button>
+    <button class="si-close" id="si-close" aria-label="Close sign-in dialog">✕</button>
 
     <!-- ── STEP 1: Entry ── -->
     <div id="si-step1">
@@ -2453,7 +2476,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
           <button type="submit" class="si-btn" id="si-email-submit">
             <span class="en">Continue</span><span class="ar">متابعة</span>
           </button>
-          <div class="si-err" id="si-email-err" role="alert" aria-live="polite"></div>
+          <div class="si-err" id="si-email-err" role="alert" aria-live="assertive" aria-atomic="true"></div>
         </form>
         <div class="si-divider"><span><span class="en">OR</span><span class="ar">أو</span></span></div>
         <button class="si-phone-btn" id="si-to-phone">
@@ -2494,7 +2517,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
           <button type="submit" class="si-btn" id="si-phone-submit">
             <span class="en">Send OTP</span><span class="ar">إرسال الرمز</span>
           </button>
-          <div class="si-err" id="si-phone-err" role="alert" aria-live="polite"></div>
+          <div class="si-err" id="si-phone-err" role="alert" aria-live="assertive" aria-atomic="true"></div>
         </form>
         <button class="si-back-link" id="si-back-to-email">
           <span class="en">← Use email instead</span><span class="ar">← استخدام البريد الإلكتروني</span>
@@ -2523,7 +2546,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
         <input class="si-otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 5">
         <input class="si-otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 6">
       </div>
-      <div class="si-err" id="si-otp-err" role="alert" aria-live="polite"></div>
+      <div class="si-err" id="si-otp-err" role="alert" aria-live="assertive" aria-atomic="true"></div>
       <div class="si-resend">
         <span class="si-resend-cd" id="si-resend-cd"></span>
         <button class="si-resend-btn" id="si-resend-btn" disabled></button>
@@ -2589,6 +2612,9 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     html.dir  = l === 'ar' ? 'rtl' : 'ltr';
     document.title = l === 'ar' ? 'المسافر | Almosafer' : 'Almosafer | المسافر';
     localStorage.setItem('alm-lang', l);
+    /* icon-button.md: dynamic aria-label reflects current state */
+    var lb = document.getElementById('langBtn');
+    if (lb) lb.setAttribute('aria-label', l === 'ar' ? 'Switch language to English' : 'Switch language to Arabic');
   }
   setLang(localStorage.getItem('alm-lang') || 'en');
   document.getElementById('langBtn').addEventListener('click', function () {
@@ -3550,16 +3576,18 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       inner = '<div class="sug-empty">' + (isAr ? 'لا توجد نتائج' : 'No results') + '</div>';
     }
 
-    filtered.forEach(function (item) {
+    filtered.forEach(function (item, i) {
       var name = isAr ? item.nameAr : item.name;
       var sub  = isAr ? (item.subAr || item.sub || '') : (item.sub || '');
-      var code = item.code ? '<span class="sug-code">' + item.code + '</span>' : '';
+      var code = item.code ? '<span class="sug-code" aria-hidden="true">' + item.code + '</span>' : '';
+      /* search.md: role="option" + aria-selected; unique id for aria-activedescendant */
       inner +=
-        '<div class="sug-item" data-val="' + name.replace(/"/g, '&quot;') + '">' +
-          '<div class="sug-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">' + sugIconPath(item.type) + '</svg></div>' +
+        '<div class="sug-item" role="option" aria-selected="false" id="sug-opt-' + i + '" data-val="' + name.replace(/"/g, '&quot;') + '">' +
+          '<div class="sug-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">' + sugIconPath(item.type) + '</svg></div>' +
           '<div class="sug-body">' +
             '<div class="sug-name">' + name + '</div>' +
             (sub ? '<div class="sug-sub">' + sub + '</div>' : '') +
+            (item.code ? '<span class="sr-only">' + item.code + '</span>' : '') +
           '</div>' +
           code +
         '</div>';
@@ -3588,10 +3616,17 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       positionSuggest(sfInput);
       panelSuggest.style.visibility = '';
     }
+    /* search.md: aria-expanded + aria-controls on owning combobox */
+    sfInput.setAttribute('aria-expanded', 'true');
+    sfInput.setAttribute('aria-controls', 'alm-suggest');
   }
 
-  /* Centralised suggest close */
+  /* Centralised suggest close — search.md: sync aria-expanded on owner combobox */
   function closeSuggest() {
+    if (panelSuggest._anchor) {
+      panelSuggest._anchor.setAttribute('aria-expanded', 'false');
+      panelSuggest._anchor.removeAttribute('aria-activedescendant');
+    }
     panelSuggest.classList.remove('open');
     panelSuggest._anchor = null;
   }
@@ -3664,6 +3699,22 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       inp.addEventListener('keydown', function (e) {
         if (e.key === 'Enter')  { e.preventDefault(); inp.blur(); }
         if (e.key === 'Escape') { inp.value = ''; inp.blur(); }
+        /* search.md: arrow-key navigation within suggestion listbox */
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          var opts = Array.from(panelSuggest.querySelectorAll('[role="option"]'));
+          if (!opts.length) return;
+          var curOpt = panelSuggest.querySelector('[aria-selected="true"]');
+          var idx    = curOpt ? opts.indexOf(curOpt) : -1;
+          var nxt    = e.key === 'ArrowDown'
+            ? (idx + 1) % opts.length
+            : (idx - 1 + opts.length) % opts.length;
+          opts.forEach(function (o) { o.setAttribute('aria-selected', 'false'); });
+          opts[nxt].setAttribute('aria-selected', 'true');
+          sfInput.setAttribute('aria-activedescendant', opts[nxt].id);
+          opts[nxt].scrollIntoView({ block: 'nearest' });
+          inp.value = opts[nxt].getAttribute('data-val') || inp.value;
+        }
       });
     });
   }
@@ -4469,7 +4520,12 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
     if(withLoading){
       rsList.classList.add('rs-loading');
-      setTimeout(function(){ doRender(); rsList.classList.remove('rs-loading'); }, 260);
+      rsList.setAttribute('aria-busy', 'true'); /* catalog-list.md */
+      setTimeout(function(){
+        doRender();
+        rsList.classList.remove('rs-loading');
+        rsList.setAttribute('aria-busy', 'false');
+      }, 260);
     } else { doRender(); }
   }
 
@@ -4492,6 +4548,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
   /* ─── MODAL ─── */
   function openModal(type, id) {
+    _modalTrigger = document.activeElement; /* dialog.md: capture trigger for focus-return on close */
     var isAr=html.lang==='ar', out='';
     if(type==='flight'){
       var f=FLIGHT_DATA.filter(function(x){return x.id===id;})[0]; if(!f) return;
@@ -4544,14 +4601,37 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     if(modalBody2) modalBody2.innerHTML = out;
     if(almModal) almModal.classList.add('modal-open');
     document.body.style.overflow='hidden';
+    /* dialog.md: move focus into modal on open */
+    var firstFocus = almModal.querySelector('button, [href], input, select, [tabindex]:not([tabindex="-1"])');
+    if(firstFocus) setTimeout(function(){ firstFocus.focus(); }, 50);
     /* Wire CTA */
     var ctaBtn=document.getElementById('mdl-cta-btn');
     if(ctaBtn) ctaBtn.addEventListener('click', function(){ showToast(isAr?'الحجز قادم قريباً!':'Booking coming soon!'); closeModal(); });
   }
 
+  /* dialog.md: focus-return tracker (trigger captured inside openModal above) */
+  var _modalTrigger = null;
+
   function closeModal() {
     if(almModal) almModal.classList.remove('modal-open');
     document.body.style.overflow='';
+    /* dialog.md: return focus to trigger element */
+    if(_modalTrigger && typeof _modalTrigger.focus === 'function') _modalTrigger.focus();
+    _modalTrigger = null;
+  }
+
+  /* dialog.md: focus trap — keep Tab within open modal */
+  if(almModal) {
+    almModal.addEventListener('keydown', function(e) {
+      if(e.key !== 'Tab') return;
+      var focusable = Array.from(almModal.querySelectorAll(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      ));
+      if(!focusable.length) return;
+      var first = focusable[0], last = focusable[focusable.length - 1];
+      if(e.shiftKey) { if(document.activeElement === first) { e.preventDefault(); last.focus(); } }
+      else           { if(document.activeElement === last)  { e.preventDefault(); first.focus(); } }
+    });
   }
 
   if(modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
