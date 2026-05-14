@@ -38,45 +38,50 @@
   --font:    'IBM Plex Sans', sans-serif;
   --font-ar: 'IBM Plex Sans Arabic', sans-serif;
 
-  /* ── DESIGN SYSTEM — COLOR TOKENS (light) ── */
-  --color-background-primary:        #0077A8;
-  --color-background-primary-hover:  #00688F;
-  --color-background-primary-active: #005977;
-  --color-background-default:        #FFFFFF;
-  --color-background-surface:        #FFFFFF;
-  --color-background-subtle:         #F5F5F5;
-  --color-background-sunken:         #F5F5F5;
-  --color-background-inverse:        #090909;
-  --color-background-disabled:       #E5E5E5;
-  --color-background-selected:       #CCE7EE;
-  --color-surface-default:           #FFFFFF;
-  --color-surface-subtle:            #E5E5E5;
+  /* ── DESIGN SYSTEM — COLOR TOKENS : BACKGROUND (light) — tokens.css ── */
+  --color-background-primary:         #52B69A;   /* brand.500  */
+  --color-background-primary-hover:   #479E87;   /* brand.600  */
+  --color-background-primary-active:  #3C8674;   /* brand.700  */
+  --color-background-default:         #FFFFFF;   /* neutral.0  */
+  --color-background-surface:         #FFFFFF;   /* neutral.0  */
+  --color-background-subtle:          #F6FAF9;   /* neutral.50 */
+  --color-background-sunken:          #F6FAF9;   /* neutral.50 */
+  --color-background-inverse:         #0C0C20;   /* neutral.900 */
+  --color-background-disabled:        #EAF1EF;   /* neutral.100 */
+  --color-background-selected:        #BFE3DB;   /* brand.100  */
+  --color-background-secondary:       #199A8C;   /* secondary.500 */
+  --color-background-secondary-hover: #157F74;   /* secondary.600 */
+  --color-surface-default:            #FFFFFF;   /* neutral.0  */
+  --color-surface-subtle:             #EAF1EF;   /* neutral.100 */
 
-  --color-text-primary:    #090909;
-  --color-text-secondary:  #4B4B4B;
-  --color-text-subtle:     #6B6B6B;
-  --color-text-inverse:    #FFFFFF;
-  --color-text-brand:      #0077A8;
-  --color-text-disabled:   #8A8A8A;
-  --color-text-danger:     #A81C1E;
-  --color-text-warning:    #7E6217;
-  --color-text-success:    #1B5E28;
+  /* ── DESIGN SYSTEM — COLOR TOKENS : TEXT (light) ── */
+  --color-text-primary:    #0C0C20;   /* neutral.900  19.9:1 AAA ✓ */
+  --color-text-secondary:  #667A74;   /* neutral.600   4.5:1 AA  ✓ */
+  --color-text-subtle:     #859C95;   /* neutral.500  placeholder/icon only */
+  --color-text-inverse:    #FFFFFF;   /* neutral.0   */
+  --color-text-brand:      #52B69A;   /* brand.500   */
+  --color-text-disabled:   #AABEB5;   /* neutral.400  disabled (exempt) */
+  --color-text-danger:     #A81C1E;   /* status.danger.700   5.6:1 AA ✓ */
+  --color-text-warning:    #7E6217;   /* status.warning.700  4.5:1 AA ✓ */
+  --color-text-success:    #1B5E28;   /* status.success.700  6.1:1 AA ✓ */
 
-  --color-border-default:  #D4D4D4;
-  --color-border-subtle:   #E5E5E5;
-  --color-border-strong:   #8A8A8A;
-  --color-border-focus:    #0077A8;
-  --color-border-disabled: #D4D4D4;
-  --color-border-selected: #0077A8;
-  --color-border-danger:   #FF6A6B;
+  /* ── DESIGN SYSTEM — COLOR TOKENS : BORDER (light) ── */
+  --color-border-default:  #D5E0DC;   /* neutral.200 */
+  --color-border-subtle:   #EAF1EF;   /* neutral.100 */
+  --color-border-strong:   #AABEB5;   /* neutral.400 */
+  --color-border-focus:    #0077A8;   /* 4.5:1 on white ✓ (design system brand.500 #52B69A = 2.4:1 fails — keeping verified value) */
+  --color-border-disabled: #D5E0DC;   /* neutral.200 */
+  --color-border-selected: #0077A8;   /* matches focus for selected consistency */
+  --color-border-danger:   #FF6A6B;   /* status.danger.400 */
 
-  --color-status-success:       #2F9E44;
-  --color-status-success-bold:  #1B5E28;
-  --color-status-warning:       #C9A227;
-  --color-status-warning-bold:  #7E6217;
-  --color-status-danger:        #FF4D4F;
-  --color-status-danger-bold:   #A81C1E;
-  --color-status-info:          #3A86FF;
+  /* ── DESIGN SYSTEM — COLOR TOKENS : STATUS (light) ── */
+  --color-status-success:        #2F9E44;   /* status.success.500 */
+  --color-status-success-bold:   #1B5E28;   /* status.success.700 */
+  --color-status-warning:        #C9A227;   /* status.warning.500 */
+  --color-status-warning-bold:   #7E6217;   /* status.warning.700 */
+  --color-status-danger:         #FF4D4F;   /* status.danger.500  */
+  --color-status-danger-bold:    #A81C1E;   /* status.danger.700  */
+  --color-status-info:           #3A86FF;   /* status.info.500    */
 
   /* ── DESIGN SYSTEM — SPACING TOKENS ── */
   --spacing-xs:         8px;
@@ -113,20 +118,43 @@
   --letter-spacing-wide:    0.02em;
 
   --text-body-sm-size:    12px;
+  --text-body-md-size:    16px;   /* body-md = standard body text */
   --text-body-size:       16px;
   --text-heading-sm-size: 20px;
   --text-heading-md-size: 24px;
-  --text-heading-lg-size: 24px;
+  --text-heading-lg-size: 32px;
+
+  /* Typography compound tokens — weight per scale step (typography.md) */
+  --text-caption-weight:       var(--font-weight-regular);
+  --text-body-sm-weight:       var(--font-weight-regular);
+  --text-body-weight:          var(--font-weight-regular);
+  --text-body-md-weight:       var(--font-weight-medium);
+  --text-heading-sm-weight:    var(--font-weight-semibold);
+  --text-heading-md-weight:    var(--font-weight-semibold);
+  --text-heading-lg-weight:    var(--font-weight-bold);
+
+  /* Typography compound tokens — line-height per scale step (typography.md) */
+  --text-caption-line-height:      var(--line-height-normal);
+  --text-body-sm-line-height:      var(--line-height-normal);
+  --text-body-line-height:         var(--line-height-normal);
+  --text-body-md-line-height:      var(--line-height-normal);
+  --text-heading-sm-line-height:   var(--line-height-tight);
+  --text-heading-md-line-height:   var(--line-height-tight);
+  --text-heading-lg-line-height:   var(--line-height-tight);
 
   /* ── DESIGN SYSTEM — BADGE / TAG TOKENS (badge.md §5–7, tag.md §5) ── */
-  --text-caption-size:              11px;      /* small label */
-  --border-width-default:            1px;      /* standard border */
-  --border-width-focus:              2px;      /* focus ring */
-  --color-background-danger:        rgba(230, 57, 70,  0.12);
-  --color-background-brand-subtle:  rgba(0, 183, 198,  0.12);
-  --color-background-neutral-subtle:rgba(0,  59,  74,  0.08);
-  --color-background-success:       rgba(47,  158,  68, 0.10);
-  --color-background-warning:       rgba(201, 162,  39, 0.10);
+  --text-caption-size:               11px;     /* small label (12px min; 11px accepted for badge/tag) */
+  --border-width-default:             1px;     /* standard border  (border-width.md step 1) */
+  --border-width-focus:               2px;     /* focus ring       (border-width.md, WCAG 2.4.11) */
+  --border-width-error:               2px;     /* error state      (border-width.md step 2) */
+  --border-width-strong:              4px;     /* emphasis divider (border-width.md step 3) */
+  /* Solid-hex semantic backgrounds — tokens.css status primitives (light) */
+  --color-background-danger:         #FFD6D6;  /* status.danger.100  — was rgba(230,57,70,.12) */
+  --color-background-success:        #C2EDCC;  /* status.success.100 — was rgba(47,158,68,.10) */
+  --color-background-warning:        #F9EDBC;  /* status.warning.100 — was rgba(201,162,39,.10) */
+  /* Almosafer brand overlay tints (no tokens.css equivalent — kept custom) */
+  --color-background-brand-subtle:   rgba(0, 183, 198, 0.12);
+  --color-background-neutral-subtle: rgba(0,  59,  74, 0.08);
 
   /* ── DESIGN SYSTEM — MOTION TOKENS ── */
   --motion-fast:   100ms cubic-bezier(0.2, 0, 0, 1);
@@ -290,33 +318,70 @@ html[data-theme="dark"] .header       { background: #030e14; }
 html[data-theme="dark"] .footer-inner { border-color: #0f2530; }
 html[data-theme="dark"] .s-btn        { border-color: rgba(255,255,255,0.08); }
 
-/* ── DESIGN SYSTEM — DARK TOKEN OVERRIDES ── */
+/* ── DESIGN SYSTEM — DARK TOKEN OVERRIDES — tokens.css [data-theme="dark"] ── */
 html[data-theme="dark"] {
-  --color-background-primary:        #339FBB;
-  --color-background-primary-hover:  #0077A8;
-  --color-background-primary-active: #00688F;
-  --color-background-default:        #090909;
-  --color-background-surface:        #090909;
-  --color-background-subtle:         #1A1A1A;
-  --color-background-sunken:         #2F2F2F;
-  --color-background-inverse:        #FFFFFF;
-  --color-background-disabled:       #2F2F2F;
-  --color-background-selected:       #00495E;
-  --color-surface-default:           #2F2F2F;
-  --color-surface-subtle:            #4B4B4B;
+  /* Background */
+  --color-background-primary:         #5CB5A1;   /* brand.400  */
+  --color-background-primary-hover:   #52B69A;   /* brand.500  */
+  --color-background-primary-active:  #479E87;   /* brand.600  */
+  --color-background-default:         #0C0C20;   /* neutral.900 */
+  --color-background-surface:         #0C0C20;   /* neutral.900 */
+  --color-background-subtle:          #4A5A55;   /* neutral.700 */
+  --color-background-sunken:          #2F3A37;   /* neutral.800 */
+  --color-background-inverse:         #FFFFFF;   /* neutral.0   */
+  --color-background-disabled:        #4A5A55;   /* neutral.700 */
+  --color-background-selected:        #316E61;   /* brand.800   */
+  /* Status backgrounds — dark palette solid hex */
+  --color-background-danger:          #FFB3B4;   /* status.danger.200  */
+  --color-background-warning:         #F4DF8A;   /* status.warning.200 */
+  --color-background-success:         #96DFA9;   /* status.success.200 */
+  --color-surface-default:            #2F3A37;   /* neutral.800 */
+  --color-surface-subtle:             #4A5A55;   /* neutral.700 */
+  /* Text */
+  --color-text-primary:    #EAF1EF;   /* neutral.100  */
+  --color-text-secondary:  #AABEB5;   /* neutral.400  */
+  --color-text-subtle:     #AABEB5;   /* neutral.400  */
+  --color-text-inverse:    #0C0C20;   /* neutral.900  */
+  --color-text-brand:      #73C0AF;   /* brand.300    */
+  --color-text-disabled:   #667A74;   /* neutral.600  */
+  --color-text-danger:     #FF6A6B;   /* status.danger.400  */
+  --color-text-warning:    #DEB82C;   /* status.warning.400 */
+  --color-text-success:    #45BE65;   /* status.success.400 */
+  /* Border */
+  --color-border-default:  #4A5A55;   /* neutral.700 */
+  --color-border-subtle:   #2F3A37;   /* neutral.800 */
+  --color-border-strong:   #859C95;   /* neutral.500 */
+  --color-border-focus:    #5CB5A1;   /* brand.400   7.96:1 on dark bg ✓ */
+  --color-border-disabled: #4A5A55;   /* neutral.700 */
+  --color-border-danger:   #FF6A6B;   /* status.danger.400  */
+  --color-border-selected: #5CB5A1;   /* brand.400   */
+  /* Status */
+  --color-status-success:        #96DFA9;   /* status.success.200 */
+  --color-status-success-bold:   #45BE65;   /* status.success.400 */
+  --color-status-warning:        #F4DF8A;   /* status.warning.200 */
+  --color-status-warning-bold:   #DEB82C;   /* status.warning.400 */
+  --color-status-danger:         #FFB3B4;   /* status.danger.200  */
+  --color-status-danger-bold:    #FF6A6B;   /* status.danger.400  */
+  --color-status-info:           #9DC3FF;   /* status.info.200    */
+}
 
-  --color-text-primary:    #E5E5E5;
-  --color-text-secondary:  #8A8A8A;
-  --color-text-subtle:     #8A8A8A;
-  --color-text-inverse:    #090909;
-  --color-text-brand:      #66B7CC;
-  --color-text-disabled:   #4B4B4B;
-
-  --color-border-default:  #4B4B4B;
-  --color-border-subtle:   #2F2F2F;
-  --color-border-strong:   #8A8A8A;
-  --color-border-focus:    #339FBB;
-  --color-border-selected: #339FBB;
+/* ── REDUCED MOTION — motion.md §Accessibility ── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast:   0ms linear;
+    --motion-normal: 0ms linear;
+    --motion-slow:   0ms linear;
+    --motion-enter:  0ms linear;
+    --motion-exit:   0ms linear;
+    --motion-layout: 0ms linear;
+  }
+  /* Kill all CSS transitions and animations globally */
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ── FOCUS STATES (keyboard nav) ── */
@@ -430,9 +495,9 @@ a:focus:not(:focus-visible) { outline: none; }
   transition: background var(--motion-fast), border-color var(--motion-fast), color var(--motion-fast);
 }
 .sf-chip:not(.active):hover {
-  background: var(--color-background-selected);
+  background: var(--color-background-selected);  /* #BFE3DB */
   border-color: var(--color-border-default);
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);  /* #0C0C20: ~15:1 on #BFE3DB ✓ WCAG 4.5:1 */
 }
 .sf-chip.active {
   background: var(--color-background-brand-subtle);
@@ -1055,7 +1120,8 @@ html[data-theme="dark"] .af-chip { color:var(--alm-cyan); }
 .af-chip__remove {
   display:inline-flex; align-items:center; justify-content:center;
   background:transparent; border:none; padding:0;
-  color:var(--color-text-subtle); cursor:pointer;
+  color:var(--color-text-secondary); /* #667A74 = 3.9:1 on brand-subtle bg ✓ WCAG 3:1 */
+  cursor:pointer;
   font-size:10px; line-height:1; flex-shrink:0;
   transition:color var(--motion-fast);
 }
