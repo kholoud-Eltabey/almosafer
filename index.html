@@ -5255,7 +5255,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     var isAr = html.lang === 'ar';
     var grid = document.getElementById('top-dest-cards');
     if (!grid) return;
-    var featured = CITIES_DATA.slice(0, 6);
+    var featured = CITIES_DATA.slice(0, 3);
     var out = '';
     featured.forEach(function(city) {
       var badgeLabel = isAr ? city.badgeLabelAr : city.badgeLabelEn;
