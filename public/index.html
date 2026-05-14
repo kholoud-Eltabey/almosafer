@@ -118,12 +118,15 @@
   --text-heading-md-size: 24px;
   --text-heading-lg-size: 24px;
 
-  /* ── DESIGN SYSTEM — BADGE TOKENS (badge.md §5–7) ── */
-  --text-caption-size:              11px;      /* small badge label */
-  --border-width-default:            1px;      /* standard border width */
-  --color-background-danger:        rgba(230, 57, 70,  0.12); /* hot/promo tint */
-  --color-background-brand-subtle:  rgba(0, 183, 198,  0.12); /* deal/brand tint */
-  --color-background-neutral-subtle:rgba(0,  59,  74,  0.08); /* neutral/premium tint */
+  /* ── DESIGN SYSTEM — BADGE / TAG TOKENS (badge.md §5–7, tag.md §5) ── */
+  --text-caption-size:              11px;      /* small label */
+  --border-width-default:            1px;      /* standard border */
+  --border-width-focus:              2px;      /* focus ring */
+  --color-background-danger:        rgba(230, 57, 70,  0.12);
+  --color-background-brand-subtle:  rgba(0, 183, 198,  0.12);
+  --color-background-neutral-subtle:rgba(0,  59,  74,  0.08);
+  --color-background-success:       rgba(47,  158,  68, 0.10);
+  --color-background-warning:       rgba(201, 162,  39, 0.10);
 
   /* ── DESIGN SYSTEM — MOTION TOKENS ── */
   --motion-fast:   100ms cubic-bezier(0.2, 0, 0, 1);
@@ -275,9 +278,9 @@ html[data-theme="dark"] .sh-tab:not(.active):hover {
 }
 html[data-theme="dark"] .sf-input     { background: #071820; border-color: var(--border); }
 html[data-theme="dark"] .sf-input:hover { background: #0c2330; }
-html[data-theme="dark"] .sf-chip      { background: #0c2330; border-color: var(--border); color: var(--text-subtle); }
-html[data-theme="dark"] .sf-chip:not(.active):hover { border-color: rgba(0,183,198,0.55); background: rgba(0,183,198,0.08); color: var(--text-secondary); }
-html[data-theme="dark"] .sf-chip.active { color: var(--alm-cyan); background: rgba(0,183,198,0.12); border-color: var(--alm-cyan); }
+html[data-theme="dark"] .sf-chip                    { background: #0c2330; border-color: var(--border); color: var(--text-subtle); }
+html[data-theme="dark"] .sf-chip:not(.active):hover { background: rgba(0,183,198,0.10); border-color: var(--border); color: var(--text-secondary); }
+html[data-theme="dark"] .sf-chip.active             { background: rgba(0,183,198,0.12); border-color: var(--alm-cyan); color: var(--alm-cyan); }
 html[data-theme="dark"] .dest-card    { background: #0c2330; border-color: var(--border); }
 html[data-theme="dark"] .dest-body    { background: #0c2330; }
 html[data-theme="dark"] .section      { background: var(--bg-page); }
@@ -413,22 +416,33 @@ a:focus:not(:focus-visible) { outline: none; }
   display: flex; align-items: center; gap: 8px;
   margin-bottom: 14px; flex-wrap: wrap;
 }
+/* Trip-type chip — Interactive tag (tag.md §2 Filter selections, §8 States) */
 .sf-chip {
-  padding: 5px 15px; border-radius: var(--r-full);
-  border: 1.5px solid var(--border);
-  font-size: 12.5px; font-weight: 500; color: var(--text-subtle);
-  cursor: pointer;
-  transition: border-color var(--motion-fast), background var(--motion-fast), color var(--motion-fast);
-  white-space: nowrap; background: none;
+  display: inline-flex; align-items: center; gap: var(--spacing-xs);
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  border: var(--border-width-default) solid var(--color-border-default);
+  font-size: var(--text-body-sm-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-secondary);
+  cursor: pointer; white-space: nowrap; background: none;
+  transition: background var(--motion-fast), border-color var(--motion-fast), color var(--motion-fast);
 }
 .sf-chip:not(.active):hover {
-  border-color: rgba(0,183,198,0.55);
-  background: rgba(0,183,198,0.05);
-  color: var(--text-secondary);
+  background: var(--color-background-selected);
+  border-color: var(--color-border-default);
+  color: var(--color-text-secondary);
 }
 .sf-chip.active {
-  border-color: var(--alm-cyan); color: var(--alm-dark);
-  background: rgba(0,183,198,0.10); font-weight: 600;
+  background: var(--color-background-brand-subtle);
+  border-color: var(--alm-cyan);
+  color: var(--alm-dark);
+  font-weight: var(--font-weight-medium);
+}
+.sf-chip:focus-visible {
+  outline: var(--border-width-focus) solid var(--color-border-focus);
+  outline-offset: 2px;
 }
 .sf-checks-group { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .sf-check {
@@ -1016,12 +1030,40 @@ html[dir="rtl"] .rs-back svg { transform: scaleX(-1); }
 html[dir="rtl"] .rs-sort-sel { background-position:left 10px center; padding-inline-start:28px; padding-inline-end:10px; }
 .rs-sort-sel:focus { outline:none; border-color:var(--alm-cyan); }
 html[data-theme="dark"] .rs-sort-sel { background-color:var(--bg-surface); }
+/* Active-filter group — tag.md §10 Group context */
 .rs-active-filters { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
 .rs-active-filters:empty { display:none; }
-.af-chip { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:var(--r-full); background:rgba(0,183,198,.12); border:1.5px solid rgba(0,183,198,.25); font-size:11.5px; font-weight:500; color:var(--alm-dark); cursor:pointer; transition:background 80ms; user-select:none; }
+
+/* Removable tag — Brand variant (tag.md §6, §8, §9) */
+.af-chip {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:4px 10px;
+  border-radius:var(--radius-full);
+  border:var(--border-width-default) solid var(--alm-cyan);
+  background:var(--color-background-brand-subtle);
+  font-size:var(--text-caption-size);
+  font-weight:var(--font-weight-medium);
+  line-height:var(--line-height-normal);
+  color:var(--alm-dark);
+  user-select:none;
+  transition:background var(--motion-fast), border-color var(--motion-fast);
+}
 html[data-theme="dark"] .af-chip { color:var(--alm-cyan); }
-.af-chip:hover { background:rgba(0,183,198,.22); }
-.af-chip-x { font-size:10px; font-weight:700; opacity:.6; }
+.af-chip:hover { background:var(--color-background-selected); }
+
+/* Remove button — independent interactive target (tag.md §4, §9) */
+.af-chip__remove {
+  display:inline-flex; align-items:center; justify-content:center;
+  background:transparent; border:none; padding:0;
+  color:var(--color-text-subtle); cursor:pointer;
+  font-size:10px; line-height:1; flex-shrink:0;
+  transition:color var(--motion-fast);
+}
+.af-chip__remove:hover  { color:var(--color-text-primary); }
+.af-chip__remove:focus-visible {
+  outline:var(--border-width-focus) solid var(--color-border-focus);
+  outline-offset:2px; border-radius:2px;
+}
 .rs-body { display:flex; align-items:flex-start; gap:20px; }
 .rs-filters { width:226px; flex-shrink:0; background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px 18px; position:sticky; top:80px; }
 .rs-filter-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--border); }
@@ -1309,16 +1351,19 @@ html[data-theme="dark"] .promo-card { background:var(--bg-surface); }
   padding:4px 10px; border-radius:var(--radius-full);
   line-height:var(--line-height-normal);
 }
-/* Category tag — Neutral variant (badge.md §6) — top-right */
+/* Category tag — Static tag, Neutral/dark-overlay variant (tag.md §2, §8, §9) */
 .promo-cat-tag {
   position:absolute; top:12px; inset-inline-end:12px;
   display:inline-flex; align-items:center;
   background:rgba(0,0,0,.48); backdrop-filter:blur(10px);
   color:rgba(255,255,255,.92);
-  font-size:var(--text-caption-size); font-weight:var(--font-weight-medium);
+  font-size:var(--text-caption-size);
+  font-weight:var(--font-weight-medium);
+  line-height:var(--line-height-normal);
   padding:4px 10px; border-radius:var(--radius-full);
   border:var(--border-width-default) solid rgba(255,255,255,0.18);
   letter-spacing:.3px; white-space:nowrap;
+  pointer-events:none; /* static tag — no interaction (tag.md §8) */
 }
 /* Colored accent stripe at bottom of image */
 .promo-accent {
@@ -1992,7 +2037,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
         <select class="rs-sort-sel" id="rs-sort" aria-label="Sort results"></select>
       </div>
     </div>
-    <div class="rs-active-filters" id="rs-active-filters"></div>
+    <div class="rs-active-filters" id="rs-active-filters" aria-label="Active filters" role="group"></div>
     <div class="rs-body">
       <aside class="rs-filters" id="rs-filters" aria-label="Filters"></aside>
       <div class="rs-list" id="rs-list" role="list"></div>
@@ -4178,9 +4223,21 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       fa.dur.forEach(function(d){ var l=d==='half'?(isAr?'نصف يوم':'Half-day'):(isAr?'يوم كامل':'Full-day'); chips.push({l:l,rm:function(){fa.dur.splice(fa.dur.indexOf(d),1);}}); });
       if(fa.maxPrice<99999) chips.push({l:'SAR ≤'+fmtN(fa.maxPrice),rm:function(){fa.maxPrice=99999;}});
     }
-    rsActiveF.innerHTML = chips.map(function(c,i){ return '<span class="af-chip" data-ci="'+i+'">'+c.l+' <span class="af-chip-x">✕</span></span>'; }).join('');
-    rsActiveF.querySelectorAll('.af-chip').forEach(function(el,i){
-      el.addEventListener('click', function(){ chips[i].rm(); buildFilters(tab); renderResults(tab,true); renderChips(tab); });
+    rsActiveF.innerHTML = chips.map(function(c,i){
+      return '<span class="af-chip" data-ci="'+i+'">'+
+        '<span class="af-chip-label">'+c.l+'</span>'+
+        '<button class="af-chip__remove" data-ci="'+i+'" aria-label="Remove '+c.l+'">✕</button>'+
+      '</span>';
+    }).join('');
+    rsActiveF.querySelectorAll('.af-chip__remove').forEach(function(btn,i){
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        chips[i].rm(); buildFilters(tab); renderResults(tab,true); renderChips(tab);
+        /* focus management — move to remaining chip or input (tag.md §9) */
+        var remaining = rsActiveF.querySelectorAll('.af-chip__remove');
+        if (remaining[i]) remaining[i].focus();
+        else if (remaining[i-1]) remaining[i-1].focus();
+      });
     });
   }
 
