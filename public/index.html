@@ -200,7 +200,7 @@ input, select, textarea { font-family: inherit; }
 
 /* ── HEADER ── */
 .header {
-  position: sticky; top: 0; z-index: 100;
+  position: sticky; top: 0; z-index: 400;
   background: var(--alm-dark);
   box-shadow: 0 2px 12px rgba(0,0,0,0.25);
 }
@@ -939,48 +939,156 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
   opacity: 1; visibility: visible; transform: none;
   transition-delay: 0s;
 }
-/* Overlay sticky header */
-.ovp-head {
-  position: sticky; top: 0; z-index: 10;
-  background: var(--alm-dark);
-  display: flex; align-items: center; gap: 12px;
-  padding: 0 24px; height: 58px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+/* ── All Destinations — sticky nav bar ── */
+.adp-nav-bar {
+  margin-top: 62px;
+  position: sticky; top: 62px; z-index: 10;
+  background: var(--bg-surface);
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 24px; height: 50px;
+  border-bottom: 1px solid var(--border);
 }
-html[data-theme="dark"] .ovp-head { background: #030e14; }
-.ovp-back {
-  display: inline-flex; align-items: center; gap: 6px;
-  color: rgba(255,255,255,0.75); font-size: 13px; font-weight: 500;
-  background: none; border: none; cursor: pointer; padding: 6px 0;
-  transition: color var(--motion-fast);
+html[data-theme="dark"] .adp-nav-bar { background: #0a1c24; border-color: #0f2f3e; }
+.adp-back-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  color: var(--text-secondary); font-size: 13px; font-weight: 500;
+  background: none; border: none; cursor: pointer; padding: 6px 8px;
+  border-radius: var(--r-sm); flex-shrink: 0;
+  transition: color var(--motion-fast), background var(--motion-fast);
 }
-.ovp-back:hover { color: var(--alm-cyan); }
-.ovp-back svg { width: 16px; height: 16px; }
-html[dir="rtl"] .ovp-back svg { transform: scaleX(-1); }
-.ovp-head-title { font-size: 15px; font-weight: 600; color: var(--alm-white); }
-.ovp-head-count { font-size: 12px; color: rgba(255,255,255,0.38); margin-inline-start: auto; }
+.adp-back-btn:hover { color: var(--text-primary); background: var(--bg-page); }
+.adp-back-btn:focus-visible { outline: 3px solid var(--color-border-focus); outline-offset: 2px; }
+.adp-back-btn svg { width: 16px; height: 16px; }
+html[dir="rtl"] .adp-back-btn svg { transform: scaleX(-1); }
+.adp-nav-crumb { font-size: 13px; font-weight: 600; color: var(--text-primary); }
 
-/* All-destinations grid */
-.adp-body { max-width: 1200px; margin: 0 auto; padding: 32px 24px 64px; }
-.adp-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+/* All Destinations — page hero banner */
+.adp-page-hero {
+  background: linear-gradient(160deg, #002E3B 0%, #005568 55%, #003B4A 100%);
+  padding: 48px 24px 56px;
 }
-@media (max-width: 960px) { .adp-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 640px) { .adp-grid { grid-template-columns: repeat(2, 1fr); } }
+.adp-page-hero-inner { max-width: 800px; margin: 0 auto; }
+.adp-page-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--alm-cyan); margin-bottom: 10px;
+}
+.adp-page-title {
+  font-size: clamp(28px, 4.5vw, 44px); font-weight: 700;
+  color: var(--alm-white); margin: 0 0 12px; line-height: 1.15;
+}
+.adp-page-desc {
+  font-size: 15px; color: rgba(255,255,255,0.72);
+  margin: 0 0 28px; line-height: 1.7; max-width: 560px;
+}
+.adp-search-wrap { position: relative; max-width: 500px; }
+.adp-search-icon {
+  position: absolute; inset-inline-start: 14px; top: 50%; transform: translateY(-50%);
+  width: 18px; height: 18px; color: var(--text-subtle); pointer-events: none;
+}
+.adp-search-input {
+  width: 100%; padding: 14px 16px 14px 46px;
+  border-radius: var(--r-full); border: 2px solid transparent;
+  background: rgba(255,255,255,0.97);
+  font-size: 14px; color: var(--text-primary); font-family: inherit;
+  box-shadow: 0 4px 28px rgba(0,0,0,0.22); outline: none;
+  transition: box-shadow var(--motion-fast), border-color var(--motion-fast);
+}
+html[dir="rtl"] .adp-search-input { padding: 14px 46px 14px 16px; }
+.adp-search-input:focus { border-color: var(--alm-cyan); box-shadow: 0 4px 28px rgba(0,0,0,0.22), 0 0 0 4px rgba(0,183,198,0.18); }
+.adp-search-input::placeholder { color: var(--text-subtle); }
 
-/* City guide hero */
-.cg-hero { position: relative; height: 380px; overflow: hidden; }
+/* All Destinations — body, grid, empty state */
+.adp-body { max-width: 1200px; margin: 0 auto; padding: 32px 24px 72px; }
+.adp-city-count { font-size: 13px; color: var(--text-subtle); margin-bottom: 20px; }
+.adp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+@media (max-width: 960px) { .adp-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
+@media (max-width: 560px)  { .adp-grid { grid-template-columns: 1fr; } }
+
+.adp-empty { text-align: center; padding: 64px 24px; }
+.adp-empty-icon { font-size: 44px; display: block; margin-bottom: 14px; }
+.adp-empty-msg { font-size: 15px; color: var(--text-secondary); margin: 0 0 18px; }
+.adp-empty-clr {
+  padding: 9px 22px; border-radius: var(--r-full);
+  background: var(--alm-cyan); color: var(--alm-dark);
+  font-size: 13px; font-weight: 600; border: none; cursor: pointer;
+  transition: opacity var(--motion-fast);
+}
+.adp-empty-clr:hover { opacity: 0.85; }
+.adp-empty-clr:focus-visible { outline: 3px solid var(--color-border-focus); outline-offset: 2px; }
+
+/* City card v2 — all-destinations grid */
+.dest-card-v2 {
+  background: var(--bg-surface); border-radius: var(--r-lg);
+  overflow: hidden; cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: transform var(--motion-normal), box-shadow var(--motion-normal);
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column;
+}
+.dest-card-v2:hover { transform: translateY(-4px); box-shadow: 0 10px 36px rgba(0,0,0,0.15); }
+.dest-card-v2:focus-visible { outline: 3px solid var(--color-border-focus); outline-offset: 2px; }
+html[data-theme="dark"] .dest-card-v2 { background: #0c1e28; border-color: #0f2f3e; }
+
+.dcv2-img-wrap { position: relative; aspect-ratio: 4/3; overflow: hidden; flex-shrink: 0; }
+.dcv2-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 350ms ease; }
+.dest-card-v2:hover .dcv2-img-wrap img { transform: scale(1.06); }
+.dcv2-scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 30%, rgba(0,10,30,0.76) 100%);
+}
+.dcv2-badge {
+  position: absolute; top: 12px; inset-inline-start: 12px;
+  padding: 3px 10px; border-radius: var(--r-full);
+  font-size: 11px; font-weight: 700; line-height: 1.6;
+}
+.dcv2-name-overlay {
+  position: absolute; bottom: 14px;
+  inset-inline-start: 16px; inset-inline-end: 16px;
+}
+.dcv2-city-name { font-size: 20px; font-weight: 700; color: var(--alm-white); line-height: 1.2; }
+.dcv2-country { font-size: 12px; color: rgba(255,255,255,0.74); margin-top: 2px; }
+
+.dcv2-body { padding: 16px 18px 18px; flex: 1; display: flex; flex-direction: column; }
+.dcv2-desc {
+  font-size: 13px; color: var(--text-secondary); line-height: 1.65;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; margin-bottom: 14px; flex: 1;
+}
+html[data-theme="dark"] .dcv2-desc { color: var(--text-subtle); }
+.dcv2-footer { display: flex; align-items: center; justify-content: space-between; }
+.dcv2-price-from { font-size: 10px; color: var(--text-subtle); display: block; }
+.dcv2-price { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+.dcv2-explore-cue { font-size: 13px; font-weight: 600; color: var(--alm-cyan); white-space: nowrap; }
+
+/* ── City guide hero ── */
+.cg-hero { position: relative; height: 480px; overflow: hidden; }
 .cg-hero img { width: 100%; height: 100%; object-fit: cover; }
 .cg-hero-scrim {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(0,10,30,0.10) 0%, rgba(0,10,30,0.68) 100%);
+  background: linear-gradient(180deg, rgba(0,10,30,0.20) 0%, rgba(0,10,30,0.72) 100%);
 }
+/* Floating back button overlaid on hero (below the sticky real header) */
+.cg-hero-back {
+  position: absolute; top: 80px; inset-inline-start: 24px;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: var(--r-full);
+  background: rgba(0,0,0,0.42); backdrop-filter: blur(8px);
+  color: rgba(255,255,255,0.90); font-size: 13px; font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.20); cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast);
+  z-index: 2;
+}
+.cg-hero-back:hover { background: rgba(0,0,0,0.64); color: #fff; }
+.cg-hero-back:focus-visible { outline: 3px solid var(--color-border-focus); outline-offset: 2px; }
+.cg-hero-back svg { width: 15px; height: 15px; flex-shrink: 0; }
+html[dir="rtl"] .cg-hero-back svg { transform: scaleX(-1); }
 .cg-hero-text {
-  position: absolute; bottom: 28px;
+  position: absolute; bottom: 32px;
   inset-inline-start: 0; inset-inline-end: 0; padding: 0 32px;
+  z-index: 2;
 }
-.cg-city-name { font-size: clamp(26px, 4vw, 40px); font-weight: 700; color: var(--alm-white); line-height: 1.1; margin-bottom: 5px; }
-.cg-country-label { font-size: 14px; color: rgba(255,255,255,0.68); }
+.cg-city-name { font-size: clamp(28px, 4.5vw, 46px); font-weight: 700; color: var(--alm-white); line-height: 1.1; margin-bottom: 6px; }
+.cg-country-label { font-size: 14px; color: rgba(255,255,255,0.72); }
 
 /* City guide content */
 .cg-content { max-width: 880px; margin: 0 auto; padding: 32px 24px 72px; }
@@ -993,9 +1101,12 @@ html[dir="rtl"] .ovp-back svg { transform: scaleX(-1); }
   transition: opacity 120ms, transform 120ms; white-space: nowrap;
 }
 .cg-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.cg-btn:focus-visible { outline: 3px solid var(--color-border-focus); outline-offset: 2px; }
 .cg-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
-.cg-btn-flights { background: var(--alm-red); color: #fff; }
-.cg-btn-stays   { background: var(--alm-dark); color: #fff; }
+.cg-btn-flights    { background: var(--alm-red);  color: #fff; }
+.cg-btn-stays      { background: var(--alm-dark); color: #fff; }
+.cg-btn-activities { background: var(--alm-cyan); color: var(--alm-dark); }
+html[data-theme="dark"] .cg-btn-stays { background: #0a2840; }
 .cg-intro-text { font-size: 15px; line-height: 1.75; color: var(--text-secondary); margin-bottom: 22px; }
 .cg-best-time {
   display: inline-flex; align-items: center; gap: 7px;
@@ -1003,7 +1114,7 @@ html[dir="rtl"] .ovp-back svg { transform: scaleX(-1); }
   background: rgba(0,183,198,0.10); border: 1.5px solid rgba(0,183,198,0.28);
   font-size: 13px; font-weight: 500; color: var(--alm-dark); margin-bottom: 36px;
 }
-html[data-theme="dark"] .cg-best-time { color: var(--alm-cyan); background: rgba(0,183,198,0.10); }
+html[data-theme="dark"] .cg-best-time { color: var(--alm-cyan); }
 .cg-best-time svg { width: 14px; height: 14px; color: var(--alm-cyan); flex-shrink: 0; }
 
 .cg-section { margin-bottom: 36px; }
@@ -2561,29 +2672,67 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 </div>
 
 <!-- ══ ALL DESTINATIONS OVERLAY ══ -->
-<div id="all-dest-page" class="overlay-page" aria-hidden="true" role="dialog" aria-modal="true" aria-label="All Destinations">
-  <div class="ovp-head">
-    <button class="ovp-back" id="adp-back" aria-label="Back">
+<div id="all-dest-page" class="overlay-page" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="adp-page-title">
+
+  <!-- sticky nav bar (sits below the real header via margin-top + top: 62px) -->
+  <div class="adp-nav-bar">
+    <button class="adp-back-btn" id="adp-back" type="button" aria-label="Back to home">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
       <span class="en">Back</span><span class="ar">رجوع</span>
     </button>
-    <span class="ovp-head-title"><span class="en">All Destinations</span><span class="ar">جميع الوجهات</span></span>
-    <span class="ovp-head-count"><span class="en">8 cities</span><span class="ar">٨ مدن</span></span>
+    <span class="adp-nav-crumb">
+      <span class="en">City Guides</span><span class="ar">دليل المدن</span>
+    </span>
   </div>
+
+  <!-- page hero banner: title + description + search -->
+  <div class="adp-page-hero">
+    <div class="adp-page-hero-inner">
+      <p class="adp-page-eyebrow">
+        <span class="en">Travel Inspiration</span><span class="ar">إلهام السفر</span>
+      </p>
+      <h1 class="adp-page-title" id="adp-page-title">
+        <span class="en">Explore Destinations</span><span class="ar">استكشف وجهاتك</span>
+      </h1>
+      <p class="adp-page-desc">
+        <span class="en">From iconic cities to hidden gems — discover, plan, and book your next adventure with Almosafer.</span>
+        <span class="ar">من المدن الشهيرة إلى الكنوز الخفية — اكتشف وخطط واحجز رحلتك القادمة مع المسافر.</span>
+      </p>
+      <div class="adp-search-wrap">
+        <label for="adp-search-input" class="sr-only">
+          <span class="en">Search destinations</span><span class="ar">ابحث عن وجهة</span>
+        </label>
+        <svg class="adp-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="search" id="adp-search-input" class="adp-search-input"
+               autocomplete="off" aria-controls="adp-grid" aria-autocomplete="list">
+      </div>
+    </div>
+  </div>
+
+  <!-- city card grid -->
   <div class="adp-body">
-    <div id="adp-grid" class="adp-grid"></div>
+    <p id="adp-city-count" class="adp-city-count" aria-live="polite" aria-atomic="true">
+      <span class="en">10 destinations</span><span class="ar">١٠ وجهات</span>
+    </p>
+    <div id="adp-grid" class="adp-grid" role="list"></div>
+    <div id="adp-empty" class="adp-empty" hidden>
+      <span class="adp-empty-icon" aria-hidden="true">🔍</span>
+      <p class="adp-empty-msg">
+        <span class="en">No destinations match your search.</span>
+        <span class="ar">لا توجد وجهات تطابق بحثك.</span>
+      </p>
+      <button class="adp-empty-clr" id="adp-empty-clr" type="button">
+        <span class="en">Clear search</span><span class="ar">مسح البحث</span>
+      </button>
+    </div>
   </div>
 </div>
 
 <!-- ══ CITY GUIDE OVERLAY ══ -->
-<div id="cg-page" class="overlay-page" aria-hidden="true" role="dialog" aria-modal="true">
-  <div class="ovp-head">
-    <button class="ovp-back" id="cg-back" aria-label="Back">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-      <span class="en">Back</span><span class="ar">رجوع</span>
-    </button>
-    <span class="ovp-head-title" id="cg-head-title"></span>
-  </div>
+<div id="cg-page" class="overlay-page" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="cg-city-heading">
+  <!-- content rendered dynamically by renderCityGuide() — back button lives inside hero -->
   <div id="cg-body"></div>
 </div>
 
@@ -5307,7 +5456,9 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
   function openAllDestinations() {
     _prevFocusCG = document.activeElement;
-    renderAllDestinations();
+    var srch = document.getElementById('adp-search-input');
+    if (srch) srch.value = '';
+    renderAllDestinations('');
     setHeroVisible(false);
     _openOverlay(ovAllDest);
   }
@@ -5384,34 +5535,72 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     return 'badge-saudi';
   }
 
-  function renderAllDestinations() {
+  function renderAllDestinations(filterText) {
     var isAr = html.lang === 'ar';
-    var grid = document.getElementById('adp-grid');
+    var grid    = document.getElementById('adp-grid');
+    var countEl = document.getElementById('adp-city-count');
+    var emptyEl = document.getElementById('adp-empty');
+    if (!grid) return;
+
+    /* update search placeholder for current language */
+    var srchInput = document.getElementById('adp-search-input');
+    if (srchInput) srchInput.placeholder = isAr ? 'ابحث عن وجهة...' : 'Search destinations...';
+
+    filterText = (filterText || '').toLowerCase().trim();
+    var filtered = filterText ? CITIES_DATA.filter(function(city) {
+      return city.nameEn.toLowerCase().indexOf(filterText) !== -1 ||
+             city.nameAr.indexOf(filterText)               !== -1 ||
+             city.countryEn.toLowerCase().indexOf(filterText) !== -1 ||
+             city.countryAr.indexOf(filterText)             !== -1;
+    }) : CITIES_DATA;
+
     var out = '';
-    CITIES_DATA.forEach(function(city) {
+    filtered.forEach(function(city) {
       var badgeLabel = isAr ? city.badgeLabelAr : city.badgeLabelEn;
-      out += '<article class="dest-card" tabindex="0" data-city-id="' + city.id + '">' +
-        '<div class="dest-img">' +
-          '<img src="' + city.thumbImg + '" alt="' + (isAr ? city.nameAr : city.nameEn) + '" loading="lazy">' +
-          '<span class="dest-badge ' + _badgeClass(city.badge) + '">' + badgeLabel + '</span>' +
-        '</div>' +
-        '<div class="dest-body">' +
-          '<div class="dest-city">' + (isAr ? city.nameAr : city.nameEn) + '</div>' +
-          '<div class="dest-country">' + (isAr ? city.countryAr : city.countryEn) + '</div>' +
-          '<div class="dest-footer">' +
-            '<div><span class="dest-price-label">' + (isAr ? 'من' : 'from') + '</span>' +
-            '<span class="dest-price">SAR ' + city.price.toLocaleString() + '</span></div>' +
-            '<button class="dest-cta">' + (isAr ? 'استكشف' : 'Explore') + '</button>' +
+      var desc = isAr ? city.introAr : city.introEn;
+      if (desc.length > 130) desc = desc.substring(0, 130) + '…';
+
+      out +=
+        '<article class="dest-card-v2" tabindex="0" role="listitem" data-city-id="' + city.id + '"' +
+          ' aria-label="' + (isAr ? city.nameAr : city.nameEn) + '">' +
+          '<div class="dcv2-img-wrap">' +
+            '<img src="' + city.thumbImg + '" alt="" loading="lazy">' +
+            '<div class="dcv2-scrim" aria-hidden="true"></div>' +
+            '<span class="dcv2-badge ' + _badgeClass(city.badge) + '">' + badgeLabel + '</span>' +
+            '<div class="dcv2-name-overlay">' +
+              '<div class="dcv2-city-name">' + (isAr ? city.nameAr : city.nameEn) + '</div>' +
+              '<div class="dcv2-country">' + (isAr ? city.countryAr : city.countryEn) + '</div>' +
+            '</div>' +
           '</div>' +
-        '</div>' +
-      '</article>';
+          '<div class="dcv2-body">' +
+            '<p class="dcv2-desc">' + desc + '</p>' +
+            '<div class="dcv2-footer">' +
+              '<div>' +
+                '<span class="dcv2-price-from">' + (isAr ? 'من' : 'from') + '</span>' +
+                '<span class="dcv2-price">SAR ' + city.price.toLocaleString() + '</span>' +
+              '</div>' +
+              '<span class="dcv2-explore-cue" aria-hidden="true">' + (isAr ? '← استكشف' : 'Explore →') + '</span>' +
+            '</div>' +
+          '</div>' +
+        '</article>';
     });
     grid.innerHTML = out;
+
+    /* count label */
+    if (countEl) {
+      var n = filtered.length;
+      countEl.textContent = isAr
+        ? (n + ' وجهات')
+        : (n + ' destination' + (n !== 1 ? 's' : ''));
+    }
+
+    /* empty state */
+    if (emptyEl) emptyEl.hidden = filtered.length > 0;
+    grid.style.display = filtered.length === 0 ? 'none' : '';
   }
 
   function renderCityGuide(city) {
     var isAr = html.lang === 'ar';
-    document.getElementById('cg-head-title').textContent = isAr ? city.nameAr : city.nameEn;
 
     var introText  = isAr ? city.introAr : city.introEn;
     var bestTime   = isAr ? city.bestTimeAr : city.bestTimeEn;
@@ -5471,12 +5660,18 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       '</div>';
     };
 
+    var backArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>';
+
     document.getElementById('cg-body').innerHTML =
       '<div class="cg-hero">' +
-        '<img src="' + city.heroImg + '" alt="' + (isAr ? city.nameAr : city.nameEn) + '">' +
+        '<img src="' + city.heroImg + '" alt="" loading="lazy">' +
         '<div class="cg-hero-scrim" aria-hidden="true"></div>' +
+        '<button class="cg-hero-back" id="cg-back" type="button" aria-label="' + (isAr ? 'رجوع' : 'Go back') + '">' +
+          backArrow +
+          '<span class="en">Back</span><span class="ar">رجوع</span>' +
+        '</button>' +
         '<div class="cg-hero-text">' +
-          '<div class="cg-city-name">' + (isAr ? city.nameAr : city.nameEn) + '</div>' +
+          '<h1 class="cg-city-name" id="cg-city-heading">' + (isAr ? city.nameAr : city.nameEn) + '</h1>' +
           '<div class="cg-country-label">' + (isAr ? city.countryAr : city.countryEn) + '</div>' +
         '</div>' +
       '</div>' +
@@ -5523,18 +5718,32 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       '</div>';
   }
 
-  /* ── Event delegation — all-dest grid ── */
+  /* ── Event delegation — all-dest grid (city card v2) ── */
   ovAllDest.addEventListener('click', function(e) {
-    var card = e.target.closest('.dest-card[data-city-id]');
+    var card = e.target.closest('.dest-card-v2[data-city-id]');
     if (card) openCityGuide(card.getAttribute('data-city-id'), true);
+    var clr = e.target.closest('#adp-empty-clr');
+    if (clr) {
+      var si = document.getElementById('adp-search-input');
+      if (si) { si.value = ''; si.focus(); }
+      renderAllDestinations('');
+    }
   });
   ovAllDest.addEventListener('keydown', function(e) {
-    var card = e.target.closest('.dest-card[data-city-id]');
+    var card = e.target.closest('.dest-card-v2[data-city-id]');
     if (card && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openCityGuide(card.getAttribute('data-city-id'), true); }
   });
 
-  /* ── Event delegation — city guide CTAs ── */
+  /* ── Search filter on all-dest page ── */
+  ovAllDest.addEventListener('input', function(e) {
+    if (e.target.id === 'adp-search-input') {
+      renderAllDestinations(e.target.value);
+    }
+  });
+
+  /* ── Event delegation — city guide back button + CTAs ── */
   ovCityGuide.addEventListener('click', function(e) {
+    if (e.target.closest('#cg-back')) { closeCityGuide(); return; }
     var fb = e.target.closest('.cg-btn-flights[data-city-id]');
     if (fb) { fillAndClose(fb.getAttribute('data-city-id'), 'flights'); return; }
     var sb = e.target.closest('.cg-btn-stays[data-city-id]');
@@ -5580,9 +5789,13 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
   renderTopDestinations();
 
-  /* Re-render home cards on language switch */
+  /* Re-render home cards on language switch; also re-render all-dest if open */
   document.getElementById('langBtn').addEventListener('click', function() {
     renderTopDestinations();
+    if (ovAllDest && !ovAllDest.hasAttribute('aria-hidden')) {
+      var srch = document.getElementById('adp-search-input');
+      renderAllDestinations(srch ? srch.value : '');
+    }
   });
 
   /* ── "See all" button ── */
@@ -5592,8 +5805,8 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   }
 
   /* ── Back buttons ── */
+  /* adp-back is static HTML; cg-back is delegated above (dynamic inside hero) */
   document.getElementById('adp-back').addEventListener('click', closeAllDestinations);
-  document.getElementById('cg-back').addEventListener('click', closeCityGuide);
 
   /* ── Escape closes topmost overlay ── */
   document.addEventListener('keydown', function(e) {
