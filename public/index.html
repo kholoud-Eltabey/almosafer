@@ -118,6 +118,13 @@
   --text-heading-md-size: 24px;
   --text-heading-lg-size: 24px;
 
+  /* ── DESIGN SYSTEM — BADGE TOKENS (badge.md §5–7) ── */
+  --text-caption-size:              11px;      /* small badge label */
+  --border-width-default:            1px;      /* standard border width */
+  --color-background-danger:        rgba(230, 57, 70,  0.12); /* hot/promo tint */
+  --color-background-brand-subtle:  rgba(0, 183, 198,  0.12); /* deal/brand tint */
+  --color-background-neutral-subtle:rgba(0,  59,  74,  0.08); /* neutral/premium tint */
+
   /* ── DESIGN SYSTEM — MOTION TOKENS ── */
   --motion-fast:   100ms cubic-bezier(0.2, 0, 0, 1);
   --motion-normal: 200ms cubic-bezier(0.2, 0, 0, 1);
@@ -759,14 +766,42 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
 .dest-img { position: relative; height: 190px; overflow: hidden; }
 .dest-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 4s ease; }
 .dest-card:hover .dest-img img { transform: scale(1.06); }
+/* Badge — base (badge.md §7 Small: caption size, pill, border, medium weight) */
 .dest-badge {
   position: absolute; top: 10px; inset-inline-start: 10px;
-  padding: 3px 9px; border-radius: var(--r-full);
-  font-size: 10.5px; font-weight: 700; color: #fff;
+  display: inline-flex; align-items: center;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  border: var(--border-width-default) solid transparent;
+  font-size: var(--text-caption-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  white-space: nowrap;
 }
-.badge-hot   { background: var(--alm-red-dark); }
-.badge-deal  { background: rgba(0,183,198,0.90); color: var(--alm-dark); }
-.badge-saudi { background: rgba(0,59,74,0.85); }
+/* Variant — Danger/Promotional (hot: Trending, Popular, Local Gem) */
+.badge-hot {
+  background: var(--color-background-danger);
+  border-color: var(--alm-red);
+  color: var(--alm-red-dark);
+}
+/* Variant — Brand (deal: Great Deal, Top Pick, Must Visit) */
+.badge-deal {
+  background: var(--color-background-brand-subtle);
+  border-color: var(--alm-cyan);
+  color: var(--alm-dark);
+}
+/* Variant — Neutral-premium (luxury) */
+.badge-luxury {
+  background: var(--color-background-neutral-subtle);
+  border-color: var(--color-border-default);
+  color: var(--text-primary);
+}
+/* Variant — Neutral (saudi) */
+.badge-saudi {
+  background: var(--color-background-neutral-subtle);
+  border-color: var(--color-border-default);
+  color: var(--text-primary);
+}
 
 .dest-body { padding: 14px 16px 16px; }
 .dest-city { font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: 2px; }
@@ -5091,6 +5126,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   function _badgeClass(badge) {
     if (badge === 'hot')    return 'badge-hot';
     if (badge === 'deal')   return 'badge-deal';
+    if (badge === 'luxury') return 'badge-luxury';
     return 'badge-saudi';
   }
 
