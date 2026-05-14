@@ -769,8 +769,8 @@ html[data-theme="dark"] .sug-item:hover { background: rgba(0,183,198,0.12); }
 .badge-saudi { background: rgba(0,59,74,0.85); }
 
 .dest-body { padding: 14px 16px 16px; }
-.dest-city { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
-.dest-country { font-size: 12px; color: var(--text-subtle); margin-bottom: 12px; }
+.dest-city { font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: 2px; }
+.dest-country { font-size: 12px; font-weight: 400; color: var(--text-subtle); margin-bottom: 12px; }
 .dest-footer { display: flex; align-items: center; justify-content: space-between; }
 .dest-price-label { font-size: 10px; color: var(--text-subtle); font-weight: 400; display: block; }
 .dest-price { font-size: 17px; font-weight: 700; color: var(--alm-dark); }
@@ -972,6 +972,7 @@ html[data-theme="dark"] .cg-tip { background: rgba(0,183,198,0.07); }
 .rs-back { display:inline-flex; align-items:center; gap:5px; background:none; border:none; padding:0; font-size:13px; font-weight:600; color:var(--alm-cyan); cursor:pointer; font-family:inherit; transition:opacity 120ms; margin-bottom:4px; }
 .rs-back:hover { opacity:.72; }
 .rs-back svg { width:14px; height:14px; }
+html[dir="rtl"] .rs-back svg { transform: scaleX(-1); }
 .rs-count { font-size:13px; color:var(--text-subtle); }
 .rs-count strong { color:var(--text-primary); font-size:22px; font-weight:800; margin-inline-end:4px; vertical-align:middle; }
 .rs-sort-wrap { display:flex; align-items:center; gap:8px; flex-shrink:0; }
@@ -1346,6 +1347,7 @@ html[data-theme="dark"] .promo-card { background:var(--bg-surface); }
 }
 .dcs-back:hover { opacity:.72; }
 .dcs-back svg { width:15px; height:15px; }
+html[dir="rtl"] .dcs-back svg { transform: scaleX(-1); }
 .dcs-content {
   width:100%; text-align:center;
   padding:48px 24px;
@@ -1555,6 +1557,7 @@ html[data-theme="dark"] #si-resend-toast { background:#00B7C6; color:#fff; }
 }
 .ma-back:hover { opacity:.72; }
 .ma-back svg { width:15px; height:15px; }
+html[dir="rtl"] .ma-back svg { transform: scaleX(-1); }
 .ma-identity {
   background:var(--bg-surface); border:1px solid var(--border);
   border-radius:var(--r-xl); padding:20px;
