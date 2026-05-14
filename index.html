@@ -1189,6 +1189,12 @@ html[dir="rtl"] .cg-hero-back svg { transform: scaleX(-1); }
 
 /* City guide content */
 .cg-content { max-width: 880px; margin: 0 auto; padding: 28px 24px 72px; }
+/* Force-hide all city guide panels when hidden — prevents CSS from overriding the [hidden] attribute */
+#cg-results[hidden],
+#cg-attr-detail[hidden],
+#cg-hotel-detail[hidden],
+#cg-flight-detail[hidden],
+#cg-page-content[hidden] { display: none !important; }
 .cg-cta-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
 
 /* ── City Guide Booking Widget ── */
@@ -1617,7 +1623,8 @@ html[data-theme="dark"] .cghd-price { color: #e8f4f7; }
 .cghd-section-divider { height: 1px; background: var(--border); margin: 20px 0; }
 .cghd-rooms-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--text-subtle); margin-bottom: 12px; }
 .cghd-rooms { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
-.cghd-room-card { display: flex; gap: 14px; padding: 14px; border-radius: var(--r-lg); border: 1px solid var(--border); background: var(--bg-page); transition: border-color 150ms, box-shadow 150ms; }
+.cghd-room-card { display: flex; gap: 14px; padding: 14px; border-radius: var(--r-lg); border: 1px solid var(--border); background: var(--bg-page); transition: border-color 150ms, box-shadow 150ms; cursor: pointer; }
+.cghd-room-card:focus-visible { outline: 2px solid var(--alm-cyan); outline-offset: 2px; }
 html[data-theme="dark"] .cghd-room-card { background: #0a1c28; border-color: #1e3a4a; }
 .cghd-room-card:hover { border-color: var(--alm-cyan); box-shadow: 0 3px 14px rgba(0,183,198,0.10); }
 .cghd-room-img { width: 110px; height: 90px; border-radius: var(--r-md); object-fit: cover; flex-shrink: 0; background: var(--border); }
@@ -6904,7 +6911,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
             var rChips = (isAr ? (room.chipsAr || room.chips) : room.chips) || [];
             var chipsHtml = rChips.map(function(c){ return '<span class="cghd-room-chip">' + c + '</span>'; }).join('');
             html2 +=
-              '<div class="cghd-room-card">' +
+              '<div class="cghd-room-card" role="button" tabindex="0" data-room-name="' + room.nameEn + '" data-price="' + room.priceSAR + '">' +
                 '<img class="cghd-room-img" src="' + (room.img || '') + '" alt="' + rName + '" loading="lazy">' +
                 '<div class="cghd-room-info">' +
                   '<div class="cghd-room-name">' + rName + '</div>' +
@@ -7858,11 +7865,11 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       return;
     }
 
-    /* Hotel detail — room select button */
-    var roomSelBtn = e.target.closest('.cghd-room-select');
-    if (roomSelBtn) {
-      var rName  = roomSelBtn.getAttribute('data-room-name') || '';
-      var rPrice = parseInt(roomSelBtn.getAttribute('data-price'), 10) || 0;
+    /* Hotel detail — room card (whole card) or select button */
+    var roomCard = e.target.closest('.cghd-room-card[data-room-name]');
+    if (roomCard) {
+      var rName  = roomCard.getAttribute('data-room-name') || '';
+      var rPrice = parseInt(roomCard.getAttribute('data-price'), 10) || 0;
       openBooking('room', rName, rPrice, 1);
       return;
     }
@@ -7973,9 +7980,15 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     if (ab) { fillAndClose(ab.getAttribute('data-city-id'), 'activities'); }
   });
 
-  /* Keyboard Enter/Space on attraction cards and hotel rows */
+  /* Keyboard Enter/Space on room cards, attraction cards and hotel rows */
   ovCityGuide.addEventListener('keydown', function(e) {
     if (e.key !== 'Enter' && e.key !== ' ') return;
+    var roomCard = e.target.closest('.cghd-room-card[data-room-name]');
+    if (roomCard) {
+      e.preventDefault();
+      openBooking('room', roomCard.getAttribute('data-room-name') || '', parseInt(roomCard.getAttribute('data-price'), 10) || 0, 1);
+      return;
+    }
     var attrCard = e.target.closest('.cg-attr-card[data-attr-idx]');
     if (attrCard && _cgCurrentCity) {
       e.preventDefault();
