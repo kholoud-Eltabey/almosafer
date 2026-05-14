@@ -2012,69 +2012,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       </a>
     </div>
 
-    <div class="cards">
-
-      <!-- Dubai -->
-      <article class="dest-card" tabindex="0">
-        <div class="dest-img">
-          <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80&auto=format&fit=crop"
-               alt="Dubai skyline with Burj Khalifa" loading="lazy">
-          <span class="dest-badge badge-hot"><span aria-hidden="true">🔥</span> <span class="en">Trending</span><span class="ar">رائج</span></span>
-        </div>
-        <div class="dest-body">
-          <div class="dest-city"><span class="en">Dubai</span><span class="ar">دبي</span></div>
-          <div class="dest-country"><span class="en">United Arab Emirates</span><span class="ar">الإمارات العربية المتحدة</span></div>
-          <div class="dest-footer">
-            <div>
-              <span class="dest-price-label"><span class="en">from</span><span class="ar">من</span></span>
-              <span class="dest-price">SAR 890</span>
-            </div>
-            <button class="dest-cta"><span class="en">Book now</span><span class="ar">احجز الآن</span></button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Istanbul -->
-      <article class="dest-card" tabindex="0">
-        <div class="dest-img">
-          <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=600&q=80&auto=format&fit=crop"
-               alt="Istanbul Blue Mosque at sunset" loading="lazy">
-          <span class="dest-badge badge-deal"><span class="en">Great Deal</span><span class="ar">عرض رائع</span></span>
-        </div>
-        <div class="dest-body">
-          <div class="dest-city"><span class="en">Istanbul</span><span class="ar">إسطنبول</span></div>
-          <div class="dest-country"><span class="en">Turkey</span><span class="ar">تركيا</span></div>
-          <div class="dest-footer">
-            <div>
-              <span class="dest-price-label"><span class="en">from</span><span class="ar">من</span></span>
-              <span class="dest-price">SAR 1,240</span>
-            </div>
-            <button class="dest-cta"><span class="en">Book now</span><span class="ar">احجز الآن</span></button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Maldives -->
-      <article class="dest-card" tabindex="0">
-        <div class="dest-img">
-          <img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80&auto=format&fit=crop"
-               alt="Overwater bungalows in the Maldives" loading="lazy">
-          <span class="dest-badge badge-saudi">⭐ <span class="en">Luxury</span><span class="ar">فاخر</span></span>
-        </div>
-        <div class="dest-body">
-          <div class="dest-city"><span class="en">Maldives</span><span class="ar">جزر المالديف</span></div>
-          <div class="dest-country"><span class="en">Indian Ocean</span><span class="ar">المحيط الهندي</span></div>
-          <div class="dest-footer">
-            <div>
-              <span class="dest-price-label"><span class="en">from</span><span class="ar">من</span></span>
-              <span class="dest-price">SAR 3,200</span>
-            </div>
-            <button class="dest-cta"><span class="en">Book now</span><span class="ar">احجز الآن</span></button>
-          </div>
-        </div>
-      </article>
-
-    </div>
+    <div class="cards" id="top-dest-cards"></div>
   </div>
 
   <!-- DEALS -->
@@ -4967,6 +4905,68 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       todoAr:['جولة نهرية على السين ليلاً','جولة سير في حي مونمارتر للفن','رحلة يومية إلى حدائق فرساي','تذوق الماكارون في لو ماريه','بار الشمبانيا في سان جيرمان'],
       tipsEn:['Navigo pass: unlimited weekly metro and RER travel.','Most cafés add a service charge; 5–10% tip appreciated.','National museums are free on the first Sunday of each month.','Book Eiffel Tower and Versailles online — queues can exceed 3 hours.'],
       tipsAr:['بطاقة Navigo: سفر أسبوعي غير محدود بالمترو والقطار.','معظم المقاهي تضيف رسوم خدمة، وإكرامية 5-10% محل تقدير.','المتاحف الوطنية مجانية أول أحد من كل شهر.','احجز أونلاين لبرج إيفل وفرساي، قد تصل طوابير لأكثر من 3 ساعات.']
+    },
+    {
+      id:'bali', nameEn:'Bali', nameAr:'بالي',
+      countryEn:'Indonesia', countryAr:'إندونيسيا',
+      price:2800, badge:'hot', badgeLabelEn:'Trending', badgeLabelAr:'رائج',
+      heroImg:'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200&q=80&auto=format&fit=crop',
+      thumbImg:'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80&auto=format&fit=crop',
+      introEn:'Bali is the Island of the Gods — a tropical paradise of emerald rice terraces, ancient temples, world-class surf, and a rich Hindu spiritual culture unlike anywhere else in Southeast Asia.',
+      introAr:'بالي جزيرة الآلهة، جنة استوائية من المدرجات الزمردية والمعابد القديمة وأمواج السرف العالمية والثقافة الهندوسية الروحية العريقة.',
+      bestTimeEn:'April – October', bestTimeAr:'أبريل – أكتوبر',
+      attractions:[
+        {nameEn:'Tegallalang Rice Terraces',nameAr:'مدرجات تيغالالانج الأرزية',descEn:'Iconic emerald-green terraced rice fields in Ubud, sculpted into hillsides over centuries.',descAr:'حقول أرز مدرجة خضراء أيقونية في أوبود، نحتتها الأيدي على مر القرون.'},
+        {nameEn:'Uluwatu Temple',nameAr:'معبد أولواتو',descEn:'A dramatic clifftop Hindu temple 70m above the Indian Ocean, famous for Kecak fire dances.',descAr:'معبد هندوسي على حافة منحدر 70 متراً فوق المحيط الهندي، مشهور برقصات الكيتشاك.'},
+        {nameEn:'Sacred Monkey Forest',nameAr:'غابة القرود المقدسة',descEn:'A Hindu sanctuary in Ubud with over 700 monkeys and moss-covered ancient temples.',descAr:'ملاذ هندوسي في أوبود يضم أكثر من 700 قرد ومعابد قديمة مغطاة بالطحالب.'},
+        {nameEn:'Seminyak Beach',nameAr:'شاطئ سيمينياك',descEn:"Bali's trendiest beach with luxury resorts, world-class dining, and spectacular sunsets.",descAr:'أرقى شواطئ بالي مع منتجعات فاخرة ومطاعم عالمية وغروب شمس استثنائي.'}
+      ],
+      hotels:[
+        {nameEn:'Four Seasons Bali at Sayan',stars:5,priceSAR:4800},
+        {nameEn:'Viceroy Bali',stars:5,priceSAR:3200},
+        {nameEn:'COMO Uma Ubud',stars:5,priceSAR:2800},
+        {nameEn:'Alaya Resort Ubud',stars:4,priceSAR:900}
+      ],
+      flightsFromRUH:[
+        {airlineEn:'Emirates via Dubai',dep:'Via Dubai',arr:'',stops:1,priceSAR:2800},
+        {airlineEn:'Qatar Airways',dep:'Via Doha',arr:'',stops:1,priceSAR:3100},
+        {airlineEn:'Singapore Airlines',dep:'Via Singapore',arr:'',stops:1,priceSAR:3400}
+      ],
+      todoEn:['Sunrise hike on Mount Batur volcano','Traditional Balinese massage in Ubud','Surf lesson at Kuta or Seminyak','White-water rafting on the Ayung River','Cooking class and local market tour'],
+      todoAr:['مشي فجري على بركان جبل باتور','مساج بالي التقليدي في أوبود','درس ركوب الأمواج في كوتا أو سيمينياك','رافتينج على نهر أيونج','درس طهي وجولة في السوق المحلي'],
+      tipsEn:['Indonesian rupiah is the currency; USD widely accepted at tourist areas.','Dress modestly at temples — sarongs are provided at entrances.','Monsoon season (Nov–Mar): expect afternoon downpours.','Haggling is expected at art markets.'],
+      tipsAr:['الروبية الإندونيسية هي العملة، والدولار مقبول في المناطق السياحية.','ارتدِ ملابس محتشمة في المعابد، وسارونجات متاحة عند المداخل.','موسم الأمطار (نوفمبر-مارس): توقع أمطاراً مسائية.','المساومة متوقعة في أسواق الفن.']
+    },
+    {
+      id:'tokyo', nameEn:'Tokyo', nameAr:'طوكيو',
+      countryEn:'Japan', countryAr:'اليابان',
+      price:3400, badge:'deal', badgeLabelEn:'Must Visit', badgeLabelAr:'لا تفوته',
+      heroImg:'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200&q=80&auto=format&fit=crop',
+      thumbImg:'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80&auto=format&fit=crop',
+      introEn:'Tokyo is a city of extraordinary contrasts — ancient temples between neon-lit skyscrapers, Michelin-starred restaurants beside street-food stalls, and serene gardens at the heart of the world\'s largest metropolis.',
+      introAr:'طوكيو مدينة التناقضات الاستثنائية، معابد قديمة بين ناطحات السحاب المضاءة بالنيون ومطاعم ميشلان بجوار أكشاك الطعام وحدائق هادئة في قلب أكبر مدن العالم.',
+      bestTimeEn:'March – May (Cherry Blossom), Oct – Nov', bestTimeAr:'مارس – مايو (موسم الكرز)، أكتوبر – نوفمبر',
+      attractions:[
+        {nameEn:'Senso-ji Temple',nameAr:'معبد سينسو-جي',descEn:"Tokyo's oldest temple in Asakusa — a vermilion complex with the famous Kaminarimon gate.",descAr:'أقدم معابد طوكيو في أساكوسا، مجمع أحمر مذهل بباب كامينارمون الشهير.'},
+        {nameEn:'Shibuya Crossing',nameAr:'تقاطع شيبويا',descEn:"The world's busiest pedestrian crossing — a mesmerizing spectacle of organised urban energy.",descAr:'أكثر تقاطعات المشاة ازدحاماً في العالم، عرض رائع من الطاقة الحضرية المنظمة.'},
+        {nameEn:'Tsukiji Outer Market',nameAr:'سوق تسوكيجي الخارجي',descEn:'A legendary food district — best visited at dawn for the freshest sushi in the world.',descAr:'حي طعام أسطوري، أفضل عند الفجر لأطازج السوشي في العالم.'},
+        {nameEn:'teamLab Borderless',nameAr:'تيم لاب بوردرليس',descEn:'A mind-bending digital art museum where immersive light installations fill entire rooms.',descAr:'متحف فن رقمي مذهل تملأ تركيباته الضوئية الغامرة الغرف بأكملها.'}
+      ],
+      hotels:[
+        {nameEn:'Park Hyatt Tokyo',stars:5,priceSAR:3800},
+        {nameEn:'The Peninsula Tokyo',stars:5,priceSAR:4200},
+        {nameEn:'Aman Tokyo',stars:5,priceSAR:6500},
+        {nameEn:'Shinjuku Granbell Hotel',stars:4,priceSAR:680}
+      ],
+      flightsFromRUH:[
+        {airlineEn:'Saudia via Osaka',dep:'Via Osaka',arr:'',stops:1,priceSAR:3400},
+        {airlineEn:'Emirates via Dubai',dep:'Via Dubai',arr:'',stops:1,priceSAR:3900},
+        {airlineEn:'Qatar Airways',dep:'Via Doha',arr:'',stops:1,priceSAR:3600}
+      ],
+      todoEn:['Cherry blossom picnic in Shinjuku Gyoen','Robot Restaurant show in Shinjuku','Ramen tasting tour in Shibuya','Day trip to Nikko shrines and waterfalls','Sumo morning practice viewing'],
+      todoAr:['نزهة الكرز في حديقة شينجوكو جيون','عرض مطعم الروبوت في شينجوكو','جولة تذوق الرامن في شيبويا','رحلة يومية إلى معابد نيكو وشلالاتها','مشاهدة تدريب السومو الصباحي'],
+      tipsEn:['IC card (Suica/Pasmo) covers all trains and metro.','Cash is preferred — many places do not accept cards.','A slight bow as a greeting is always appreciated.','Book teamLab and popular restaurants well in advance.'],
+      tipsAr:['بطاقة IC (سويكا/باسمو) تغطي جميع القطارات والمترو.','النقد مفضّل، كثير من الأماكن لا تقبل البطاقات.','انحنٍ قليلاً كتحية، لها أثر كبير دائماً.','احجز تيم لاب والمطاعم الشهيرة مسبقاً.']
     }
   ];
 
@@ -5062,11 +5062,16 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       if (destEl) { destEl.textContent = cityName; destEl.classList.remove('sf-muted'); }
       var flightsTab = document.querySelector('.sh-tab[data-sh-tab="flights"]');
       if (flightsTab && !flightsTab.classList.contains('active')) flightsTab.click();
-    } else {
+    } else if (mode === 'stays') {
       var stayEl = document.getElementById('stayQVal');
       if (stayEl) { stayEl.textContent = cityName; stayEl.classList.remove('sf-muted'); }
       var staysTab = document.querySelector('.sh-tab[data-sh-tab="stays"]');
       if (staysTab && !staysTab.classList.contains('active')) staysTab.click();
+    } else if (mode === 'activities') {
+      var actEl = document.getElementById('actQVal');
+      if (actEl) { actEl.textContent = cityName; actEl.classList.remove('sf-muted'); }
+      var actTab = document.querySelector('.sh-tab[data-sh-tab="activities"]');
+      if (actTab && !actTab.classList.contains('active')) actTab.click();
     }
     _hideInstant(ovCityGuide);
     _hideInstant(ovAllDest);
@@ -5157,9 +5162,10 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
         t + '</div>';
     }).join('');
 
-    var flightSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 16l-9-13L3 16M3 16h18M3 16l4-2m14 2l-4-2"/></svg>';
-    var staysSvg  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
-    var clockSvg  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+    var flightSvg     = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 16l-9-13L3 16M3 16h18M3 16l4-2m14 2l-4-2"/></svg>';
+    var staysSvg      = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
+    var clockSvg      = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+    var activitiesSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>';
 
     var ctaBar = function(cityId) {
       return '<div class="cg-cta-bar">' +
@@ -5167,6 +5173,8 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
           '<span class="en">Search flights</span><span class="ar">ابحث عن رحلات</span></button>' +
         '<button class="cg-btn cg-btn-stays" data-city-id="' + cityId + '">' + staysSvg +
           '<span class="en">Search stays</span><span class="ar">ابحث عن إقامات</span></button>' +
+        '<button class="cg-btn cg-btn-activities" data-city-id="' + cityId + '">' + activitiesSvg +
+          '<span class="en">Activities</span><span class="ar">الأنشطة</span></button>' +
       '</div>';
     };
 
@@ -5207,12 +5215,16 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
         '</section>' +
         '<div class="cg-footer-cta">' +
           '<button class="cg-btn cg-btn-flights" data-city-id="' + city.id + '">' + flightSvg +
-            '<span class="en">Search flights to ' + city.nameEn + '</span>' +
-            '<span class="ar">ابحث عن رحلات إلى ' + city.nameAr + '</span>' +
+            '<span class="en">Flights to ' + city.nameEn + '</span>' +
+            '<span class="ar">رحلات إلى ' + city.nameAr + '</span>' +
           '</button>' +
           '<button class="cg-btn cg-btn-stays" data-city-id="' + city.id + '">' + staysSvg +
-            '<span class="en">Search stays in ' + city.nameEn + '</span>' +
-            '<span class="ar">ابحث عن إقامات في ' + city.nameAr + '</span>' +
+            '<span class="en">Stays in ' + city.nameEn + '</span>' +
+            '<span class="ar">إقامات في ' + city.nameAr + '</span>' +
+          '</button>' +
+          '<button class="cg-btn cg-btn-activities" data-city-id="' + city.id + '">' + activitiesSvg +
+            '<span class="en">Activities in ' + city.nameEn + '</span>' +
+            '<span class="ar">أنشطة في ' + city.nameAr + '</span>' +
           '</button>' +
         '</div>' +
       '</div>';
@@ -5233,20 +5245,51 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     var fb = e.target.closest('.cg-btn-flights[data-city-id]');
     if (fb) { fillAndClose(fb.getAttribute('data-city-id'), 'flights'); return; }
     var sb = e.target.closest('.cg-btn-stays[data-city-id]');
-    if (sb) { fillAndClose(sb.getAttribute('data-city-id'), 'stays'); }
+    if (sb) { fillAndClose(sb.getAttribute('data-city-id'), 'stays'); return; }
+    var ab = e.target.closest('.cg-btn-activities[data-city-id]');
+    if (ab) { fillAndClose(ab.getAttribute('data-city-id'), 'activities'); }
   });
 
-  /* ── Wire up main page dest-cards ── */
-  document.querySelectorAll('#main .dest-card').forEach(function(card) {
-    var en = card.querySelector('.dest-city .en');
-    if (!en) return;
-    var match = CITIES_DATA.filter(function(c) { return c.nameEn === en.textContent.trim(); })[0];
-    if (!match) return;
-    card.setAttribute('data-city-id', match.id);
-    card.addEventListener('click', function() { openCityGuide(match.id, false); });
-    card.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') openCityGuide(match.id, false);
+  /* ── Render top destinations home grid ── */
+  function renderTopDestinations() {
+    var isAr = html.lang === 'ar';
+    var grid = document.getElementById('top-dest-cards');
+    if (!grid) return;
+    var featured = CITIES_DATA.slice(0, 6);
+    var out = '';
+    featured.forEach(function(city) {
+      var badgeLabel = isAr ? city.badgeLabelAr : city.badgeLabelEn;
+      out += '<article class="dest-card" tabindex="0" role="button" data-city-id="' + city.id + '" aria-label="' + (isAr ? city.nameAr : city.nameEn) + '">' +
+        '<div class="dest-img">' +
+          '<img src="' + city.thumbImg + '" alt="' + (isAr ? city.nameAr : city.nameEn) + '" loading="lazy">' +
+          '<span class="dest-badge ' + _badgeClass(city.badge) + '">' + badgeLabel + '</span>' +
+        '</div>' +
+        '<div class="dest-body">' +
+          '<div class="dest-city">' + (isAr ? city.nameAr : city.nameEn) + '</div>' +
+          '<div class="dest-country">' + (isAr ? city.countryAr : city.countryEn) + '</div>' +
+          '<div class="dest-footer">' +
+            '<div><span class="dest-price-label">' + (isAr ? 'من' : 'from') + '</span> ' +
+            '<span class="dest-price">SAR ' + city.price.toLocaleString() + '</span></div>' +
+            '<button class="dest-cta">' + (isAr ? 'استكشف' : 'Explore') + '</button>' +
+          '</div>' +
+        '</div>' +
+      '</article>';
     });
+    grid.innerHTML = out;
+    grid.querySelectorAll('.dest-card[data-city-id]').forEach(function(card) {
+      var id = card.getAttribute('data-city-id');
+      card.addEventListener('click', function() { openCityGuide(id, false); });
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCityGuide(id, false); }
+      });
+    });
+  }
+
+  renderTopDestinations();
+
+  /* Re-render home cards on language switch */
+  document.getElementById('langBtn').addEventListener('click', function() {
+    renderTopDestinations();
   });
 
   /* ── "See all" button ── */
