@@ -2320,8 +2320,33 @@ html[data-theme="dark"] .deals-section { background:var(--bg-page); }
   transition:transform 180ms, box-shadow 180ms;
   display:flex; flex-direction:column; position:relative;
 }
-html[data-theme="dark"] .promo-card { background:var(--bg-surface); }
+html[data-theme="dark"] .promo-card { background:var(--bg-surface); border-color:rgba(255,255,255,.08); }
 .promo-card:hover { transform:translateY(-5px); box-shadow:0 16px 44px rgba(0,59,74,.16); }
+/* ── dark mode deals accessibility fixes ── */
+html[data-theme="dark"] .promo-title { color:var(--text-primary); }
+html[data-theme="dark"] .promo-desc  { color:var(--text-secondary); }
+html[data-theme="dark"] .promo-timer { color:var(--alm-cyan); }
+html[data-theme="dark"] .promo-timer.urgent { color:#ff8a8a; }
+html[data-theme="dark"] .promo-timer-lbl { color:var(--text-subtle); }
+html[data-theme="dark"] .promo-inline-code { color:var(--text-secondary); }
+html[data-theme="dark"] .promo-inline-code strong { color:var(--text-primary); }
+html[data-theme="dark"] .promo-footer-row { border-top-color:rgba(255,255,255,.08); }
+html[data-theme="dark"] .deals-tab { background:var(--bg-surface); border-color:rgba(255,255,255,.12); color:var(--text-secondary); }
+html[data-theme="dark"] .deals-tab:hover { border-color:var(--alm-cyan); color:var(--text-primary); }
+html[data-theme="dark"] .deals-tab.active { background:var(--alm-cyan); color:var(--alm-dark); border-color:var(--alm-cyan); }
+html[data-theme="dark"] .deal-ov-panel { background:var(--bg-surface); }
+html[data-theme="dark"] .deal-ov-cat { color:var(--alm-cyan); }
+html[data-theme="dark"] .deal-ov-title { color:var(--text-primary); }
+html[data-theme="dark"] .deal-ov-desc { color:var(--text-secondary); }
+html[data-theme="dark"] .deal-ov-terms-ttl { color:var(--text-subtle); }
+html[data-theme="dark"] .deal-ov-terms li { color:var(--text-secondary); }
+html[data-theme="dark"] .deal-ov-cd-label { color:var(--text-secondary); }
+html[data-theme="dark"] .deal-ov-code-box { background:rgba(0,183,198,.07); border-color:var(--alm-cyan); }
+html[data-theme="dark"] .deal-ov-code-label { color:var(--text-subtle); }
+html[data-theme="dark"] .deal-ov-code-val { color:var(--text-primary); }
+html[data-theme="dark"] .deal-ov-from-lbl { color:var(--text-subtle); }
+html[data-theme="dark"] .deal-ov-price { color:var(--text-primary); }
+html[data-theme="dark"] .deal-ov-currency { color:var(--text-secondary); }
 .promo-card:hover .promo-img img { transform:scale(1.06); }
 
 /* Image area */
@@ -2444,7 +2469,17 @@ html[data-theme="dark"] .promo-card { background:var(--bg-surface); }
 .flash-card:hover { transform:translateY(-3px); border-color:rgba(0,183,198,.5); }
 .flash-card-img { width:100%; height:84px; object-fit:cover; display:block; }
 .flash-card-body { padding:9px 10px 11px; }
-.flash-card-pct { font-size:21px; font-weight:900; color:var(--alm-red); line-height:1; margin-bottom:3px; }
+.flash-card-pct { font-size:24px; font-weight:500; color:var(--alm-red); line-height:1; margin-bottom:3px; }
+.flash-nav { display:flex; gap:6px; flex-shrink:0; }
+.flash-nav-btn {
+  width:32px; height:32px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.10);
+  color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:background 150ms; flex-shrink:0;
+}
+.flash-nav-btn:hover { background:rgba(255,255,255,.22); }
+.flash-nav-btn:disabled { opacity:.35; cursor:default; }
+.flash-nav-btn svg { width:16px; height:16px; pointer-events:none; }
 .flash-card-dest { font-size:11.5px; font-weight:600; color:#fff; margin-bottom:4px; line-height:1.3; }
 .flash-card-from { font-size:10px; color:rgba(255,255,255,.5); margin-bottom:5px; }
 .flash-card-timer { font-size:10px; font-weight:700; color:var(--alm-cyan); font-variant-numeric:tabular-nums; }
@@ -6124,6 +6159,11 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
         '</div>' +
       '</div>';
     }).join('');
+    var prevSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>';
+    var nextSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>';
+    /* In RTL the visual prev/next are swapped */
+    var prevBtn = '<button class="flash-nav-btn" id="flash-prev" aria-label="Previous">' + prevSvg + '</button>';
+    var nextBtn = '<button class="flash-nav-btn" id="flash-next" aria-label="Next">' + nextSvg + '</button>';
     wrap.innerHTML =
       '<div class="flash-strip">' +
         '<div class="flash-strip-head">' +
@@ -6131,9 +6171,19 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
             '⚡ ' + (isAr ? 'تخفيضات مؤقتة' : 'Flash Deals') +
             '<span class="flash-live-badge">' + (isAr ? 'مباشر' : 'LIVE') + '</span>' +
           '</span>' +
+          '<div class="flash-nav">' + prevBtn + nextBtn + '</div>' +
         '</div>' +
         '<div class="flash-scroll" id="flash-scroll">' + cardsHtml + '</div>' +
       '</div>';
+    /* wire nav arrows */
+    var scrollEl = document.getElementById('flash-scroll');
+    var step = 160; /* ~card width + gap */
+    document.getElementById('flash-prev').addEventListener('click', function(){
+      scrollEl.scrollBy({ left: isAr ? step : -step, behavior:'smooth' });
+    });
+    document.getElementById('flash-next').addEventListener('click', function(){
+      scrollEl.scrollBy({ left: isAr ? -step : step, behavior:'smooth' });
+    });
     wrap.querySelectorAll('.flash-card').forEach(function(fc){
       fc.addEventListener('click', function(){
         openDealDetail(fc.getAttribute('data-deal-id'));
