@@ -625,6 +625,25 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
 .sf-val-clr:hover { background: rgba(0,0,0,0.40); }
 .sf-has-val .sf-val-clr { display: flex; }
 
+/* ── Swap button between Origin & Destination ── */
+.sf-swap-wrap {
+  display: flex; align-items: flex-end; flex-shrink: 0;
+  padding-bottom: 10px; margin-inline: -18px; z-index: 3; position: relative;
+}
+.sf-swap-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 2px solid var(--alm-cyan); background: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--alm-cyan); flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(0,183,198,0.22);
+  transition: background 140ms, transform 220ms cubic-bezier(.34,1.56,.64,1);
+}
+.sf-swap-btn:hover { background: rgba(0,183,198,0.08); }
+.sf-swap-btn.spinning { transform: rotate(180deg); }
+.sf-swap-btn svg { width: 15px; height: 15px; stroke: var(--alm-cyan); }
+html[data-theme="dark"] .sf-swap-btn { background: #0c2330; border-color: var(--alm-cyan); }
+@media (max-width: 640px) { .sf-swap-wrap { display: none; } }
+
 /* ── Services Bar ── */
 .svc-bar {
   background: var(--bg-surface); border-bottom: 1px solid var(--border);
@@ -3297,6 +3316,12 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
                   <button class="sf-val-clr" type="button" data-clear="origVal" aria-label="Clear origin">✕</button>
                 </div>
               </div>
+              <!-- Swap button -->
+              <div class="sf-swap-wrap" aria-hidden="true">
+                <button class="sf-swap-btn" id="swapBtn" type="button" aria-label="Swap origin and destination">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+                </button>
+              </div>
               <div class="sf-field">
                 <label id="lbl-dest"><span class="en">DESTINATION</span><span class="ar">الوصول إلى</span></label>
                 <div class="sf-input" id="si-dest" role="combobox" aria-labelledby="lbl-dest" aria-haspopup="listbox" aria-expanded="false">
@@ -4961,6 +4986,37 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
       el.classList.add('s-placeholder');
     });
   });
+
+  /* ── Swap origin ↔ destination ── */
+  var swapBtn = document.getElementById('swapBtn');
+  if (swapBtn) {
+    swapBtn.addEventListener('click', function () {
+      var origSpan = document.getElementById('origVal');
+      var destSpan = document.getElementById('destVal');
+      var siOrig   = document.getElementById('si-orig');
+      var siDest   = document.getElementById('si-dest');
+      if (!origSpan || !destSpan) return;
+
+      /* Swap inner HTML */
+      var tmpHtml = origSpan.innerHTML;
+      origSpan.innerHTML = destSpan.innerHTML;
+      destSpan.innerHTML = tmpHtml;
+
+      /* Swap muted (placeholder) state */
+      var origMuted = origSpan.classList.contains('sf-muted');
+      var destMuted = destSpan.classList.contains('sf-muted');
+      origSpan.classList.toggle('sf-muted', destMuted);
+      destSpan.classList.toggle('sf-muted', origMuted);
+
+      /* Sync sf-has-val on parent inputs */
+      if (siOrig) siOrig.classList.toggle('sf-has-val', !destMuted);
+      if (siDest) siDest.classList.toggle('sf-has-val', !origMuted);
+
+      /* Spin animation */
+      swapBtn.classList.add('spinning');
+      setTimeout(function () { swapBtn.classList.remove('spinning'); }, 240);
+    });
+  }
 
   /* ── Services bar ── */
   document.querySelectorAll('.svc-item[data-svc]').forEach(function (btn) {
