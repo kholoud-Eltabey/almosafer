@@ -3058,6 +3058,95 @@ html[dir="rtl"] .ma-back svg { transform: scaleX(-1); }
 html[data-theme="dark"] .ma-menu-item:hover,
 html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
+/* ── My Account Sub-Panels ── */
+#my-account { position:relative; overflow:hidden; }
+.ma-sub-view {
+  position:absolute; inset:0; background:var(--bg-page);
+  transform:translateX(110%); transition:transform 280ms cubic-bezier(.22,1,.36,1);
+  overflow-y:auto; z-index:5; padding-bottom:32px;
+}
+html[dir="rtl"] .ma-sub-view { transform:translateX(-110%); }
+.ma-sub-view.ma-sub-open { transform:translateX(0); }
+.ma-sub-topbar {
+  display:flex; align-items:center; gap:10px; padding:14px 20px;
+  border-bottom:1px solid var(--border); background:var(--bg-surface);
+  position:sticky; top:0; z-index:2;
+}
+.ma-sub-back {
+  display:flex; align-items:center; gap:4px; background:none; border:none;
+  cursor:pointer; padding:0; font-size:12px; font-weight:600;
+  color:var(--alm-cyan); font-family:inherit; transition:opacity 120ms;
+}
+.ma-sub-back:hover { opacity:.72; }
+html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
+.ma-sub-title { flex:1; font-size:16px; font-weight:700; color:var(--text-primary); }
+.ma-sub-body { padding:20px; }
+/* Wallet */
+.ma-wallet-card {
+  background:linear-gradient(135deg,var(--alm-dark) 0%,#00516F 100%);
+  border-radius:var(--r-xl); padding:24px; margin-bottom:16px;
+  color:#fff; position:relative; overflow:hidden;
+}
+.ma-wallet-card::before {
+  content:''; position:absolute; top:-40px; inset-inline-end:-30px;
+  width:130px; height:130px; border-radius:50%; background:rgba(0,183,198,.18);
+}
+.ma-wallet-lbl { font-size:12px; font-weight:600; opacity:.6; letter-spacing:.8px; text-transform:uppercase; margin-bottom:6px; position:relative; }
+.ma-wallet-amt { font-size:24px; font-weight:700; line-height:1.2; position:relative; }
+.ma-wallet-sub { font-size:12px; opacity:.55; margin-top:4px; position:relative; }
+.ma-wallet-topup {
+  display:inline-flex; align-items:center; gap:6px; margin-top:16px;
+  padding:9px 22px; border-radius:var(--r-full); background:var(--alm-cyan);
+  border:none; cursor:pointer; font-size:12px; font-weight:700;
+  color:var(--alm-dark); font-family:inherit; transition:opacity 150ms; position:relative;
+}
+.ma-wallet-topup:hover { opacity:.88; }
+.ma-txn-list { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-xl); overflow:hidden; }
+.ma-txn-hd { padding:12px 18px; font-size:12px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.6px; border-bottom:1px solid var(--border); }
+.ma-txn-row { display:flex; align-items:center; gap:12px; padding:13px 18px; border-bottom:1px solid var(--border); }
+.ma-txn-row:last-child { border-bottom:none; }
+.ma-txn-icon { width:36px; height:36px; border-radius:var(--r-md); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:16px; }
+.ma-txn-body { flex:1; min-width:0; }
+.ma-txn-name { font-size:12px; font-weight:600; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ma-txn-date { font-size:12px; color:var(--text-subtle); margin-top:2px; }
+.ma-txn-amt { font-size:12px; font-weight:700; flex-shrink:0; }
+.ma-txn-credit { color:#22B573; }
+.ma-txn-debit { color:var(--alm-red); }
+/* Profile/Form */
+.ma-form-field { margin-bottom:16px; }
+.ma-form-label { display:block; font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:6px; }
+.ma-form-input { width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:var(--r-md); font-size:16px; font-family:inherit; color:var(--text-primary); background:var(--bg-surface); box-sizing:border-box; transition:border-color 150ms; }
+.ma-form-input:focus { outline:none; border-color:var(--alm-cyan); box-shadow:0 0 0 3px rgba(0,183,198,.12); }
+.ma-form-save { width:100%; padding:13px; border-radius:var(--r-md); background:var(--alm-cyan); border:none; cursor:pointer; font-size:16px; font-weight:700; color:var(--alm-dark); font-family:inherit; margin-top:8px; transition:opacity 150ms; }
+.ma-form-save:hover { opacity:.88; }
+/* Travellers */
+.ma-traveller-card { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-xl); padding:14px 18px; margin-bottom:10px; display:flex; align-items:center; gap:12px; }
+.ma-traveller-avatar { width:40px; height:40px; border-radius:50%; background:rgba(0,183,198,.12); display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; color:var(--alm-cyan); flex-shrink:0; }
+.ma-traveller-body { flex:1; min-width:0; }
+.ma-traveller-name { font-size:16px; font-weight:600; color:var(--text-primary); }
+.ma-traveller-meta { font-size:12px; color:var(--text-subtle); margin-top:2px; }
+.ma-add-btn { width:100%; padding:12px; border:2px dashed var(--border); border-radius:var(--r-xl); background:none; cursor:pointer; font-size:12px; font-weight:600; color:var(--text-secondary); font-family:inherit; display:flex; align-items:center; justify-content:center; gap:6px; transition:border-color 150ms,color 150ms; }
+.ma-add-btn:hover { border-color:var(--alm-cyan); color:var(--alm-cyan); }
+/* Pref rows */
+.ma-pref-group { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-xl); overflow:hidden; margin-bottom:14px; }
+.ma-pref-row { display:flex; align-items:center; padding:13px 18px; gap:10px; border-bottom:1px solid var(--border); }
+.ma-pref-row:last-child { border-bottom:none; }
+.ma-pref-label { flex:1; font-size:12px; font-weight:500; color:var(--text-primary); }
+.ma-pref-val { font-size:12px; font-weight:600; color:var(--alm-cyan); }
+.ma-pref-select { padding:5px 10px; border:1px solid var(--border); border-radius:var(--r-md); font-size:12px; font-family:inherit; background:var(--bg-page); color:var(--text-primary); cursor:pointer; }
+.ma-toggle { width:42px; height:24px; border-radius:12px; background:var(--border); border:none; cursor:pointer; position:relative; transition:background 200ms; flex-shrink:0; padding:0; }
+.ma-toggle.on { background:var(--alm-cyan); }
+.ma-toggle::after { content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; transition:transform 200ms; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+.ma-toggle.on::after { transform:translateX(18px); }
+.ma-loyalty-pts { background:linear-gradient(135deg,var(--alm-dark),#00516F); border-radius:var(--r-xl); padding:22px; color:#fff; margin-bottom:14px; text-align:center; }
+.ma-loyalty-pts-val { font-size:24px; font-weight:700; }
+.ma-loyalty-pts-lbl { font-size:12px; opacity:.6; margin-top:4px; }
+.ma-card-saved { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-xl); padding:14px 18px; margin-bottom:10px; display:flex; align-items:center; gap:14px; }
+.ma-card-chip { width:36px; height:24px; border-radius:4px; background:linear-gradient(135deg,#e8a020,#f0c040); flex-shrink:0; }
+.ma-card-info { flex:1; }
+.ma-card-num { font-size:16px; font-weight:600; color:var(--text-primary); letter-spacing:.5px; }
+.ma-card-exp { font-size:12px; color:var(--text-subtle); margin-top:2px; }
+
 </style>
 <!-- Supabase Auth -->
 </head>
@@ -3390,6 +3479,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 <!-- ══ MY ACCOUNT ══ -->
 <section id="my-account" aria-label="My Account">
   <div class="ma-wrap" id="ma-content"></div>
+  <div class="ma-sub-view" id="ma-sub-view" aria-hidden="true"></div>
 </section>
 
 <!-- DEAL DETAIL OVERLAY -->
@@ -4232,6 +4322,229 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     if (mainEl)    mainEl.style.display = '';
   }
 
+  /* ── My Account Sub-Panels ── */
+  var _maSubEl = null;
+  function openMaSubPanel(key) {
+    _maSubEl = document.getElementById('ma-sub-view');
+    if (!_maSubEl || !ALM_USER) return;
+    var isAr = html.lang === 'ar';
+    var u = ALM_USER;
+
+    var TITLES = {
+      profile:     { en:'Edit Profile',         ar:'تعديل الملف الشخصي' },
+      wallet:      { en:'My Wallet',             ar:'محفظتي' },
+      travellers:  { en:'Saved Travellers',      ar:'المسافرون المحفوظون' },
+      preferences: { en:'Travel Preferences',   ar:'تفضيلات السفر' },
+      loyalty:     { en:'Loyalty Programs',      ar:'برامج الولاء' },
+      payment:     { en:'Payment Preferences',  ar:'طرق الدفع' },
+      security:    { en:'Security',              ar:'الأمان' }
+    };
+    var t = TITLES[key] || TITLES.profile;
+    var title = isAr ? t.ar : t.en;
+    var chevBack = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>';
+
+    var body = '';
+
+    if (key === 'wallet') {
+      /* Compute balance: SAR 250 welcome + 2.5% cashback per booking */
+      var cashback = _cart.reduce(function(s, item) {
+        var tot = item.total || item.price || item.ticketSAR || 0;
+        return s + Math.round(tot * 0.025);
+      }, 0);
+      var balance = 250 + cashback;
+      var txns = [{ icon:'🎁', name: isAr?'رصيد ترحيبي Nusuk+':'Nusuk+ Welcome Credit', date:'Jan 2026', amt:'+SAR 250', cls:'ma-txn-credit' }];
+      _cart.forEach(function(item) {
+        var tot = item.total || item.price || item.ticketSAR || 0;
+        var cb = Math.round(tot * 0.025);
+        if (!cb) return;
+        var lbl = item.label || item.attrName || 'Booking';
+        txns.push({ icon:'✈️', name:(isAr?'استرداد نقدي — ':'Cashback — ')+lbl, date:'May 2026', amt:'+SAR '+cb, cls:'ma-txn-credit' });
+      });
+      body =
+        '<div class="ma-wallet-card">' +
+          '<div class="ma-wallet-lbl">' + (isAr?'الرصيد المتاح':'Available Balance') + '</div>' +
+          '<div class="ma-wallet-amt">SAR ' + balance.toLocaleString() + '<span style="font-size:16px;font-weight:600">.00</span></div>' +
+          '<div class="ma-wallet-sub">' + (isAr?'Nusuk+ محفظة المكافآت':'Nusuk+ Rewards Wallet') + '</div>' +
+          '<button class="ma-wallet-topup">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+            (isAr?'إضافة رصيد':'Top Up') +
+          '</button>' +
+        '</div>' +
+        '<div class="ma-txn-list">' +
+          '<div class="ma-txn-hd">' + (isAr?'المعاملات':'Transactions') + '</div>' +
+          txns.map(function(tx) {
+            return '<div class="ma-txn-row">' +
+              '<div class="ma-txn-icon" style="background:rgba(34,181,115,.10)">' + tx.icon + '</div>' +
+              '<div class="ma-txn-body"><div class="ma-txn-name">' + tx.name + '</div><div class="ma-txn-date">' + tx.date + '</div></div>' +
+              '<div class="ma-txn-amt ' + tx.cls + '">' + tx.amt + '</div>' +
+            '</div>';
+          }).join('') +
+        '</div>';
+
+    } else if (key === 'profile') {
+      var nameParts = u.name.split(' ');
+      body =
+        '<div class="ma-form-field"><label class="ma-form-label">' + (isAr?'الاسم الأول':'First Name') + '</label>' +
+          '<input class="ma-form-input" id="ma-fn" type="text" value="' + (nameParts[0]||'') + '"></div>' +
+        '<div class="ma-form-field"><label class="ma-form-label">' + (isAr?'اسم العائلة':'Last Name') + '</label>' +
+          '<input class="ma-form-input" id="ma-ln" type="text" value="' + (nameParts.slice(1).join(' ')||'') + '"></div>' +
+        '<div class="ma-form-field"><label class="ma-form-label">' + (isAr?'البريد الإلكتروني':'Email') + '</label>' +
+          '<input class="ma-form-input" id="ma-em" type="email" value="' + u.email + '"></div>' +
+        '<div class="ma-form-field"><label class="ma-form-label">' + (isAr?'رقم الجوال':'Phone') + '</label>' +
+          '<input class="ma-form-input" id="ma-ph" type="tel" value="+966 5XX XXX XXXX" placeholder="+966 5XX XXX XXXX"></div>' +
+        '<div class="ma-form-field"><label class="ma-form-label">' + (isAr?'الجنسية':'Nationality') + '</label>' +
+          '<select class="ma-form-input ma-form-select" id="ma-nat">' +
+            '<option>' + (isAr?'🇸🇦 سعودي':'🇸🇦 Saudi Arabian') + '</option>' +
+            '<option>' + (isAr?'🇦🇪 إماراتي':'🇦🇪 Emirati') + '</option>' +
+            '<option>' + (isAr?'🇰🇼 كويتي':'🇰🇼 Kuwaiti') + '</option>' +
+            '<option>' + (isAr?'🌍 أخرى':'🌍 Other') + '</option>' +
+          '</select></div>' +
+        '<button class="ma-form-save" id="ma-profile-save">' + (isAr?'حفظ التغييرات':'Save Changes') + '</button>';
+
+    } else if (key === 'travellers') {
+      body =
+        '<div class="ma-traveller-card">' +
+          '<div class="ma-traveller-avatar">' + getInitials(u.name) + '</div>' +
+          '<div class="ma-traveller-body"><div class="ma-traveller-name">' + u.name + '</div><div class="ma-traveller-meta">' + (isAr?'بالغ — جواز سعودي':'Adult — Saudi Passport') + '</div></div>' +
+        '</div>' +
+        '<div class="ma-traveller-card">' +
+          '<div class="ma-traveller-avatar">AK</div>' +
+          '<div class="ma-traveller-body"><div class="ma-traveller-name">' + (isAr?'أحمد الكريم':'Ahmed Al-Kareem') + '</div><div class="ma-traveller-meta">' + (isAr?'بالغ — جواز سعودي':'Adult — Saudi Passport') + '</div></div>' +
+        '</div>' +
+        '<button class="ma-add-btn" type="button">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+          (isAr?'إضافة مسافر':'Add Traveller') +
+        '</button>';
+
+    } else if (key === 'preferences') {
+      body =
+        '<div class="ma-pref-group">' +
+          '<div class="ma-pref-row"><span class="ma-pref-label">' + (isAr?'مقعد مفضل':'Preferred Seat') + '</span>' +
+            '<select class="ma-pref-select"><option>' + (isAr?'نافذة':'Window') + '</option><option>' + (isAr?'ممر':'Aisle') + '</option><option>' + (isAr?'وسط':'Middle') + '</option></select>' +
+          '</div>' +
+          '<div class="ma-pref-row"><span class="ma-pref-label">' + (isAr?'وجبة مفضلة':'Meal Preference') + '</span>' +
+            '<select class="ma-pref-select"><option>' + (isAr?'عادي':'Standard') + '</option><option>' + (isAr?'نباتي':'Vegetarian') + '</option><option>' + (isAr?'حلال':'Halal') + '</option></select>' +
+          '</div>' +
+          '<div class="ma-pref-row"><span class="ma-pref-label">' + (isAr?'درجة السفر':'Cabin Class') + '</span>' +
+            '<select class="ma-pref-select"><option>' + (isAr?'اقتصادية':'Economy') + '</option><option>' + (isAr?'رجال الأعمال':'Business') + '</option><option>' + (isAr?'أولى':'First') + '</option></select>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ma-pref-group">' +
+          '<div class="ma-pref-row"><span class="ma-pref-label">' + (isAr?'الرحلات المباشرة فقط':'Direct Flights Only') + '</span>' +
+            '<button class="ma-toggle" type="button" aria-pressed="false"></button></div>' +
+          '<div class="ma-pref-row"><span class="ma-pref-label">' + (isAr?'بريد العروض والتنبيهات':'Offers & Price Alert Emails') + '</span>' +
+            '<button class="ma-toggle on" type="button" aria-pressed="true"></button></div>' +
+          '<div class="ma-pref-row"><span class="ma-pref-label">' + (isAr?'تنبيهات الأسعار بالرسائل النصية':'SMS Price Alerts') + '</span>' +
+            '<button class="ma-toggle" type="button" aria-pressed="false"></button></div>' +
+        '</div>';
+
+    } else if (key === 'loyalty') {
+      body =
+        '<div class="ma-loyalty-pts">' +
+          '<div class="ma-loyalty-pts-val">12,450</div>' +
+          '<div class="ma-loyalty-pts-lbl">' + (isAr?'نقاط نسك Nusuk+ Points':'Nusuk+ Points') + '</div>' +
+        '</div>' +
+        '<div class="ma-pref-group">' +
+          '<div class="ma-pref-row">' +
+            '<span class="ma-pref-label">' + (isAr?'الخطوط السعودية — رقم الملاحق':'Saudia — Alfursan Number') + '</span>' +
+            '<span class="ma-pref-val">SV-9834712</span>' +
+          '</div>' +
+          '<div class="ma-pref-row">' +
+            '<span class="ma-pref-label">' + (isAr?'طيران ناس — ناس كلوب':'flynas — nasClub Number') + '</span>' +
+            '<span class="ma-pref-val">—</span>' +
+          '</div>' +
+          '<div class="ma-pref-row">' +
+            '<span class="ma-pref-label">' + (isAr?'طيران أديل — رقم برنامج الولاء':'flyadeal — Loyalty Number') + '</span>' +
+            '<span class="ma-pref-val">—</span>' +
+          '</div>' +
+        '</div>' +
+        '<button class="ma-form-save" style="background:var(--alm-dark)">' + (isAr?'ربط برنامج ولاء جديد':'Link New Loyalty Program') + '</button>';
+
+    } else if (key === 'payment') {
+      body =
+        '<div class="ma-card-saved">' +
+          '<div class="ma-card-chip"></div>' +
+          '<div class="ma-card-info"><div class="ma-card-num">•••• •••• •••• 4242</div><div class="ma-card-exp">Expires 09 / 27</div></div>' +
+        '</div>' +
+        '<div class="ma-card-saved">' +
+          '<div class="ma-card-chip" style="background:linear-gradient(135deg,#1A1F71,#3B82F6)"></div>' +
+          '<div class="ma-card-info"><div class="ma-card-num">•••• •••• •••• 8881</div><div class="ma-card-exp">Expires 03 / 26</div></div>' +
+        '</div>' +
+        '<button class="ma-add-btn" type="button">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+          (isAr?'إضافة بطاقة جديدة':'Add New Card') +
+        '</button>';
+
+    } else if (key === 'security') {
+      body =
+        '<div class="ma-pref-group">' +
+          '<div class="ma-pref-row">' +
+            '<span class="ma-pref-label">' + (isAr?'البريد الإلكتروني':'Email') + '</span>' +
+            '<span class="ma-pref-val">' + u.email + '</span>' +
+          '</div>' +
+          '<div class="ma-pref-row">' +
+            '<span class="ma-pref-label">' + (isAr?'كلمة المرور':'Password') + '</span>' +
+            '<span class="ma-pref-val">••••••••</span>' +
+          '</div>' +
+          '<div class="ma-pref-row">' +
+            '<span class="ma-pref-label">' + (isAr?'التحقق بخطوتين (2FA)':'Two-Factor Auth (2FA)') + '</span>' +
+            '<button class="ma-toggle on" type="button" aria-pressed="true"></button>' +
+          '</div>' +
+          '<div class="ma-pref-row">' +
+            '<span class="ma-pref-label">' + (isAr?'تنبيهات تسجيل الدخول':'Login Alerts') + '</span>' +
+            '<button class="ma-toggle on" type="button" aria-pressed="true"></button>' +
+          '</div>' +
+        '</div>' +
+        '<button class="ma-form-save" style="background:var(--alm-dark);color:#fff">' + (isAr?'تغيير كلمة المرور':'Change Password') + '</button>' +
+        '<button class="ma-form-save" style="background:rgba(230,57,70,.08);color:var(--alm-red);margin-top:10px;border:1.5px solid rgba(230,57,70,.25)">' + (isAr?'إلغاء تفعيل الحساب':'Deactivate Account') + '</button>';
+    }
+
+    _maSubEl.innerHTML =
+      '<div class="ma-sub-topbar">' +
+        '<button class="ma-sub-back" id="ma-sub-back-btn">' + chevBack + '<span class="en">Back</span><span class="ar">رجوع</span></button>' +
+        '<span class="ma-sub-title">' + title + '</span>' +
+      '</div>' +
+      '<div class="ma-sub-body">' + body + '</div>';
+
+    _maSubEl.setAttribute('aria-hidden', 'false');
+    _maSubEl.classList.add('ma-sub-open');
+
+    /* wire back button */
+    document.getElementById('ma-sub-back-btn').addEventListener('click', function() {
+      _maSubEl.classList.remove('ma-sub-open');
+      _maSubEl.setAttribute('aria-hidden', 'true');
+    });
+
+    /* wire profile save */
+    var saveBtn = document.getElementById('ma-profile-save');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', function() {
+        var fn = (document.getElementById('ma-fn')||{}).value || '';
+        var ln = (document.getElementById('ma-ln')||{}).value || '';
+        var full = (fn + ' ' + ln).trim();
+        if (full) {
+          ALM_USER.name = full;
+          try { localStorage.setItem('alm-user', JSON.stringify(ALM_USER)); } catch(e){}
+        }
+        _maSubEl.classList.remove('ma-sub-open');
+        renderMyAccount();
+        showToast(isAr ? 'تم حفظ الملف الشخصي' : 'Profile saved');
+      });
+    }
+
+    /* wire toggles */
+    _maSubEl.querySelectorAll('.ma-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var isOn = btn.classList.toggle('on');
+        btn.setAttribute('aria-pressed', String(isOn));
+      });
+    });
+
+    /* wire top-up */
+    var topup = _maSubEl.querySelector('.ma-wallet-topup');
+    if (topup) topup.addEventListener('click', function() { showToast(isAr?'ميزة إضافة الرصيد قريباً':'Top-up coming soon'); });
+  }
+
   function renderMyAccount() {
     if (!maContent || !ALM_USER) return;
     var isAr = html.lang === 'ar';
@@ -4272,10 +4585,11 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     out += '</button></div></div>';
 
     /* Promo / wallet card */
+    var walletBal = 250 + _cart.reduce(function(s,item){ var t=item.total||item.price||item.ticketSAR||0; return s+Math.round(t*0.025); },0);
     out += '<div class="ma-promo">';
     out += '<div class="ma-promo-badge">Nusuk +</div>';
     out += '<div class="ma-promo-lbl">'+(isAr?'رصيد المحفظة':'Wallet Balance')+'</div>';
-    out += '<div class="ma-promo-val">SAR 0<span style="font-size:16px;font-weight:600">.00</span></div>';
+    out += '<div class="ma-promo-val">SAR '+walletBal.toLocaleString()+'<span style="font-size:16px;font-weight:600">.00</span></div>';
     out += '<div class="ma-promo-sub">'+(trips ? trips+' '+(isAr?'رحلة محجوزة':(trips===1?'booking saved':'bookings saved')) : (isAr?'لا توجد حجوزات بعد — ابدأ رحلتك!':'No bookings yet — start your journey!'))+'</div>';
     out += '</div>';
 
@@ -4287,7 +4601,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     out += '<div class="ma-qchev">'+chev+'</div></div>';
     out += '<div class="ma-quick-row" id="ma-wallet-row">';
     out += '<div class="ma-qicon" style="background:rgba(230,57,70,.10)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--alm-red)" stroke-width="1.8" width="18" height="18"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>';
-    out += '<div class="ma-qbody"><div class="ma-qtitle">'+(isAr?'محفظتي':'My Wallet')+'</div><div class="ma-qsub">SAR 0.00</div></div>';
+    out += '<div class="ma-qbody"><div class="ma-qtitle">'+(isAr?'محفظتي':'My Wallet')+'</div><div class="ma-qsub">SAR '+walletBal.toLocaleString()+'.00</div></div>';
     out += '<div class="ma-qchev">'+chev+'</div></div>';
     out += '<div class="ma-quick-row" id="ma-tickets-row">';
     out += '<div class="ma-qicon" style="background:rgba(255,159,28,.12)"><svg viewBox="0 0 24 24" fill="none" stroke="#FF9F1C" stroke-width="1.8" width="18" height="18"><path d="M2 9V5a2 2 0 012-2h16a2 2 0 012 2v4a2 2 0 000 4v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4a2 2 0 000-4z"/><line x1="12" y1="3" x2="12" y2="21" stroke-dasharray="3 3"/></svg></div>';
@@ -4313,24 +4627,19 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
     /* Wire events */
     document.getElementById('ma-back-btn').addEventListener('click', closeMyAccount);
-    document.getElementById('ma-edit-btn').addEventListener('click', function(){
-      showToast(html.lang==='ar'?'تعديل الملف الشخصي قريباً':'Profile editing coming soon');
-    });
+    document.getElementById('ma-edit-btn').addEventListener('click', function(){ openMaSubPanel('profile'); });
     document.getElementById('ma-trips-row').addEventListener('click', function(){
       closeMyAccount();
       setTimeout(openMyTrips, 220);
     });
-    document.getElementById('ma-wallet-row').addEventListener('click', function(){
-      showToast(html.lang==='ar'?'المحفظة قريباً':'Wallet coming soon');
-    });
+    document.getElementById('ma-wallet-row').addEventListener('click', function(){ openMaSubPanel('wallet'); });
     document.getElementById('ma-tickets-row').addEventListener('click', function(){
       closeMyAccount();
       setTimeout(openMyTickets, 220);
     });
-    maContent.querySelectorAll('.ma-menu-item').forEach(function(el){
-      el.addEventListener('click', function(){
-        showToast(html.lang==='ar'?'قريباً':'Coming soon');
-      });
+    var MENU_KEYS = ['profile','travellers','preferences','loyalty','payment','security'];
+    maContent.querySelectorAll('.ma-menu-item').forEach(function(el, i){
+      el.addEventListener('click', function(){ openMaSubPanel(MENU_KEYS[i] || 'profile'); });
     });
     document.getElementById('ma-signout-btn').addEventListener('click', function(){
       ALM_USER = null;
@@ -4381,11 +4690,18 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     });
   });
 
-  /* Footer social — toast */
+  /* Footer social — real Almosafer links */
+  var _socialUrls = {
+    'X':        'https://twitter.com/Almosafer',
+    'Instagram':'https://www.instagram.com/almosafer/',
+    'Snapchat': 'https://www.snapchat.com/add/almosafer'
+  };
   document.querySelectorAll('.footer-social .s-btn').forEach(function (a) {
     a.addEventListener('click', function (e) {
       e.preventDefault();
-      showToast(html.lang === 'ar' ? 'تابعونا قريباً' : 'Social links coming soon');
+      var label = a.getAttribute('aria-label') || '';
+      var url = _socialUrls[label];
+      if (url) { window.open(url, '_blank', 'noopener,noreferrer'); }
     });
   });
 
@@ -5825,7 +6141,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
           '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'الأمتعة':'Baggage')+'</div><div class="mdl-stat-val">'+(f.baggage?(isAr?'مشمولة':'Included'):(isAr?'غير مشمولة':'Not included'))+'</div></div>'+
         '</div>'+
         '<div class="mdl-price-row"><div class="mdl-total-lbl">'+(isAr?'السعر الإجمالي':'Total price')+'</div><div class="mdl-total-price">SAR '+fmtN(f.price)+'</div></div>'+
-        '<button class="mdl-cta" id="mdl-cta-btn">'+(isAr?'احجز الآن':'Book Now — Coming Soon')+'</button>';
+        '<button class="mdl-cta" id="mdl-cta-btn">'+(isAr?'احجز الآن':'Book Now')+'</button>';
     }
     if(type==='stay'){
       var s=STAY_DATA.filter(function(x){return x.id===id;})[0]; if(!s) return;
@@ -5840,7 +6156,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
           '<div class="mdl-stat" style="grid-column:1/-1"><div class="mdl-stat-lbl">'+(isAr?'المرافق':'Amenities')+'</div><div class="mdl-stat-val">'+s.amenities.join(' · ')+'</div></div>'+
         '</div>'+
         '<div class="mdl-price-row"><div class="mdl-total-lbl">'+(isAr?'من / ليلة':'from / night')+'</div><div class="mdl-total-price">SAR '+fmtN(s.price)+'</div></div>'+
-        '<button class="mdl-cta" id="mdl-cta-btn">'+(isAr?'اعرض التوفر':'View Availability — Coming Soon')+'</button>';
+        '<button class="mdl-cta" id="mdl-cta-btn">'+(isAr?'اعرض التوفر':'View Availability')+'</button>';
     }
     if(type==='activity'){
       var a=ACT_DATA.filter(function(x){return x.id===id;})[0]; if(!a) return;
@@ -5857,7 +6173,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
           '<div class="mdl-stat"><div class="mdl-stat-lbl">'+(isAr?'الفئة':'Category')+'</div><div class="mdl-stat-val">'+aclbl+'</div></div>'+
         '</div>'+
         '<div class="mdl-price-row"><div class="mdl-total-lbl">'+(isAr?'من / شخص':'from / person')+'</div><div class="mdl-total-price">SAR '+fmtN(a.price)+'</div></div>'+
-        '<button class="mdl-cta" id="mdl-cta-btn">'+(isAr?'احجز الآن':'Book Now — Coming Soon')+'</button>';
+        '<button class="mdl-cta" id="mdl-cta-btn">'+(isAr?'احجز الآن':'Book Now')+'</button>';
     }
     if(modalBody2) modalBody2.innerHTML = out;
     if(almModal) almModal.classList.add('modal-open');
@@ -7532,7 +7848,16 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       '<div class="mtp-total">' +
         '<span class="mtp-total-label"><span class="en">Total paid</span><span class="ar">إجمالي المدفوع</span></span>' +
         '<span class="mtp-total-val">' + totalStr + '</span>' +
-      '</div>';
+      '</div>' +
+      '<button class="mtp-checkout-btn" id="mtp-checkout-btn" type="button">' +
+        '<span class="en">Book Another Trip</span><span class="ar">احجز رحلة أخرى</span>' +
+      '</button>';
+
+    var ckBtn = document.getElementById('mtp-checkout-btn');
+    if (ckBtn) ckBtn.addEventListener('click', function() {
+      _mtPanel.classList.remove('mtp-open');
+      setTimeout(openAllDestinations, 220);
+    });
   }
 
   function openMyTickets() {
@@ -8190,8 +8515,8 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
                 '</div>' +
                 '<div class="sf-field">' +
                   '<label><span class="en">Departure</span><span class="ar">المغادرة</span></label>' +
-                  '<div class="sf-input">' + calSvgSm +
-                    '<div><span class="sf-val sf-muted"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span></div>' +
+                  '<div class="sf-input sf-ptr" data-cgw-date="depart">' + calSvgSm +
+                    '<div><span class="sf-val sf-muted" id="cgw-depart-val"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span></div>' +
                   '</div>' +
                 '</div>' +
                 '<div class="sf-field">' +
@@ -8217,14 +8542,14 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
                 '</div>' +
                 '<div class="sf-field">' +
                   '<label><span class="en">Check-in</span><span class="ar">تسجيل الوصول</span></label>' +
-                  '<div class="sf-input">' + calSvgSm +
-                    '<div><span class="sf-val sf-muted"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span></div>' +
+                  '<div class="sf-input sf-ptr" data-cgw-date="checkin">' + calSvgSm +
+                    '<div><span class="sf-val sf-muted" id="cgw-checkin-val"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span></div>' +
                   '</div>' +
                 '</div>' +
                 '<div class="sf-field">' +
                   '<label><span class="en">Check-out</span><span class="ar">تسجيل المغادرة</span></label>' +
-                  '<div class="sf-input">' + calSvgSm +
-                    '<div><span class="sf-val sf-muted"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span></div>' +
+                  '<div class="sf-input sf-ptr" data-cgw-date="checkout">' + calSvgSm +
+                    '<div><span class="sf-val sf-muted" id="cgw-checkout-val"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span></div>' +
                   '</div>' +
                 '</div>' +
                 '<div class="sf-field">' +
@@ -8250,8 +8575,8 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
                 '</div>' +
                 '<div class="sf-field">' +
                   '<label><span class="en">Date</span><span class="ar">التاريخ</span></label>' +
-                  '<div class="sf-input">' + calSvgSm +
-                    '<div><span class="sf-val sf-muted"><span class="en">Any date</span><span class="ar">أي تاريخ</span></span></div>' +
+                  '<div class="sf-input sf-ptr" data-cgw-date="actdate">' + calSvgSm +
+                    '<div><span class="sf-val sf-muted" id="cgw-actdate-val"><span class="en">Any date</span><span class="ar">أي تاريخ</span></span></div>' +
                   '</div>' +
                 '</div>' +
                 '<button class="sf-btn" type="button" data-cgw-action="search" data-cgw-mode="activities">' +
@@ -8457,7 +8782,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     if (closeBtn) closeBtn.addEventListener('click', closeMyTrips);
 
     var exploreBtn = document.getElementById('mt-explore-btn');
-    if (exploreBtn) exploreBtn.addEventListener('click', function() { closeMyTrips(); });
+    if (exploreBtn) exploreBtn.addEventListener('click', function() { closeMyTrips(); setTimeout(openAllDestinations, 220); });
 
     var ticketsBtn = document.getElementById('mt-tickets-btn');
     if (ticketsBtn) ticketsBtn.addEventListener('click', function() { closeMyTrips(); setTimeout(openMyTickets, 260); });
@@ -8971,6 +9296,30 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
           allForms[fi].classList.toggle('active', allForms[fi].getAttribute('data-cgw-form') === tabName);
         }
       }
+      return;
+    }
+
+    /* CGW — date field click → open date picker */
+    var cgwDateField = e.target.closest('[data-cgw-date]');
+    if (cgwDateField) {
+      var dateKey = cgwDateField.getAttribute('data-cgw-date');
+      var valSpanId = { depart:'cgw-depart-val', checkin:'cgw-checkin-val', checkout:'cgw-checkout-val', actdate:'cgw-actdate-val' }[dateKey];
+      var valSpanEl = valSpanId ? document.getElementById(valSpanId) : null;
+      var isRange = (dateKey === 'checkin' || dateKey === 'checkout');
+      openPicker(cgwDateField, isRange ? 'range' : 'single', function(d1, d2) {
+        if (!valSpanEl) return;
+        var fmt = function(d) { return d ? d.toLocaleDateString(html.lang === 'ar' ? 'ar-SA' : 'en-GB', { day:'numeric', month:'short' }) : ''; };
+        valSpanEl.textContent = fmt(d1) + (d2 && d2 !== d1 ? ' – ' + fmt(d2) : '');
+        valSpanEl.classList.remove('sf-muted');
+        /* if checkin, auto-focus checkout */
+        if (dateKey === 'checkin') {
+          var coEl = document.getElementById('cgw-checkout-val');
+          var coField = coEl ? coEl.closest('[data-cgw-date]') : null;
+          if (coField) setTimeout(function() { openPicker(coField, 'range', function(d3, d4) {
+            if (coEl) { coEl.textContent = fmt(d3) + (d4 && d4 !== d3 ? ' – ' + fmt(d4) : ''); coEl.classList.remove('sf-muted'); }
+          }); }, 180);
+        }
+      });
       return;
     }
 
