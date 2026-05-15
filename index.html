@@ -8775,7 +8775,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     });
   }
 
-  function renderSuggestions(filterText) {
+  function _adpRenderSugg(filterText) {
     if (!adpSuggEl) return;
     var isAr = html.lang === 'ar';
     filterText = (filterText || '').trim();
@@ -8828,7 +8828,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   ovAllDest.addEventListener('input', function(e) {
     if (e.target.id === 'adp-search-input') {
       renderAllDestinations(e.target.value);
-      renderSuggestions(e.target.value);
+      _adpRenderSugg(e.target.value);
     }
   });
 
