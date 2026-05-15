@@ -2470,22 +2470,25 @@ html[data-theme="dark"] .deal-ov-currency { color:var(--text-secondary); }
 .flash-card-img { width:100%; height:84px; object-fit:cover; display:block; }
 .flash-card-body { padding:9px 10px 11px; }
 .flash-card-pct { font-size:24px; font-weight:500; color:var(--alm-red); line-height:1; margin-bottom:3px; }
-/* carousel arrow controls — overlaid on scroll track */
-.flash-scroll-wrap { position:relative; }
+/* ── Flash carousel layout ── */
+.flash-scroll-wrap { display:flex; align-items:center; gap:10px; }
 .flash-nav-btn {
-  position:absolute; top:50%; transform:translateY(-50%);
-  width:36px; height:36px; border-radius:50%; z-index:10;
-  border:none; background:rgba(255,255,255,.92);
-  color:var(--alm-dark); cursor:pointer;
+  flex-shrink:0;
+  width:38px; height:38px; border-radius:50%;
+  background:rgba(255,255,255,.15);
+  border:1.5px solid rgba(255,255,255,.30);
+  color:#fff; cursor:pointer;
   display:flex; align-items:center; justify-content:center;
-  box-shadow:0 2px 14px rgba(0,0,0,.28);
-  transition:background 140ms, transform 140ms;
+  transition:background 150ms, border-color 150ms;
 }
-.flash-nav-btn:hover { background:#fff; transform:translateY(-50%) scale(1.08); }
-.flash-nav-btn:disabled { opacity:.3; cursor:default; pointer-events:none; }
-.flash-nav-btn svg { width:16px; height:16px; pointer-events:none; }
-#flash-prev { inset-inline-start:-14px; }
-#flash-next { inset-inline-end:-14px; }
+.flash-nav-btn:hover:not(:disabled) { background:rgba(255,255,255,.28); border-color:rgba(255,255,255,.55); }
+.flash-nav-btn:focus-visible {
+  outline:2px solid var(--alm-cyan);
+  outline-offset:3px;
+}
+.flash-nav-btn:disabled { opacity:.28; cursor:not-allowed; }
+.flash-nav-btn svg { width:16px; height:16px; pointer-events:none; flex-shrink:0; }
+.flash-scroll { flex:1; }
 .flash-card-dest { font-size:11.5px; font-weight:600; color:#fff; margin-bottom:4px; line-height:1.3; }
 .flash-card-from { font-size:10px; color:rgba(255,255,255,.5); margin-bottom:5px; }
 .flash-card-timer { font-size:10px; font-weight:700; color:var(--alm-cyan); font-variant-numeric:tabular-nums; }
@@ -6198,13 +6201,25 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       '</div>';
     /* wire nav arrows */
     var scrollEl = document.getElementById('flash-scroll');
+    var prevEl   = document.getElementById('flash-prev');
+    var nextEl   = document.getElementById('flash-next');
     var step = 154;
-    document.getElementById('flash-prev').addEventListener('click', function(){
+
+    function _syncArrows() {
+      var atStart = scrollEl.scrollLeft <= 2;
+      var atEnd   = scrollEl.scrollLeft >= scrollEl.scrollWidth - scrollEl.clientWidth - 2;
+      if (isAr) { prevEl.disabled = atEnd;   nextEl.disabled = atStart; }
+      else       { prevEl.disabled = atStart; nextEl.disabled = atEnd;   }
+    }
+
+    prevEl.addEventListener('click', function(){
       scrollEl.scrollBy({ left: isAr ? step : -step, behavior:'smooth' });
     });
-    document.getElementById('flash-next').addEventListener('click', function(){
+    nextEl.addEventListener('click', function(){
       scrollEl.scrollBy({ left: isAr ? -step : step, behavior:'smooth' });
     });
+    scrollEl.addEventListener('scroll', _syncArrows, { passive:true });
+    _syncArrows();
     wrap.querySelectorAll('.flash-card').forEach(function(fc){
       fc.addEventListener('click', function(){
         openDealDetail(fc.getAttribute('data-deal-id'));
