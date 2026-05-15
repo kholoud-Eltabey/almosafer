@@ -1392,14 +1392,17 @@ html[data-theme="dark"] .mtp-ticket { background: #0a1e2e; }
   justify-content: center; color: var(--alm-cyan);
 }
 .mtp-ticket-icon svg { width: 20px; height: 20px; }
-.mtp-ticket-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
-.mtp-ticket-city { font-size: 12px; color: var(--text-subtle); margin-top: 2px; }
-.mtp-ticket-price {
-  margin-inline-start: auto; flex-shrink: 0;
-  font-size: 15px; font-weight: 700; color: var(--alm-dark); text-align: end;
-}
+.mtp-ticket-body { flex: 1; min-width: 0; }
+.mtp-ticket-badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--r-full); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 4px; }
+.mtp-ticket-name { font-size: 13.5px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html[data-theme="dark"] .mtp-ticket-name { color: #e8f4f7; }
+.mtp-ticket-sub { font-size: 11.5px; color: var(--text-subtle); margin-top: 2px; }
+.mtp-ticket-ref { font-size: 11px; font-weight: 700; color: var(--alm-cyan); letter-spacing: 1px; margin-top: 3px; font-variant-numeric: tabular-nums; }
+.mtp-ticket-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+.mtp-ticket-price { font-size: 14px; font-weight: 700; color: var(--alm-dark); white-space: nowrap; }
 html[data-theme="dark"] .mtp-ticket-price { color: var(--alm-cyan); }
-.mtp-ticket-price span { font-size: 11px; font-weight: 400; color: var(--text-subtle); display: block; }
+.mtp-status-dot { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 600; color: #22B573; }
+.mtp-status-dot::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #22B573; }
 .mtp-remove {
   width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
   background: none; border: 1px solid var(--border);
@@ -6642,35 +6645,65 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     var isAr = html.lang === 'ar';
     if (_cart.length === 0) {
       _mtList.innerHTML = '<div class="mtp-empty">' +
-        '<span class="en">No tickets booked yet.</span>' +
-        '<span class="ar">لم تحجز أي تذاكر بعد.</span>' +
+        '<div style="font-size:32px;margin-bottom:10px">🎫</div>' +
+        '<div style="font-weight:600;margin-bottom:4px"><span class="en">No bookings yet</span><span class="ar">لا توجد حجوزات بعد</span></div>' +
+        '<div style="font-size:12px;color:var(--text-subtle)"><span class="en">Complete a booking to see it here</span><span class="ar">أكمل حجزاً ليظهر هنا</span></div>' +
       '</div>';
       return;
     }
-    var ticketIco = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 010-6h20a3 3 0 010 6H2zm0 6a3 3 0 000 6h20a3 3 0 000-6H2z"/></svg>';
-    var total = 0;
+
+    var typeIcons = {
+      hotel:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+      room:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M2 4v16"/><path d="M22 4v16"/><path d="M2 12h20"/><path d="M2 8h4a2 2 0 012 2v2H2V8z"/><path d="M16 8h4a2 2 0 012 2v2h-8v-2a2 2 0 012-2z"/></svg>',
+      flight:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 16l-9-13L3 16M3 16h18M3 16l4-2m14 2l-4-2"/></svg>',
+      activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>'
+    };
+    var typeColors = { hotel:'#003B4A', room:'#00B7C6', flight:'#E63946', activity:'#FF9F1C' };
+    var typeLabels = {
+      hotel:    isAr ? 'فندق' : 'Hotel',
+      room:     isAr ? 'غرفة' : 'Room',
+      flight:   isAr ? 'رحلة' : 'Flight',
+      activity: isAr ? 'نشاط' : 'Activity'
+    };
+
+    var grandTotal = 0;
     var rows = _cart.map(function(item, i) {
-      total += item.ticketSAR;
-      var priceStr = item.ticketSAR === 0 ? (isAr ? 'مجاني' : 'Free') : 'SAR ' + item.ticketSAR.toLocaleString();
+      /* Support both old format {attrName,cityName,ticketSAR} and new {type,label,total,ref} */
+      var isOld   = !item.type;
+      var iType   = isOld ? 'activity' : item.type;
+      var iLabel  = isOld ? item.attrName : item.label;
+      var iTotal  = isOld ? (item.ticketSAR || 0) : (item.total || item.price || 0);
+      var iRef    = isOld ? '' : (item.ref || '');
+      var iNights = (!isOld && item.nights && item.nights > 1) ? item.nights : 0;
+      grandTotal += iTotal;
+
+      var priceStr = iTotal === 0 ? (isAr ? 'مجاني' : 'Free') : 'SAR ' + iTotal.toLocaleString();
+      var color    = typeColors[iType] || '#003B4A';
+      var icon     = typeIcons[iType] || typeIcons.activity;
+      var badge    = typeLabels[iType] || iType;
+
       return '<div class="mtp-ticket">' +
-        '<div class="mtp-ticket-icon">' + ticketIco + '</div>' +
-        '<div>' +
-          '<div class="mtp-ticket-name">' + item.attrName + '</div>' +
-          '<div class="mtp-ticket-city">' + item.cityName + '</div>' +
+        '<div class="mtp-ticket-icon" style="background:' + color + '22;color:' + color + '">' + icon + '</div>' +
+        '<div class="mtp-ticket-body">' +
+          '<div class="mtp-ticket-badge" style="background:' + color + '18;color:' + color + '">' + badge + '</div>' +
+          '<div class="mtp-ticket-name">' + iLabel + '</div>' +
+          (iNights ? '<div class="mtp-ticket-sub">' + iNights + (isAr ? ' ليالٍ' : ' nights') + '</div>' : '') +
+          (iRef ? '<div class="mtp-ticket-ref">' + iRef + '</div>' : '') +
         '</div>' +
-        '<div class="mtp-ticket-price">' + priceStr + '<span>' + (isAr ? 'تذكرة واحدة' : '1 ticket') + '</span></div>' +
-        '<button class="mtp-remove" type="button" data-cart-idx="' + i + '" aria-label="' + (isAr ? 'إزالة ' + item.attrName : 'Remove ' + item.attrName) + '">×</button>' +
+        '<div class="mtp-ticket-right">' +
+          '<div class="mtp-ticket-price">' + priceStr + '</div>' +
+          '<div class="mtp-status-dot"><span class="en">Confirmed</span><span class="ar">مؤكد</span></div>' +
+          '<button class="mtp-remove" type="button" data-cart-idx="' + i + '" aria-label="Remove">✕</button>' +
+        '</div>' +
       '</div>';
     }).join('');
-    var totalStr = total === 0 ? (isAr ? 'مجاني' : 'Free') : 'SAR ' + total.toLocaleString();
+
+    var totalStr = grandTotal === 0 ? (isAr ? 'مجاني' : 'Free') : 'SAR ' + grandTotal.toLocaleString();
     _mtList.innerHTML = rows +
       '<div class="mtp-total">' +
-        '<span class="mtp-total-label"><span class="en">Total</span><span class="ar">الإجمالي</span></span>' +
+        '<span class="mtp-total-label"><span class="en">Total paid</span><span class="ar">إجمالي المدفوع</span></span>' +
         '<span class="mtp-total-val">' + totalStr + '</span>' +
-      '</div>' +
-      '<button class="mtp-checkout-btn" type="button">' +
-        '<span class="en">Proceed to checkout</span><span class="ar">المتابعة للدفع</span>' +
-      '</button>';
+      '</div>';
   }
 
   function openMyTickets() {
@@ -6690,15 +6723,27 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     }
   }
 
-  function addToCart(attrName, cityName, ticketSAR) {
-    _cart.push({ attrName: attrName, cityName: cityName, ticketSAR: ticketSAR || 0 });
+  function addToCart(item) {
+    /* item: { type, label, price, nights, total, ref, ts } */
+    _cart.push(item);
     _updateFab();
+    /* persist to localStorage so tickets survive refresh */
+    try { localStorage.setItem('alm-cart', JSON.stringify(_cart)); } catch(ex) {}
   }
+
+  /* Load persisted cart on startup */
+  (function() {
+    try {
+      var saved = JSON.parse(localStorage.getItem('alm-cart') || '[]');
+      if (Array.isArray(saved)) { _cart = saved; _updateFab(); }
+    } catch(ex) {}
+  })();
 
   function removeFromCart(idx) {
     _cart.splice(idx, 1);
     _updateFab();
     _renderCartList();
+    try { localStorage.setItem('alm-cart', JSON.stringify(_cart)); } catch(ex) {}
   }
 
   /* Panel click delegation */
@@ -7575,8 +7620,17 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
     var panelHtml;
     if (n === 3) {
-      /* Confirmation screen */
+      /* Confirmation screen — save booking to My Tickets */
       var total3 = _bk.price * (_bk.type === 'flight' ? 1 : _bk.nights);
+      addToCart({
+        type:   _bk.type,
+        label:  _bk.label,
+        price:  _bk.price,
+        nights: _bk.nights,
+        total:  total3,
+        ref:    _bk.ref,
+        ts:     Date.now()
+      });
       panelHtml =
         '<div class="bk-panel">' +
           '<div class="bk-header">' +
@@ -7611,6 +7665,9 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
               '</div>' +
             '</div>' +
             '<div class="bk-confirm-note">' + (isAr ? 'سيتم إرسال تفاصيل الحجز إلى بريدك الإلكتروني قريباً.' : 'Booking details will be sent to your email address shortly.') + '</div>' +
+            '<button class="bk-done-btn" id="bk-view-tickets-btn" type="button" style="background:var(--alm-cyan);color:var(--alm-dark);margin-bottom:10px">' +
+              (isAr ? '🎫 عرض تذاكري' : '🎫 View My Tickets') +
+            '</button>' +
             '<button class="bk-done-btn" id="bk-done-btn" type="button">' + (isAr ? 'العودة للتصفح' : 'Back to Browsing') + '</button>' +
           '</div>' +
         '</div>';
@@ -7644,6 +7701,11 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     if (closeBtn) closeBtn.addEventListener('click', closeBk);
     var doneBtn = document.getElementById('bk-done-btn');
     if (doneBtn) doneBtn.addEventListener('click', closeBk);
+    var viewTicketsBtn = document.getElementById('bk-view-tickets-btn');
+    if (viewTicketsBtn) viewTicketsBtn.addEventListener('click', function() {
+      closeBk();
+      setTimeout(openMyTickets, 260);
+    });
 
     var nextBtn = document.getElementById('bk-next-btn');
     if (nextBtn) nextBtn.addEventListener('click', function() { _renderBkStep(n + 1); });
