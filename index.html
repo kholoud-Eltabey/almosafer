@@ -2309,9 +2309,7 @@ html[data-theme="dark"] .bk-total-price { color:var(--text-primary); }
 ══════════════════════════════════════════ */
 .deals-section { background:var(--bg-page); border-top:1px solid var(--border); }
 html[data-theme="dark"] .deals-section { background:var(--bg-page); }
-.deals-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-@media (max-width:860px) { .deals-grid { grid-template-columns:repeat(2,1fr); } }
-@media (max-width:540px) { .deals-grid { grid-template-columns:1fr; } }
+.deals-grid { display:block; }
 
 .promo-card {
   border-radius:var(--r-xl); overflow:hidden;
@@ -2499,6 +2497,113 @@ html[data-theme="dark"] .deal-ov-currency { color:var(--text-secondary); }
 .promo-timer-lbl { font-size:11.5px; color:var(--text-subtle); }
 .promo-timer { font-size:11.5px; font-weight:700; color:var(--alm-dark); font-variant-numeric:tabular-nums; }
 .promo-timer.urgent { color:var(--alm-red); }
+
+/* ══ NETFLIX-STYLE DEAL ROWS ══ */
+.deals-filter-tabs { display:none; } /* hidden in rows layout */
+#flash-strip-wrap  { display:none; } /* replaced by first row     */
+
+.deal-row { margin-bottom:30px; }
+.deal-row-head {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:14px;
+}
+.deal-row-label {
+  display:flex; align-items:center; gap:9px;
+  font-size:16px; font-weight:700; color:var(--text-primary);
+}
+.deal-row-live {
+  background:var(--alm-red); color:#fff; font-size:10px; font-weight:800;
+  padding:2px 8px; border-radius:var(--r-full); letter-spacing:.5px;
+  animation:flash-pulse 1.5s infinite;
+}
+.deal-row-see {
+  font-size:12.5px; font-weight:600; color:var(--alm-cyan);
+  background:none; border:none; cursor:pointer; font-family:inherit;
+  display:flex; align-items:center; gap:3px;
+  transition:opacity 120ms;
+}
+.deal-row-see:hover { opacity:.75; }
+.deal-row-see svg { width:13px; height:13px; }
+
+.deal-row-scroll {
+  display:flex; gap:14px;
+  overflow-x:auto; padding-bottom:6px;
+  scrollbar-width:none; -ms-overflow-style:none;
+}
+.deal-row-scroll::-webkit-scrollbar { display:none; }
+
+/* ── Row card ── */
+.drc {
+  flex:0 0 230px; border-radius:var(--r-lg); overflow:hidden;
+  background:var(--bg-surface); border:1px solid var(--border);
+  cursor:pointer; box-shadow:var(--shadow-card);
+  transition:transform 160ms, box-shadow 160ms;
+  display:flex; flex-direction:column;
+}
+.drc:hover { transform:translateY(-5px); box-shadow:0 14px 40px rgba(0,59,74,.15); }
+.drc:focus-visible { outline:2px solid var(--alm-cyan); outline-offset:2px; }
+.drc-img { position:relative; height:158px; overflow:hidden; flex-shrink:0; }
+.drc-img img {
+  width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform 4s ease;
+}
+.drc:hover .drc-img img { transform:scale(1.07); }
+.drc-scrim {
+  position:absolute; inset:0;
+  background:linear-gradient(to top,rgba(0,10,25,.70) 0%,transparent 55%);
+}
+.drc-disc {
+  position:absolute; top:10px; inset-inline-start:10px;
+  background:var(--alm-red); color:#fff;
+  font-size:12px; font-weight:800; padding:3px 10px;
+  border-radius:var(--r-full); white-space:nowrap;
+}
+.drc-cat-tag {
+  position:absolute; top:10px; inset-inline-end:10px;
+  background:rgba(0,0,0,.46); backdrop-filter:blur(8px);
+  color:rgba(255,255,255,.92); font-size:10.5px; font-weight:600;
+  padding:3px 9px; border-radius:var(--r-full);
+  border:1px solid rgba(255,255,255,.15); white-space:nowrap;
+}
+.drc-timer-pill {
+  position:absolute; bottom:10px; inset-inline-start:10px;
+  background:rgba(0,0,0,.50); backdrop-filter:blur(6px);
+  color:var(--alm-cyan); font-size:10.5px; font-weight:700;
+  padding:3px 9px; border-radius:var(--r-full);
+  font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+.drc-timer-pill.urgent { color:#ff8a8a; }
+
+.drc-body { padding:12px 14px 14px; flex:1; display:flex; flex-direction:column; }
+.drc-title {
+  font-size:13px; font-weight:700; color:var(--text-primary);
+  line-height:1.35; margin-bottom:4px;
+}
+.drc-from { font-size:11.5px; color:var(--text-subtle); margin-bottom:auto; padding-bottom:11px; }
+.drc-footer {
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding-top:10px; border-top:1px solid var(--border);
+}
+.drc-code {
+  font-size:11px; font-weight:800; letter-spacing:1px;
+  color:var(--text-secondary); background:var(--bg-page);
+  padding:3px 8px; border-radius:5px; font-family:var(--font);
+}
+.drc-view-btn {
+  flex-shrink:0; background:var(--alm-red); color:#fff; border:none;
+  border-radius:var(--r-full); padding:5px 13px;
+  font-size:11.5px; font-weight:700; cursor:pointer; font-family:inherit;
+  transition:opacity 120ms;
+}
+.drc-view-btn:hover { opacity:.85; }
+
+/* dark mode */
+html[data-theme="dark"] .drc { border-color:rgba(255,255,255,.08); }
+html[data-theme="dark"] .drc-title { color:var(--text-primary); }
+html[data-theme="dark"] .drc-from  { color:var(--text-subtle); }
+html[data-theme="dark"] .drc-code  { background:rgba(255,255,255,.07); color:var(--text-secondary); }
+html[data-theme="dark"] .drc-footer { border-top-color:rgba(255,255,255,.08); }
+html[data-theme="dark"] .deal-row-label { color:var(--text-primary); }
 
 /* ── DEAL DETAIL OVERLAY — centered modal ── */
 #deal-overlay {
@@ -6160,98 +6265,115 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     '</article>';
   }
 
-  /* ── render flash strip ── */
-  function _renderFlashStrip() {
-    var isAr = html.lang === 'ar';
-    var flashDeals = DEALS_DATA.filter(function(d){ return d.expiresMs <= 72*3600000; });
-    flashDeals.sort(function(a,b){ return a.expiresMs - b.expiresMs; });
-    if (!flashDeals.length) return;
-    var wrap = document.getElementById('flash-strip-wrap');
-    if (!wrap) return;
-    var cardsHtml = flashDeals.map(function(d){
-      var dest = isAr ? d.titleAr : d.titleEn;
-      var rem  = _dealRemaining(d);
-      return '<div class="flash-card" data-deal-id="' + d.id + '">' +
-        '<img class="flash-card-img" src="' + d.img + '" alt="' + dest + '" loading="lazy">' +
-        '<div class="flash-card-body">' +
-          '<div class="flash-card-pct">' + (isAr ? d.discAr : d.disc) + '</div>' +
-          '<div class="flash-card-dest">' + dest + '</div>' +
-          '<div class="flash-card-from">' + (isAr ? 'من ' : 'From ') + 'SAR ' + d.bkPrice.toLocaleString() + '</div>' +
-          '<div class="flash-card-timer" data-flash-timer="' + d.id + '">' + _fmtTime(rem) + '</div>' +
+  /* ── render one row card ── */
+  function _renderRowCard(deal, hasTimer) {
+    var isAr  = html.lang === 'ar';
+    var title = isAr ? deal.titleAr : deal.titleEn;
+    var disc  = isAr ? deal.discAr  : deal.disc;
+    var cat   = isAr ? deal.catAr   : deal.catEn;
+    var rem   = _dealRemaining(deal);
+    var urgent= rem < 6*3600000;
+    var timerHtml = (hasTimer && rem < 7*24*3600000) ?
+      '<div class="drc-timer-pill' + (urgent ? ' urgent' : '') + '" data-deal-timer="' + deal.id + '">' +
+        (urgent ? '🔥 ' : '⏱ ') + _fmtTime(rem) +
+      '</div>' : '';
+    return '<article class="drc" tabindex="0" role="button" data-deal-id="' + deal.id + '">' +
+      '<div class="drc-img">' +
+        '<img src="' + deal.img + '" alt="' + title + '" loading="lazy">' +
+        '<div class="drc-scrim"></div>' +
+        '<span class="drc-disc">' + disc + '</span>' +
+        '<span class="drc-cat-tag">' + cat + '</span>' +
+        timerHtml +
+      '</div>' +
+      '<div class="drc-body">' +
+        '<div class="drc-title">' + title + '</div>' +
+        '<div class="drc-from">' + (isAr ? 'يبدأ من ' : 'From ') + 'SAR ' + deal.bkPrice.toLocaleString() + '</div>' +
+        '<div class="drc-footer">' +
+          '<span class="drc-code">' + deal.code + '</span>' +
+          '<button class="drc-view-btn" data-deal-id="' + deal.id + '">' +
+            (isAr ? 'التفاصيل' : 'View deal') +
+          '</button>' +
         '</div>' +
-      '</div>';
-    }).join('');
-    var prevSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>';
-    var nextSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>';
-    var prevBtn = '<button class="flash-nav-btn" id="flash-prev" aria-label="Previous">' + prevSvg + '</button>';
-    var nextBtn = '<button class="flash-nav-btn" id="flash-next" aria-label="Next">' + nextSvg + '</button>';
-    wrap.innerHTML =
-      '<div class="flash-strip">' +
-        '<div class="flash-strip-head">' +
-          '<span class="flash-strip-title">' +
-            '⚡ ' + (isAr ? 'تخفيضات مؤقتة' : 'Flash Deals') +
-            '<span class="flash-live-badge">' + (isAr ? 'مباشر' : 'LIVE') + '</span>' +
-          '</span>' +
-        '</div>' +
-        '<div class="flash-scroll-wrap">' +
-          prevBtn +
-          '<div class="flash-scroll" id="flash-scroll">' + cardsHtml + '</div>' +
-          nextBtn +
-        '</div>' +
-      '</div>';
-    /* wire nav arrows */
-    var scrollEl = document.getElementById('flash-scroll');
-    var prevEl   = document.getElementById('flash-prev');
-    var nextEl   = document.getElementById('flash-next');
-    var step = 154;
-
-    function _syncArrows() {
-      var atStart = scrollEl.scrollLeft <= 2;
-      var atEnd   = scrollEl.scrollLeft >= scrollEl.scrollWidth - scrollEl.clientWidth - 2;
-      if (isAr) { prevEl.disabled = atEnd;   nextEl.disabled = atStart; }
-      else       { prevEl.disabled = atStart; nextEl.disabled = atEnd;   }
-    }
-
-    prevEl.addEventListener('click', function(){
-      scrollEl.scrollBy({ left: isAr ? step : -step, behavior:'smooth' });
-    });
-    nextEl.addEventListener('click', function(){
-      scrollEl.scrollBy({ left: isAr ? -step : step, behavior:'smooth' });
-    });
-    scrollEl.addEventListener('scroll', _syncArrows, { passive:true });
-    _syncArrows();
-    wrap.querySelectorAll('.flash-card').forEach(function(fc){
-      fc.addEventListener('click', function(){
-        openDealDetail(fc.getAttribute('data-deal-id'));
-      });
-    });
+      '</div>' +
+    '</article>';
   }
 
-  /* ── render deals grid ── */
-  function _renderDealsGrid(cat) {
-    var grid = document.getElementById('deals-grid');
-    if (!grid) return;
-    var list = cat === 'all' ? DEALS_DATA : DEALS_DATA.filter(function(d){ return d.cat === cat; });
-    grid.innerHTML = list.map(_renderDealCard).join('');
-    /* wire events */
-    grid.querySelectorAll('.promo-copy-btn').forEach(function(btn){
-      btn.addEventListener('click', function(e){
-        e.stopPropagation();
-        var code = btn.getAttribute('data-code') || '';
-        try { navigator.clipboard.writeText(code); } catch(err){}
-        showToast(html.lang === 'ar' ? 'تم نسخ الكود ✓' : 'Code copied ✓');
-      });
-    });
-    grid.querySelectorAll('[data-deal-id]').forEach(function(card){
-      function openIt(e){
-        if (e.target.closest('.promo-copy-btn')) return;
+  /* ── render one row ── */
+  function _renderOneRow(rowDef, container) {
+    var isAr = html.lang === 'ar';
+    var deals = rowDef.filter(DEALS_DATA);
+    if (!deals.length) return;
+    if (rowDef.sort) deals = rowDef.sort(deals);
+    var chevron = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>';
+    var liveHtml = rowDef.live ? '<span class="deal-row-live">' + (isAr ? 'مباشر' : 'LIVE') + '</span>' : '';
+    var cardsHtml = deals.map(function(d){ return _renderRowCard(d, !!rowDef.hasTimer); }).join('');
+    var rowId = 'dr-' + rowDef.id;
+    var rowEl = document.createElement('div');
+    rowEl.className = 'deal-row';
+    rowEl.innerHTML =
+      '<div class="deal-row-head">' +
+        '<div class="deal-row-label">' +
+          '<span>' + rowDef.emoji + '</span>' +
+          '<span>' + (isAr ? rowDef.titleAr : rowDef.titleEn) + '</span>' +
+          liveHtml +
+        '</div>' +
+        '<button class="deal-row-see" aria-label="See all ' + rowDef.titleEn + '">' +
+          (isAr ? 'عرض الكل' : 'See all') + chevron +
+        '</button>' +
+      '</div>' +
+      '<div class="deal-row-scroll" id="' + rowId + '">' + cardsHtml + '</div>';
+    container.appendChild(rowEl);
+    rowEl.querySelectorAll('.drc').forEach(function(card){
+      function open(e){
+        if (e.target.closest('.drc-view-btn')) return;
         openDealDetail(card.getAttribute('data-deal-id'));
       }
-      card.addEventListener('click', openIt);
+      card.addEventListener('click', open);
       card.addEventListener('keydown', function(e){
         if (e.key==='Enter'||e.key===' '){ e.preventDefault(); openDealDetail(card.getAttribute('data-deal-id')); }
       });
     });
+    rowEl.querySelectorAll('.drc-view-btn').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        openDealDetail(btn.getAttribute('data-deal-id'));
+      });
+    });
+  }
+
+  /* ── row definitions ── */
+  var DEAL_ROWS = [
+    {
+      id:'flash', emoji:'⚡', titleEn:'Flash Deals', titleAr:'تخفيضات مؤقتة',
+      live:true, hasTimer:true,
+      filter:function(data){ return data.filter(function(d){ return d.expiresMs <= 72*3600000; }); },
+      sort:function(data){ return data.slice().sort(function(a,b){ return a.expiresMs - b.expiresMs; }); }
+    },
+    {
+      id:'flight', emoji:'✈️', titleEn:'Flight Deals', titleAr:'عروض الرحلات',
+      filter:function(data){ return data.filter(function(d){ return d.cat === 'flight'; }); }
+    },
+    {
+      id:'hotel', emoji:'🏨', titleEn:'Hotel Deals', titleAr:'عروض الفنادق',
+      filter:function(data){ return data.filter(function(d){ return d.cat === 'hotel'; }); }
+    },
+    {
+      id:'activity', emoji:'🎡', titleEn:'Activities', titleAr:'أنشطة وترفيه',
+      filter:function(data){ return data.filter(function(d){ return d.cat === 'activity'; }); }
+    },
+    {
+      id:'bank', emoji:'🏦', titleEn:'Bank Offers', titleAr:'عروض بنكية',
+      filter:function(data){ return data.filter(function(d){ return d.cat === 'bank'; }); }
+    }
+  ];
+
+  /* ── render all rows ── */
+  function _renderDealRows() {
+    var grid = document.getElementById('deals-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    grid.style.display = 'block'; /* override the 3-col grid */
+    DEAL_ROWS.forEach(function(row){ _renderOneRow(row, grid); });
   }
 
   /* ── countdown ticker ── */
@@ -6259,29 +6381,21 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   function _startDealTimers() {
     if (_dealTimerIv) clearInterval(_dealTimerIv);
     _dealTimerIv = setInterval(function(){
-      /* card timers */
       document.querySelectorAll('[data-deal-timer]').forEach(function(el){
-        var id = el.getAttribute('data-deal-timer');
-        var d  = DEALS_DATA.filter(function(x){ return x.id === id; })[0];
+        var id  = el.getAttribute('data-deal-timer');
+        var d   = DEALS_DATA.filter(function(x){ return x.id === id; })[0];
         if (!d) return;
         var rem = _dealRemaining(d);
-        el.textContent = _fmtTime(rem);
-        el.classList.toggle('urgent', rem < 6*3600000);
+        var isUrgent = rem < 6*3600000;
+        /* pill timers in row cards */
+        if (el.classList.contains('drc-timer-pill')) {
+          el.textContent = (isUrgent ? '🔥 ' : '⏱ ') + _fmtTime(rem);
+          el.classList.toggle('urgent', isUrgent);
+        } else {
+          el.textContent = _fmtTime(rem);
+          el.classList.toggle('urgent', isUrgent);
+        }
       });
-      /* flash strip timers */
-      document.querySelectorAll('[data-flash-timer]').forEach(function(el){
-        var id = el.getAttribute('data-flash-timer');
-        var d  = DEALS_DATA.filter(function(x){ return x.id === id; })[0];
-        if (!d) return;
-        el.textContent = _fmtTime(_dealRemaining(d));
-      });
-      /* overlay timer */
-      var ovTimer = document.getElementById('deal-ov-timer');
-      if (ovTimer) {
-        var oid = ovTimer.getAttribute('data-deal-timer');
-        var od  = DEALS_DATA.filter(function(x){ return x.id === oid; })[0];
-        if (od) ovTimer.textContent = _fmtTime(_dealRemaining(od));
-      }
     }, 1000);
   }
 
@@ -6370,8 +6484,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   });
 
   /* ── init ── */
-  _renderFlashStrip();
-  _renderDealsGrid('all');
+  _renderDealRows();
   _startDealTimers();
 
   /* ═══════════════════════════════════════════════════
