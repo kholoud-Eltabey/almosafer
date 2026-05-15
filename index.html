@@ -576,7 +576,9 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
 
 /* Input row */
 .sf-row { display: flex; gap: 8px; align-items: flex-end; }
-.sf-field { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.sf-field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+/* Make search button align with input bottoms */
+#sf-standard .sf-row .sf-btn { align-self: flex-end; }
 .sf-field label {
   font-size: 9.5px; font-weight: 700; color: var(--text-subtle);
   text-transform: uppercase; letter-spacing: 0.9px; padding-inline-start: 2px;
@@ -627,32 +629,11 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
 .sf-val-clr svg { width: 12px; height: 12px; stroke: currentColor; display: block; }
 .sf-has-val .sf-val-clr { display: flex; }
 
-/* ── Flight search 2-column grid layout ── */
-.sf-od-row {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: flex-end;
-  gap: 0;
-  margin-bottom: 12px;
+/* ── Swap button between Origin & Destination ── */
+.sf-swap-wrap {
+  display: flex; align-items: flex-end; flex-shrink: 0;
+  padding-bottom: 8px; margin-inline: -16px; z-index: 3; position: relative;
 }
-.sf-swap-center {
-  display: flex; align-items: flex-end;
-  padding-bottom: 10px; padding-inline: 2px;
-  z-index: 3; position: relative;
-}
-.sf-2col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-/* Round-trip: pax spans full width below depart + return */
-#sf-standard.trip-round-trip #sf-pax-field { grid-column: 1 / -1; }
-.sf-btn-full {
-  width: 100%; justify-content: center;
-  margin-top: 12px; display: flex;
-}
-
-/* ── Swap button ── */
 .sf-swap-btn {
   width: 32px; height: 32px; border-radius: 50%;
   border: 2px solid var(--alm-cyan); background: #fff; cursor: pointer;
@@ -665,11 +646,7 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
 .sf-swap-btn.spinning { transform: rotate(180deg); }
 .sf-swap-btn svg { width: 15px; height: 15px; stroke: var(--alm-cyan); }
 html[data-theme="dark"] .sf-swap-btn { background: #0c2330; border-color: var(--alm-cyan); }
-@media (max-width: 600px) {
-  .sf-od-row { grid-template-columns: 1fr 1fr; }
-  .sf-swap-center { display: none; }
-  .sf-2col { grid-template-columns: 1fr 1fr; }
-}
+@media (max-width: 640px) { .sf-swap-wrap { display: none; } }
 
 /* ── Services Bar ── */
 .svc-bar {
@@ -688,25 +665,30 @@ html[data-theme="dark"] .sf-swap-btn { background: #0c2330; border-color: var(--
   transition: border-color 150ms, background 120ms; font-family: inherit;
   border-radius: var(--r-md) var(--r-md) 0 0;
 }
-.svc-item:hover { border-bottom-color: var(--alm-cyan); background: rgba(0,183,198,0.04); }
-.svc-item.active { border-bottom-color: var(--alm-cyan); }
+.svc-item:hover { background: rgba(0,183,198,0.04); }
+.svc-item:focus-visible { outline: none; }
 .svc-icon-wrap {
-  width: 52px; height: 52px; border-radius: 50%;
-  background: rgba(0,183,198,0.10); border: 1.5px solid rgba(0,183,198,0.20);
+  width: 52px; height: 52px; border-radius: 12px;
+  background: var(--bg-page); border: 1.5px solid var(--border);
   display: flex; align-items: center; justify-content: center;
-  transition: background 160ms, border-color 160ms, transform 180ms cubic-bezier(.34,1.56,.64,1);
+  transition: background 160ms, border-color 160ms, box-shadow 160ms;
   flex-shrink: 0;
 }
-.svc-item:hover .svc-icon-wrap {
-  background: rgba(0,183,198,0.18); border-color: var(--alm-cyan);
-  transform: scale(1.08);
-}
-.svc-item.active .svc-icon-wrap { background: rgba(0,183,198,0.22); border-color: var(--alm-cyan); }
-.svc-icon-wrap svg { width: 24px; height: 24px; stroke: var(--alm-cyan); fill: none; }
-.svc-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); line-height: 1.2; text-align: center; }
+.svc-icon-wrap svg { width: 22px; height: 22px; stroke: var(--text-secondary); fill: none; transition: stroke 160ms; }
+/* Hover */
+.svc-item:hover .svc-icon-wrap { background: rgba(0,183,198,0.08); border-color: var(--alm-cyan); }
+.svc-item:hover .svc-icon-wrap svg { stroke: var(--alm-cyan); }
 .svc-item:hover .svc-label { color: var(--alm-cyan); }
+/* Active */
+.svc-item.active .svc-icon-wrap { background: rgba(0,183,198,0.14); border-color: var(--alm-cyan); }
+.svc-item.active .svc-icon-wrap svg { stroke: var(--alm-cyan); }
+.svc-item.active .svc-label { color: var(--alm-cyan); font-weight: 600; }
+/* Focus-visible */
+.svc-item:focus-visible .svc-icon-wrap { box-shadow: 0 0 0 3px rgba(0,183,198,0.35); border-color: var(--alm-cyan); }
+.svc-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); line-height: 1.2; text-align: center; transition: color 160ms; }
 html[data-theme="dark"] .svc-bar { background: #0c2330; border-color: #163545; }
-html[data-theme="dark"] .svc-icon-wrap { background: rgba(0,183,198,0.14); border-color: rgba(0,183,198,0.25); }
+html[data-theme="dark"] .svc-icon-wrap { background: #0c2330; border-color: #224455; }
+html[data-theme="dark"] .svc-icon-wrap svg { stroke: #7aacb8; }
 html[data-theme="dark"] .svc-label { color: #7aacb8; }
 
 /* Search button */
@@ -3338,8 +3320,7 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
 
           <!-- ── Standard (One Way / Round Trip) ── -->
           <div id="sf-standard">
-            <!-- Row 1: Origin | Swap | Destination -->
-            <div class="sf-od-row">
+            <div class="sf-row">
               <div class="sf-field">
                 <label id="lbl-orig"><span class="en">ORIGIN</span><span class="ar">المغادرة من</span></label>
                 <div class="sf-input sf-has-val" id="si-orig" role="combobox" aria-labelledby="lbl-orig" aria-haspopup="listbox" aria-expanded="false">
@@ -3351,7 +3332,7 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
                 </div>
               </div>
               <!-- Swap -->
-              <div class="sf-swap-center" aria-hidden="true">
+              <div class="sf-swap-wrap" aria-hidden="true">
                 <button class="sf-swap-btn" id="swapBtn" type="button" aria-label="Swap origin and destination">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
                 </button>
@@ -3366,10 +3347,6 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
                   <button class="sf-val-clr" type="button" data-clear="destVal" aria-label="Clear destination"><svg viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg></button>
                 </div>
               </div>
-            </div>
-
-            <!-- Row 2: Date fields + Pax in 2-col grid -->
-            <div class="sf-2col">
               <div class="sf-field" id="sf-depart-wrap">
                 <label id="lbl-depart"><span class="en">DEPARTURE</span><span class="ar">تاريخ المغادرة</span></label>
                 <div class="sf-input" id="si-depart" role="button" aria-labelledby="lbl-depart" tabindex="0">
@@ -3398,13 +3375,11 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
                   </div>
                 </div>
               </div>
+              <button class="sf-btn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <span class="en">Search</span><span class="ar">بحث</span>
+              </button>
             </div>
-
-            <!-- Search button — full width -->
-            <button class="sf-btn sf-btn-full" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <span class="en">Search</span><span class="ar">بحث</span>
-            </button>
           </div>
 
           <!-- ── Multi City ── -->
