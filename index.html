@@ -2470,16 +2470,22 @@ html[data-theme="dark"] .deal-ov-currency { color:var(--text-secondary); }
 .flash-card-img { width:100%; height:84px; object-fit:cover; display:block; }
 .flash-card-body { padding:9px 10px 11px; }
 .flash-card-pct { font-size:24px; font-weight:500; color:var(--alm-red); line-height:1; margin-bottom:3px; }
-.flash-nav { display:flex; gap:6px; flex-shrink:0; }
+/* carousel arrow controls — overlaid on scroll track */
+.flash-scroll-wrap { position:relative; }
 .flash-nav-btn {
-  width:32px; height:32px; border-radius:50%;
-  border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.10);
-  color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center;
-  transition:background 150ms; flex-shrink:0;
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:36px; height:36px; border-radius:50%; z-index:10;
+  border:none; background:rgba(255,255,255,.92);
+  color:var(--alm-dark); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 2px 14px rgba(0,0,0,.28);
+  transition:background 140ms, transform 140ms;
 }
-.flash-nav-btn:hover { background:rgba(255,255,255,.22); }
-.flash-nav-btn:disabled { opacity:.35; cursor:default; }
+.flash-nav-btn:hover { background:#fff; transform:translateY(-50%) scale(1.08); }
+.flash-nav-btn:disabled { opacity:.3; cursor:default; pointer-events:none; }
 .flash-nav-btn svg { width:16px; height:16px; pointer-events:none; }
+#flash-prev { inset-inline-start:-14px; }
+#flash-next { inset-inline-end:-14px; }
 .flash-card-dest { font-size:11.5px; font-weight:600; color:#fff; margin-bottom:4px; line-height:1.3; }
 .flash-card-from { font-size:10px; color:rgba(255,255,255,.5); margin-bottom:5px; }
 .flash-card-timer { font-size:10px; font-weight:700; color:var(--alm-cyan); font-variant-numeric:tabular-nums; }
@@ -2491,31 +2497,44 @@ html[data-theme="dark"] .deal-ov-currency { color:var(--text-secondary); }
 .promo-timer { font-size:11.5px; font-weight:700; color:var(--alm-dark); font-variant-numeric:tabular-nums; }
 .promo-timer.urgent { color:var(--alm-red); }
 
-/* ── DEAL DETAIL OVERLAY ── */
-#deal-overlay { position:fixed; inset:0; z-index:1900; display:none; }
-#deal-overlay.open { display:block; }
-.deal-ov-backdrop { position:absolute; inset:0; background:rgba(0,10,20,.55); backdrop-filter:blur(6px); cursor:pointer; }
+/* ── DEAL DETAIL OVERLAY — centered modal ── */
+#deal-overlay {
+  position:fixed; inset:0; z-index:1900; display:none;
+  align-items:center; justify-content:center; padding:20px;
+}
+#deal-overlay.open { display:flex; }
+.deal-ov-backdrop { position:absolute; inset:0; background:rgba(0,10,20,.65); backdrop-filter:blur(10px); cursor:pointer; }
 .deal-ov-panel {
-  position:absolute; inset-inline-end:0; top:0; bottom:0;
-  width:min(540px,100vw); background:var(--bg-surface);
+  position:relative; z-index:1;
+  width:min(600px,100%); max-height:88vh;
+  background:var(--bg-surface); border-radius:var(--r-xl);
   display:flex; flex-direction:column; overflow:hidden;
-  box-shadow:-20px 0 60px rgba(0,0,0,.28);
-  transform:translateX(100%); transition:transform 300ms cubic-bezier(.4,0,.2,1);
+  box-shadow:0 28px 90px rgba(0,0,0,.42);
+  transform:scale(.93) translateY(24px); opacity:0;
+  transition:transform 300ms cubic-bezier(.34,1.4,.64,1), opacity 240ms ease;
 }
-html[dir="rtl"] .deal-ov-panel { inset-inline-end:auto; inset-inline-start:0; transform:translateX(-100%); }
-#deal-overlay.open .deal-ov-panel { transform:translateX(0); }
-.deal-ov-hero { position:relative; height:220px; flex-shrink:0; }
+#deal-overlay.open .deal-ov-panel { transform:scale(1) translateY(0); opacity:1; }
+.deal-ov-hero { position:relative; height:260px; flex-shrink:0; }
 .deal-ov-hero img { width:100%; height:100%; object-fit:cover; display:block; }
-.deal-ov-hero-scrim { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,10,25,.78) 0%,transparent 55%); }
-.deal-ov-disc { position:absolute; bottom:16px; inset-inline-start:20px; font-size:38px; font-weight:900; color:#fff; line-height:1; text-shadow:0 2px 10px rgba(0,0,0,.45); }
-.deal-ov-close {
-  position:absolute; top:12px; inset-inline-end:12px;
-  width:34px; height:34px; border-radius:50%;
-  background:rgba(0,0,0,.5); backdrop-filter:blur(8px);
-  border:none; cursor:pointer; color:#fff; font-size:15px;
-  display:flex; align-items:center; justify-content:center; z-index:2;
+.deal-ov-hero-scrim {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,10,25,.82) 0%, rgba(0,10,25,.3) 45%, transparent 100%);
 }
-.deal-ov-body { flex:1; overflow-y:auto; padding:22px 24px 36px; }
+.deal-ov-disc {
+  position:absolute; bottom:20px; inset-inline-start:24px;
+  font-size:42px; font-weight:900; color:#fff; line-height:1;
+  text-shadow:0 2px 14px rgba(0,0,0,.5);
+}
+.deal-ov-close {
+  position:absolute; top:14px; inset-inline-end:14px;
+  width:36px; height:36px; border-radius:50%;
+  background:rgba(0,0,0,.55); backdrop-filter:blur(8px);
+  border:none; cursor:pointer; color:#fff; font-size:16px;
+  display:flex; align-items:center; justify-content:center; z-index:2;
+  transition:background 140ms;
+}
+.deal-ov-close:hover { background:rgba(0,0,0,.75); }
+.deal-ov-body { flex:1; overflow-y:auto; padding:24px 28px 36px; }
 .deal-ov-cat { font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--alm-cyan); margin-bottom:6px; }
 .deal-ov-title { font-size:20px; font-weight:800; color:var(--text-primary); line-height:1.3; margin-bottom:8px; }
 .deal-ov-desc { font-size:13.5px; color:var(--text-secondary); line-height:1.65; margin-bottom:18px; }
@@ -6161,7 +6180,6 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     }).join('');
     var prevSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>';
     var nextSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>';
-    /* In RTL the visual prev/next are swapped */
     var prevBtn = '<button class="flash-nav-btn" id="flash-prev" aria-label="Previous">' + prevSvg + '</button>';
     var nextBtn = '<button class="flash-nav-btn" id="flash-next" aria-label="Next">' + nextSvg + '</button>';
     wrap.innerHTML =
@@ -6171,13 +6189,16 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
             '⚡ ' + (isAr ? 'تخفيضات مؤقتة' : 'Flash Deals') +
             '<span class="flash-live-badge">' + (isAr ? 'مباشر' : 'LIVE') + '</span>' +
           '</span>' +
-          '<div class="flash-nav">' + prevBtn + nextBtn + '</div>' +
         '</div>' +
-        '<div class="flash-scroll" id="flash-scroll">' + cardsHtml + '</div>' +
+        '<div class="flash-scroll-wrap">' +
+          prevBtn +
+          '<div class="flash-scroll" id="flash-scroll">' + cardsHtml + '</div>' +
+          nextBtn +
+        '</div>' +
       '</div>';
     /* wire nav arrows */
     var scrollEl = document.getElementById('flash-scroll');
-    var step = 160; /* ~card width + gap */
+    var step = 154;
     document.getElementById('flash-prev').addEventListener('click', function(){
       scrollEl.scrollBy({ left: isAr ? step : -step, behavior:'smooth' });
     });
