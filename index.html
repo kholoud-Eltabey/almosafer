@@ -625,11 +625,32 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
 .sf-val-clr:hover { background: rgba(0,0,0,0.40); }
 .sf-has-val .sf-val-clr { display: flex; }
 
-/* ── Swap button between Origin & Destination ── */
-.sf-swap-wrap {
-  display: flex; align-items: flex-end; flex-shrink: 0;
-  padding-bottom: 10px; margin-inline: -18px; z-index: 3; position: relative;
+/* ── Flight search 2-column grid layout ── */
+.sf-od-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: flex-end;
+  gap: 0;
+  margin-bottom: 12px;
 }
+.sf-swap-center {
+  display: flex; align-items: flex-end;
+  padding-bottom: 10px; padding-inline: 2px;
+  z-index: 3; position: relative;
+}
+.sf-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+/* Round-trip: pax spans full width below depart + return */
+#sf-standard.trip-round-trip #sf-pax-field { grid-column: 1 / -1; }
+.sf-btn-full {
+  width: 100%; justify-content: center;
+  margin-top: 12px; display: flex;
+}
+
+/* ── Swap button ── */
 .sf-swap-btn {
   width: 32px; height: 32px; border-radius: 50%;
   border: 2px solid var(--alm-cyan); background: #fff; cursor: pointer;
@@ -642,7 +663,11 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
 .sf-swap-btn.spinning { transform: rotate(180deg); }
 .sf-swap-btn svg { width: 15px; height: 15px; stroke: var(--alm-cyan); }
 html[data-theme="dark"] .sf-swap-btn { background: #0c2330; border-color: var(--alm-cyan); }
-@media (max-width: 640px) { .sf-swap-wrap { display: none; } }
+@media (max-width: 600px) {
+  .sf-od-row { grid-template-columns: 1fr 1fr; }
+  .sf-swap-center { display: none; }
+  .sf-2col { grid-template-columns: 1fr 1fr; }
+}
 
 /* ── Services Bar ── */
 .svc-bar {
@@ -3311,7 +3336,8 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
 
           <!-- ── Standard (One Way / Round Trip) ── -->
           <div id="sf-standard">
-            <div class="sf-row">
+            <!-- Row 1: Origin | Swap | Destination -->
+            <div class="sf-od-row">
               <div class="sf-field">
                 <label id="lbl-orig"><span class="en">ORIGIN</span><span class="ar">المغادرة من</span></label>
                 <div class="sf-input sf-has-val" id="si-orig" role="combobox" aria-labelledby="lbl-orig" aria-haspopup="listbox" aria-expanded="false">
@@ -3322,8 +3348,8 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
                   <button class="sf-val-clr" type="button" data-clear="origVal" aria-label="Clear origin">✕</button>
                 </div>
               </div>
-              <!-- Swap button -->
-              <div class="sf-swap-wrap" aria-hidden="true">
+              <!-- Swap -->
+              <div class="sf-swap-center" aria-hidden="true">
                 <button class="sf-swap-btn" id="swapBtn" type="button" aria-label="Swap origin and destination">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
                 </button>
@@ -3338,6 +3364,10 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
                   <button class="sf-val-clr" type="button" data-clear="destVal" aria-label="Clear destination">✕</button>
                 </div>
               </div>
+            </div>
+
+            <!-- Row 2: Date fields + Pax in 2-col grid -->
+            <div class="sf-2col">
               <div class="sf-field" id="sf-depart-wrap">
                 <label id="lbl-depart"><span class="en">DEPARTURE</span><span class="ar">تاريخ المغادرة</span></label>
                 <div class="sf-input" id="si-depart" role="button" aria-labelledby="lbl-depart" tabindex="0">
@@ -3354,11 +3384,10 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
                   <div>
                     <span class="sf-val sf-muted"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span>
                   </div>
-                  <!-- icon-button.md: aria-label required; button not span -->
                   <button type="button" class="sf-clear" aria-label="Clear return date">✕</button>
                 </div>
               </div>
-              <div class="sf-field" style="flex:0.88">
+              <div class="sf-field" id="sf-pax-field">
                 <label id="lbl-pax"><span class="en">TRAVELLERS &amp; CLASS</span><span class="ar">المسافرون والدرجة</span></label>
                 <div class="sf-input" id="si-pax" role="button" aria-labelledby="lbl-pax" tabindex="0">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
@@ -3367,11 +3396,13 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
                   </div>
                 </div>
               </div>
-              <button class="sf-btn" type="button">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <span class="en">Search</span><span class="ar">بحث</span>
-              </button>
             </div>
+
+            <!-- Search button — full width -->
+            <button class="sf-btn sf-btn-full" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span class="en">Search</span><span class="ar">بحث</span>
+            </button>
           </div>
 
           <!-- ── Multi City ── -->
@@ -4919,6 +4950,7 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
       sfStandard.style.display  = 'block';
       sfMulticity.style.display = 'none';
       sfReturnWrap.style.display = type === 'one-way' ? 'none' : '';
+      sfStandard.classList.toggle('trip-round-trip', type === 'round-trip');
     }
   }
 
