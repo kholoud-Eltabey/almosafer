@@ -2407,38 +2407,117 @@ html[data-theme="dark"] .promo-card { background:var(--bg-surface); }
 .promo-view-btn:hover { opacity:.88; }
 .promo-view-btn svg { width:11px; height:11px; flex-shrink:0; }
 
-/* ── Coming Soon section ── */
-#deal-coming-soon {
-  display:none; background:var(--bg-page);
-  min-height:60vh; border-top:1px solid var(--border);
+/* ── DEALS FILTER TABS ── */
+.deals-filter-tabs { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 20px; }
+.deals-tab {
+  padding:7px 16px; border-radius:var(--r-full); font-size:12.5px; font-weight:600;
+  border:1.5px solid var(--border); background:var(--bg-surface); color:var(--text-secondary);
+  cursor:pointer; font-family:inherit; white-space:nowrap;
+  transition:background 120ms,border-color 120ms,color 120ms;
 }
-#deal-coming-soon.dcs-open { display:block; }
-.dcs-wrap {
-  max-width:480px; margin:0 auto;
-  padding:36px 24px 72px;
-  display:flex; flex-direction:column; align-items:flex-start;
+.deals-tab:hover { border-color:var(--alm-cyan); color:var(--alm-dark); }
+.deals-tab.active { background:var(--alm-dark); color:#fff; border-color:var(--alm-dark); }
+
+/* ── FLASH DEALS STRIP ── */
+.flash-strip {
+  background:linear-gradient(135deg,var(--alm-dark) 0%,#005872 100%);
+  border-radius:var(--r-xl); padding:18px 20px 14px; margin-bottom:22px;
 }
-.dcs-back {
-  display:inline-flex; align-items:center; gap:6px;
-  background:none; border:none; padding:0;
-  font-size:13px; font-weight:600; color:var(--alm-cyan);
+.flash-strip-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:13px; }
+.flash-strip-title { font-size:14.5px; font-weight:700; color:#fff; display:flex; align-items:center; gap:9px; font-family:inherit; }
+.flash-live-badge {
+  background:var(--alm-red); color:#fff; font-size:10px; font-weight:800;
+  padding:2px 9px; border-radius:var(--r-full); letter-spacing:.6px;
+  animation:flash-pulse 1.5s infinite;
+}
+@keyframes flash-pulse { 0%,100%{opacity:1} 50%{opacity:.58} }
+.flash-scroll {
+  display:flex; gap:11px; overflow-x:auto; padding-bottom:2px;
+  scrollbar-width:none; -ms-overflow-style:none;
+}
+.flash-scroll::-webkit-scrollbar { display:none; }
+.flash-card {
+  flex:0 0 142px; border-radius:var(--r-lg);
+  background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.14);
+  overflow:hidden; cursor:pointer; transition:transform 150ms,border-color 150ms;
+}
+.flash-card:hover { transform:translateY(-3px); border-color:rgba(0,183,198,.5); }
+.flash-card-img { width:100%; height:84px; object-fit:cover; display:block; }
+.flash-card-body { padding:9px 10px 11px; }
+.flash-card-pct { font-size:21px; font-weight:900; color:var(--alm-red); line-height:1; margin-bottom:3px; }
+.flash-card-dest { font-size:11.5px; font-weight:600; color:#fff; margin-bottom:4px; line-height:1.3; }
+.flash-card-from { font-size:10px; color:rgba(255,255,255,.5); margin-bottom:5px; }
+.flash-card-timer { font-size:10px; font-weight:700; color:var(--alm-cyan); font-variant-numeric:tabular-nums; }
+
+/* ── PROMO CARD TIMER ── */
+.promo-timer-row { display:flex; align-items:center; gap:5px; margin-bottom:9px; }
+.promo-timer-icon { font-size:12px; line-height:1; }
+.promo-timer-lbl { font-size:11.5px; color:var(--text-subtle); }
+.promo-timer { font-size:11.5px; font-weight:700; color:var(--alm-dark); font-variant-numeric:tabular-nums; }
+.promo-timer.urgent { color:var(--alm-red); }
+
+/* ── DEAL DETAIL OVERLAY ── */
+#deal-overlay { position:fixed; inset:0; z-index:1900; display:none; }
+#deal-overlay.open { display:block; }
+.deal-ov-backdrop { position:absolute; inset:0; background:rgba(0,10,20,.55); backdrop-filter:blur(6px); cursor:pointer; }
+.deal-ov-panel {
+  position:absolute; inset-inline-end:0; top:0; bottom:0;
+  width:min(540px,100vw); background:var(--bg-surface);
+  display:flex; flex-direction:column; overflow:hidden;
+  box-shadow:-20px 0 60px rgba(0,0,0,.28);
+  transform:translateX(100%); transition:transform 300ms cubic-bezier(.4,0,.2,1);
+}
+html[dir="rtl"] .deal-ov-panel { inset-inline-end:auto; inset-inline-start:0; transform:translateX(-100%); }
+#deal-overlay.open .deal-ov-panel { transform:translateX(0); }
+.deal-ov-hero { position:relative; height:220px; flex-shrink:0; }
+.deal-ov-hero img { width:100%; height:100%; object-fit:cover; display:block; }
+.deal-ov-hero-scrim { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,10,25,.78) 0%,transparent 55%); }
+.deal-ov-disc { position:absolute; bottom:16px; inset-inline-start:20px; font-size:38px; font-weight:900; color:#fff; line-height:1; text-shadow:0 2px 10px rgba(0,0,0,.45); }
+.deal-ov-close {
+  position:absolute; top:12px; inset-inline-end:12px;
+  width:34px; height:34px; border-radius:50%;
+  background:rgba(0,0,0,.5); backdrop-filter:blur(8px);
+  border:none; cursor:pointer; color:#fff; font-size:15px;
+  display:flex; align-items:center; justify-content:center; z-index:2;
+}
+.deal-ov-body { flex:1; overflow-y:auto; padding:22px 24px 36px; }
+.deal-ov-cat { font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--alm-cyan); margin-bottom:6px; }
+.deal-ov-title { font-size:20px; font-weight:800; color:var(--text-primary); line-height:1.3; margin-bottom:8px; }
+.deal-ov-desc { font-size:13.5px; color:var(--text-secondary); line-height:1.65; margin-bottom:18px; }
+.deal-ov-cd {
+  display:flex; align-items:center; gap:10px;
+  background:rgba(230,57,70,.07); border:1px solid rgba(230,57,70,.2);
+  border-radius:var(--r-md); padding:12px 14px; margin-bottom:18px;
+}
+.deal-ov-cd-label { font-size:12px; color:var(--text-secondary); }
+.deal-ov-cd-time { font-size:17px; font-weight:800; color:var(--alm-red); font-variant-numeric:tabular-nums; }
+.deal-ov-terms { margin-bottom:18px; }
+.deal-ov-terms-ttl { font-size:11px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--text-subtle); margin-bottom:8px; }
+.deal-ov-terms ul { margin:0; padding-inline-start:18px; }
+.deal-ov-terms li { font-size:12.5px; color:var(--text-secondary); line-height:1.75; }
+.deal-ov-code-box {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  background:var(--bg-page); border:1.5px dashed var(--alm-cyan);
+  border-radius:var(--r-md); padding:13px 16px; margin-bottom:22px;
+}
+.deal-ov-code-label { font-size:11px; color:var(--text-subtle); margin-bottom:3px; }
+.deal-ov-code-val { font-size:19px; font-weight:900; letter-spacing:2.5px; color:var(--alm-dark); font-family:var(--font); }
+.deal-ov-copy-btn {
+  flex-shrink:0; background:var(--alm-cyan); color:#fff; border:none;
+  border-radius:var(--r-md); padding:10px 18px; font-size:12.5px; font-weight:700;
   cursor:pointer; font-family:inherit; transition:opacity 120ms;
-  margin-bottom:52px;
 }
-.dcs-back:hover { opacity:.72; }
-.dcs-back svg { width:15px; height:15px; }
-html[dir="rtl"] .dcs-back svg { transform: scaleX(-1); }
-.dcs-content {
-  width:100%; text-align:center;
-  padding:48px 24px;
-  background:var(--bg-surface); border:1px solid var(--border);
-  border-radius:var(--r-xl);
+.deal-ov-copy-btn:hover { opacity:.85; }
+.deal-ov-price-row { display:flex; align-items:baseline; gap:7px; margin-bottom:16px; }
+.deal-ov-from-lbl { font-size:12px; color:var(--text-subtle); }
+.deal-ov-price { font-size:26px; font-weight:800; color:var(--alm-dark); }
+.deal-ov-currency { font-size:13px; color:var(--text-secondary); }
+.deal-ov-book-btn {
+  width:100%; background:var(--alm-red); color:#fff; border:none;
+  border-radius:var(--r-md); padding:16px; font-size:15px; font-weight:700;
+  cursor:pointer; font-family:inherit; transition:opacity 120ms;
 }
-.dcs-icon { font-size:42px; margin-bottom:18px; }
-.dcs-title {
-  font-size:clamp(22px,3vw,30px); font-weight:800;
-  color:var(--text-primary); line-height:1.2;
-}
+.deal-ov-book-btn:hover { opacity:.88; }
 
 /* ══════════════════════════════════════════
    MY ACCOUNT — SIGN-IN MODAL + ACCOUNT PAGE
@@ -3086,22 +3165,13 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   <div class="ma-wrap" id="ma-content"></div>
 </section>
 
-<!-- DEAL COMING SOON -->
-<section id="deal-coming-soon" aria-label="Coming soon">
-  <div class="dcs-wrap">
-    <button class="dcs-back" id="dcs-back" aria-label="Back to deals">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-      <span class="en">Back</span><span class="ar">رجوع</span>
-    </button>
-    <div class="dcs-content" role="status">
-      <div class="dcs-icon" aria-hidden="true">🕐</div>
-      <h2 class="dcs-title">
-        <span class="en">Coming Soon</span>
-        <span class="ar">قريبًا</span>
-      </h2>
-    </div>
+<!-- DEAL DETAIL OVERLAY -->
+<div id="deal-overlay" role="dialog" aria-modal="true" aria-label="Deal details">
+  <div class="deal-ov-backdrop" id="deal-ov-backdrop"></div>
+  <div class="deal-ov-panel" id="deal-ov-panel">
+    <!-- injected by openDealDetail() -->
   </div>
-</section>
+</div>
 
 <!-- DESTINATIONS -->
 <main id="main">
@@ -3125,107 +3195,30 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     <div class="section-head">
       <div>
         <h2 class="section-title">
-          <span class="en">Special deals for you</span>
-          <span class="ar">عروض خاصة لك</span>
+          <span class="en">Offers &amp; Deals</span>
+          <span class="ar">العروض والخصومات</span>
         </h2>
         <p class="section-sub">
           <span class="en">Exclusive promo codes — only on Almosafer</span>
           <span class="ar">رموز خصم حصرية — فقط على المسافر</span>
         </p>
       </div>
-      <button class="see-all" id="deals-view-all" aria-label="View all deals">
-        <span class="en">View all</span><span class="ar">عرض الكل</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
     </div>
 
-    <div class="deals-grid">
+    <!-- Flash strip (rendered by JS) -->
+    <div id="flash-strip-wrap"></div>
 
-      <!-- Deal 1: Riyad Bank -->
-      <article class="promo-card" data-deal-id="riyad" tabindex="0" role="button" aria-label="Riyad Bank credit card special — up to 15% off">
-        <div class="promo-img">
-          <img src="https://images.unsplash.com/photo-1559526324-593bc073d938?w=700&q=85&fit=crop&auto=format" alt="Premium airline cabin view above clouds representing Riyad Bank travel offer" loading="lazy">
-          <div class="promo-img-scrim" aria-hidden="true"></div>
-          <span class="promo-disc"><span class="en">Up to 15% off</span><span class="ar">حتى ١٥٪ خصم</span></span>
-          <span class="promo-cat-tag"><span class="en">Bank Offer</span><span class="ar">عرض بنكي</span></span>
-          <div class="promo-accent" style="background:linear-gradient(90deg,#003B6F,#0055A5)" aria-hidden="true"></div>
-        </div>
-        <div class="promo-body">
-          <div class="promo-title"><span class="en">Riyad Bank Credit Card Special</span><span class="ar">عرض بطاقة بنك الرياض</span></div>
-          <div class="promo-desc"><span class="en">Save on flights, stays, and select activities</span><span class="ar">وفر على الرحلات والإقامات والأنشطة المختارة</span></div>
-          <div class="promo-footer-row">
-            <span class="promo-inline-code">
-              <span class="en">Use code:</span><span class="ar">استخدم الكود:</span>
-              <strong>RIYAD</strong>
-              <button class="promo-copy-btn" data-code="RIYAD" aria-label="Copy code RIYAD">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-              </button>
-            </span>
-            <button class="promo-view-btn">
-              <span class="en">View deal</span><span class="ar">التفاصيل</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Deal 2: TRIP -->
-      <article class="promo-card" data-deal-id="trip" tabindex="0" role="button" aria-label="An offer you can't miss — up to 20% off">
-        <div class="promo-img">
-          <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=700&q=85&fit=crop&auto=format" alt="Airplane wing soaring above golden clouds at sunset" loading="lazy">
-          <div class="promo-img-scrim" aria-hidden="true"></div>
-          <span class="promo-disc"><span class="en">Up to 20% off</span><span class="ar">حتى ٢٠٪ خصم</span></span>
-          <span class="promo-cat-tag"><span class="en">Limited Time</span><span class="ar">لفترة محدودة</span></span>
-          <div class="promo-accent" style="background:linear-gradient(90deg,#00B7C6,#00D4E5)" aria-hidden="true"></div>
-        </div>
-        <div class="promo-body">
-          <div class="promo-title"><span class="en">An Offer You Can't Miss</span><span class="ar">عرض لا يُفوَّت</span></div>
-          <div class="promo-desc"><span class="en">Enjoy savings on flights, stays, and activities</span><span class="ar">استمتع بالتوفير على الرحلات والإقامات والأنشطة</span></div>
-          <div class="promo-footer-row">
-            <span class="promo-inline-code">
-              <span class="en">Use code:</span><span class="ar">استخدم الكود:</span>
-              <strong>TRIP</strong>
-              <button class="promo-copy-btn" data-code="TRIP" aria-label="Copy code TRIP">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-              </button>
-            </span>
-            <button class="promo-view-btn">
-              <span class="en">View deal</span><span class="ar">التفاصيل</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Deal 3: Aquarabia SPLASH -->
-      <article class="promo-card" data-deal-id="splash" tabindex="0" role="button" aria-label="Aquarabia Qiddiya City tickets — special price">
-        <div class="promo-img">
-          <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=700&q=85&fit=crop&auto=format" alt="People enjoying water park rides and pools" loading="lazy">
-          <div class="promo-img-scrim" aria-hidden="true"></div>
-          <span class="promo-disc"><span class="en">Special Price</span><span class="ar">سعر مميز</span></span>
-          <span class="promo-cat-tag"><span class="en">Entertainment</span><span class="ar">ترفيه</span></span>
-          <div class="promo-accent" style="background:linear-gradient(90deg,#E63946,#FF6B6B)" aria-hidden="true"></div>
-        </div>
-        <div class="promo-body">
-          <div class="promo-title"><span class="en">Aquarabia Qiddiya City Tickets</span><span class="ar">تذاكر أكوارابيا قدية</span></div>
-          <div class="promo-desc"><span class="en">Get your Aquarabia Qiddiya City tickets today</span><span class="ar">احصل على تذاكر أكوارابيا قدية اليوم</span></div>
-          <div class="promo-footer-row">
-            <span class="promo-inline-code">
-              <span class="en">Use code:</span><span class="ar">استخدم الكود:</span>
-              <strong>SPLASH</strong>
-              <button class="promo-copy-btn" data-code="SPLASH" aria-label="Copy code SPLASH">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-              </button>
-            </span>
-            <button class="promo-view-btn">
-              <span class="en">View deal</span><span class="ar">التفاصيل</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-          </div>
-        </div>
-      </article>
-
+    <!-- Filter tabs -->
+    <div class="deals-filter-tabs" id="deals-tabs">
+      <button class="deals-tab active" data-cat="all"><span class="en">All</span><span class="ar">الكل</span></button>
+      <button class="deals-tab" data-cat="flight"><span class="en">Flights</span><span class="ar">رحلات</span></button>
+      <button class="deals-tab" data-cat="hotel"><span class="en">Hotels</span><span class="ar">فنادق</span></button>
+      <button class="deals-tab" data-cat="activity"><span class="en">Activities</span><span class="ar">أنشطة</span></button>
+      <button class="deals-tab" data-cat="bank"><span class="en">Bank Offers</span><span class="ar">عروض بنكية</span></button>
     </div>
+
+    <!-- Cards injected by JS -->
+    <div class="deals-grid" id="deals-grid"></div>
   </div>
 
 
@@ -3958,12 +3951,12 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     var hdS = document.getElementById('hotel-detail');
     var bkS = document.getElementById('booking-summary');
     var bcS = document.getElementById('booking-confirm');
-    var dcs = document.getElementById('deal-coming-soon');
+    var dcs = document.getElementById('deal-overlay');
     if (rsS) rsS.classList.remove('rs-open');
     if (hdS) hdS.classList.remove('hd-open');
     if (bkS) bkS.classList.remove('bk-open');
     if (bcS) bcS.classList.remove('bc-open');
-    if (dcs) dcs.classList.remove('dcs-open');
+    if (dcs) dcs.classList.remove('open');
     if (mainEl) mainEl.style.display = 'none';
     maSection.classList.add('ma-open');
     window.scrollTo({ top:0, behavior:'smooth' });
@@ -5902,60 +5895,398 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   }
 
   /* ══════════════════════════════════════════
-     DEALS — copy code + coming soon
+     OFFERS & DEALS — full system
   ══════════════════════════════════════════ */
-  var dcsSection = document.getElementById('deal-coming-soon');
-  var dcsBack    = document.getElementById('dcs-back');
-  var mainEl     = document.getElementById('main');
 
-  var heroEl = document.querySelector('.hero');
-  function setHeroVisible(visible) {
-    if (heroEl) heroEl.style.display = visible ? '' : 'none';
-  }
+  var mainEl = document.getElementById('main');
+  var _PAGE_LOAD = Date.now();
 
-  function showDealComingSoon() {
-    if (mainEl)     mainEl.style.display = 'none';
-    setHeroVisible(false);
-    if (dcsSection) { dcsSection.classList.add('dcs-open'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-  }
-
-  function hideDealComingSoon() {
-    if (dcsSection) dcsSection.classList.remove('dcs-open');
-    if (mainEl)     mainEl.style.display = '';
-    setHeroVisible(true);
-    var dealsEl = document.getElementById('deals-section');
-    if (dealsEl) setTimeout(function(){ dealsEl.scrollIntoView({ behavior:'smooth', block:'start' }); }, 50);
-  }
-
-  if (dcsBack) dcsBack.addEventListener('click', hideDealComingSoon);
-
-  /* Copy icon buttons */
-  document.querySelectorAll('.promo-copy-btn').forEach(function(btn){
-    btn.addEventListener('click', function(e){
-      e.stopPropagation();
-      var code = btn.getAttribute('data-code') || '';
-      try { navigator.clipboard.writeText(code); } catch(err){}
-      showToast(html.lang === 'ar' ? 'تم نسخ الكود' : 'Code copied');
-    });
-  });
-
-  /* Card body + "View deal" → coming soon */
-  document.querySelectorAll('.promo-card').forEach(function(card){
-    function goComingSoon(e) {
-      if (e.target.closest('.promo-copy-btn')) return;
-      showDealComingSoon();
+  var DEALS_DATA = [
+    {
+      id:'riyad', cat:'bank',
+      catEn:'Bank Offer', catAr:'عرض بنكي',
+      disc:'15% OFF', discAr:'١٥٪ خصم',
+      titleEn:'Riyad Bank Credit Card Special', titleAr:'عرض بطاقة بنك الرياض',
+      descEn:'Save up to 15% on flights, stays, and select activities when you pay with your Riyad Bank credit card.',
+      descAr:'وفر حتى ١٥٪ على الرحلات والإقامات والأنشطة المختارة عند الدفع ببطاقة بنك الرياض الائتمانية.',
+      code:'RIYAD',
+      img:'https://images.unsplash.com/photo-1559526324-593bc073d938?w=900&q=85&fit=crop&auto=format',
+      accent:'linear-gradient(90deg,#003B6F,#0055A5)',
+      expiresMs:48*3600000,
+      termsEn:['Valid on all Riyad Bank credit cards','Max discount SAR 500 per booking','Cannot be combined with other offers'],
+      termsAr:['صالح لجميع بطاقات بنك الرياض الائتمانية','الحد الأقصى للخصم ٥٠٠ ريال لكل حجز','لا يمكن دمجه مع عروض أخرى'],
+      bkType:'flight', bkLabelEn:'Riyad Bank Special · Any Route', bkLabelAr:'عرض بنك الرياض · أي مسار', bkPrice:799, bkNights:1
+    },
+    {
+      id:'trip', cat:'flight',
+      catEn:'Flash Sale', catAr:'تخفيض مؤقت',
+      disc:'20% OFF', discAr:'٢٠٪ خصم',
+      titleEn:'Flash Flight Sale', titleAr:'تخفيض رحلات مؤقت',
+      descEn:'Book any flight in the next 26 hours and save 20%. No destination restrictions — all routes included.',
+      descAr:'احجز أي رحلة خلال ٢٦ ساعة القادمة ووفر ٢٠٪ بلا قيود على الوجهة — جميع المسارات مشمولة.',
+      code:'TRIP',
+      img:'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=85&fit=crop&auto=format',
+      accent:'linear-gradient(90deg,#00B7C6,#00D4E5)',
+      expiresMs:26*3600000,
+      termsEn:['Valid on one-way and round trips','Discount applied at checkout','Minimum fare SAR 300'],
+      termsAr:['صالح للرحلات ذهاب وعودة وذهاب فقط','يُطبق الخصم عند الدفع','الحد الأدنى للسعر ٣٠٠ ريال'],
+      bkType:'flight', bkLabelEn:'Flash Flight · Any Route', bkLabelAr:'رحلة مؤقتة · أي مسار', bkPrice:599, bkNights:1
+    },
+    {
+      id:'dubai50', cat:'hotel',
+      catEn:'Flash Sale', catAr:'تخفيض مؤقت',
+      disc:'50% OFF', discAr:'٥٠٪ خصم',
+      titleEn:'Dubai 5-Star — Half Price', titleAr:'دبي فندق ٥ نجوم بنصف السعر',
+      descEn:'Three nights at a luxury 5-star Dubai hotel at an unbeatable price. Limited rooms — act fast.',
+      descAr:'ثلاث ليالٍ في فندق فاخر ٥ نجوم في دبي بسعر لا يُقاوم. عدد محدود من الغرف.',
+      code:'DUBAI50',
+      img:'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=900&q=85&fit=crop&auto=format',
+      accent:'linear-gradient(90deg,#E63946,#FF6B6B)',
+      expiresMs:14*3600000,
+      termsEn:['Valid for check-in 20 May – 30 Jun 2026','3 nights minimum stay','Subject to availability'],
+      termsAr:['صالح للوصول ٢٠ مايو – ٣٠ يونيو ٢٠٢٦','إقامة لا تقل عن ٣ ليالٍ','بحسب توفر الغرف'],
+      bkType:'hotel', bkLabelEn:'Dubai Luxury 5-Star · 3N', bkLabelAr:'فندق دبي الفاخر ٥ نجوم ٣ ليالٍ', bkPrice:1600, bkNights:3
+    },
+    {
+      id:'bali', cat:'hotel',
+      catEn:'Escape Deal', catAr:'عرض هروب',
+      disc:'35% OFF', discAr:'٣٥٪ خصم',
+      titleEn:'Bali Paradise — 5 Nights', titleAr:'جنة بالي — ٥ ليالٍ',
+      descEn:'Escape to the Island of the Gods. 5 nights at a pool-villa resort with daily breakfast included.',
+      descAr:'اهرب إلى جزيرة الآلهة. ٥ ليالٍ في منتجع فيلا بمسبح مع الإفطار اليومي.',
+      code:'BALI35',
+      img:'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=900&q=85&fit=crop&auto=format',
+      accent:'linear-gradient(90deg,#00875A,#00B7C6)',
+      expiresMs:36*3600000,
+      termsEn:['Pool villa category only','Check-in Jul–Sep 2026','Breakfast for 2 guests'],
+      termsAr:['فيلا بمسبح فقط','وصول يوليو–سبتمبر ٢٠٢٦','إفطار لشخصين'],
+      bkType:'hotel', bkLabelEn:'Bali Pool Villa Resort · 5N', bkLabelAr:'منتجع بالي فيلا بمسبح ٥ ليالٍ', bkPrice:1200, bkNights:5
+    },
+    {
+      id:'london', cat:'flight',
+      catEn:'Business Class', catAr:'درجة الأعمال',
+      disc:'30% OFF', discAr:'٣٠٪ خصم',
+      titleEn:'London — Business Class Upgrade', titleAr:'لندن — ترقية درجة الأعمال',
+      descEn:'Fly to London Heathrow in Business Class at 30% off the standard price. Premium service included.',
+      descAr:'سافر إلى لندن هيثرو بدرجة الأعمال بخصم ٣٠٪. خدمة مميزة مشمولة.',
+      code:'LONDON30',
+      img:'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=900&q=85&fit=crop&auto=format',
+      accent:'linear-gradient(90deg,#003B4A,#0088AA)',
+      expiresMs:60*3600000,
+      termsEn:['Saudia or British Airways only','Round trip required','Limited seats — book fast'],
+      termsAr:['السعودية أو الخطوط البريطانية فقط','يشترط حجز ذهاب وعودة','مقاعد محدودة'],
+      bkType:'flight', bkLabelEn:'London Heathrow · Business Class', bkLabelAr:'لندن هيثرو · درجة الأعمال', bkPrice:3200, bkNights:1
+    },
+    {
+      id:'istanbul', cat:'hotel',
+      catEn:'Weekend Deal', catAr:'عرض نهاية الأسبوع',
+      disc:'25% OFF', discAr:'٢٥٪ خصم',
+      titleEn:'Weekend in Istanbul', titleAr:'عطلة نهاية الأسبوع في إسطنبول',
+      descEn:'Where east meets west. 3 nights at top Istanbul hotels with breakfast included.',
+      descAr:'حيث يلتقي الشرق والغرب. ٣ ليالٍ في أفضل فنادق إسطنبول مع الإفطار.',
+      code:'ALM25',
+      img:'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=900&q=85&fit=crop&auto=format',
+      accent:'linear-gradient(90deg,#C8202D,#E63946)',
+      expiresMs:72*3600000,
+      termsEn:['Breakfast included','Valid Jun–Aug 2026','Non-refundable rate'],
+      termsAr:['الإفطار مشمول','صالح يونيو–أغسطس ٢٠٢٦','سعر غير قابل للاسترداد'],
+      bkType:'hotel', bkLabelEn:'Istanbul Boutique Hotel · 3N', bkLabelAr:'فندق إسطنبول ٣ ليالٍ', bkPrice:950, bkNights:3
+    },
+    {
+      id:'splash', cat:'activity',
+      catEn:'Entertainment', catAr:'ترفيه',
+      disc:'Special', discAr:'سعر مميز',
+      titleEn:'Aquarabia Qiddiya City Tickets', titleAr:'تذاكر أكوارابيا قدية',
+      descEn:'Get tickets to Aquarabia Qiddiya City — Saudi Arabia\'s premier water park — at an exclusive Almosafer price.',
+      descAr:'احصل على تذاكر أكوارابيا قدية — أبرز حدائق المياه في المملكة — بسعر حصري على المسافر.',
+      code:'SPLASH',
+      img:'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=900&q=85&fit=crop&auto=format',
+      accent:'linear-gradient(90deg,#E63946,#FF6B6B)',
+      expiresMs:5*24*3600000,
+      termsEn:['Ticket valid for 1 entry','Must be 120cm+ for most rides','Advance booking recommended'],
+      termsAr:['التذكرة صالحة لدخول واحد','يُشترط طول ١٢٠ سم للألعاب الرئيسية','يُنصح بالحجز المسبق'],
+      bkType:'activity', bkLabelEn:'Aquarabia Qiddiya · Entry Ticket', bkLabelAr:'أكوارابيا قدية · تذكرة دخول', bkPrice:185, bkNights:1
+    },
+    {
+      id:'season', cat:'activity',
+      catEn:'Saudi Seasons', catAr:'المواسم السعودية',
+      disc:'20% OFF', discAr:'٢٠٪ خصم',
+      titleEn:'Saudi Seasons Experiences', titleAr:'تجارب المواسم السعودية',
+      descEn:'Book activity packages for Saudi Seasons — concerts, festivals, and cultural experiences across the Kingdom.',
+      descAr:'احجز باقات أنشطة لفعاليات المواسم السعودية — حفلات ومهرجانات وتجارب ثقافية في أنحاء المملكة.',
+      code:'SEASON20',
+      img:'https://images.unsplash.com/photo-1512250029847-23ee4bf87df8?w=900&q=85&fit=crop&auto=format',
+      accent:'linear-gradient(90deg,#7B2D8B,#B85DB8)',
+      expiresMs:10*24*3600000,
+      termsEn:['Valid on selected Saudi Seasons events','Advance booking only','Non-transferable'],
+      termsAr:['صالح على فعاليات محددة من المواسم السعودية','حجز مسبق فقط','غير قابل للتحويل'],
+      bkType:'activity', bkLabelEn:'Saudi Seasons Experience Pack', bkLabelAr:'باقة تجارب المواسم السعودية', bkPrice:299, bkNights:1
+    },
+    {
+      id:'umrah', cat:'hotel',
+      catEn:'Holy Journey', catAr:'رحلة مقدسة',
+      disc:'10% OFF', discAr:'١٠٪ خصم',
+      titleEn:'Umrah Package — 7 Nights', titleAr:'باقة العمرة — ٧ ليالٍ',
+      descEn:'Complete Umrah packages including hotel near Haram, transport, and guided ziyarat.',
+      descAr:'باقات عمرة متكاملة تشمل فندقاً قريباً من الحرم والنقل والزيارات المصحوبة.',
+      code:'UMRAH10',
+      img:'https://images.unsplash.com/photo-1591604021695-0c69b7c05981?w=900&q=85&fit=crop&auto=format',
+      accent:'linear-gradient(90deg,#005872,#00B7C6)',
+      expiresMs:30*24*3600000,
+      termsEn:['Package includes hotel + transport + ziyarat','Valid year-round','Mecca hotel 500m from Haram'],
+      termsAr:['الباقة تشمل فندق + نقل + زيارات','صالحة طوال العام','فندق مكة ٥٠٠ م من الحرم'],
+      bkType:'hotel', bkLabelEn:'Umrah Package · 7 Nights', bkLabelAr:'باقة عمرة · ٧ ليالٍ', bkPrice:2800, bkNights:7
     }
-    card.addEventListener('click', goComingSoon);
-    card.addEventListener('keydown', function(e){
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showDealComingSoon(); }
+  ];
+
+  /* ── helpers ── */
+  function _dealRemaining(deal) {
+    return Math.max(0, (_PAGE_LOAD + deal.expiresMs) - Date.now());
+  }
+  function _fmtTime(ms) {
+    if (ms <= 0) return html.lang === 'ar' ? 'انتهى' : 'Expired';
+    var s = Math.floor(ms / 1000);
+    var d = Math.floor(s / 86400); s %= 86400;
+    var h = Math.floor(s / 3600);  s %= 3600;
+    var m = Math.floor(s / 60);    s %= 60;
+    var pad = function(n){ return n < 10 ? '0' + n : '' + n; };
+    if (d > 0) return d + 'd ' + pad(h) + 'h ' + pad(m) + 'm';
+    return pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
+  }
+
+  /* ── render one card HTML ── */
+  function _renderDealCard(deal) {
+    var isAr = html.lang === 'ar';
+    var title = isAr ? deal.titleAr : deal.titleEn;
+    var desc  = isAr ? deal.descAr  : deal.descEn;
+    var cat   = isAr ? deal.catAr   : deal.catEn;
+    var disc  = isAr ? deal.discAr  : deal.disc;
+    var rem   = _dealRemaining(deal);
+    var urgent= rem < 6*3600000;
+    var timerHtml = '';
+    if (rem < 7*24*3600000) {
+      timerHtml = '<div class="promo-timer-row">' +
+        '<span class="promo-timer-icon">' + (urgent ? '🔥' : '⏱') + '</span>' +
+        '<span class="promo-timer-lbl">' + (isAr ? 'ينتهي خلال:' : 'Ends in:') + '</span>' +
+        '<span class="promo-timer' + (urgent ? ' urgent' : '') + '" data-deal-timer="' + deal.id + '">' +
+          _fmtTime(rem) +
+        '</span>' +
+      '</div>';
+    }
+    var codeLabel = isAr ? 'استخدم الكود:' : 'Use code:';
+    return '<article class="promo-card" data-deal-id="' + deal.id + '" data-cat="' + deal.cat + '" tabindex="0" role="button">' +
+      '<div class="promo-img">' +
+        '<img src="' + deal.img + '" alt="' + title + '" loading="lazy">' +
+        '<div class="promo-img-scrim" aria-hidden="true"></div>' +
+        '<span class="promo-disc">' + disc + '</span>' +
+        '<span class="promo-cat-tag">' + cat + '</span>' +
+        '<div class="promo-accent" style="background:' + deal.accent + '" aria-hidden="true"></div>' +
+      '</div>' +
+      '<div class="promo-body">' +
+        '<div class="promo-title">' + title + '</div>' +
+        '<div class="promo-desc">' + desc + '</div>' +
+        timerHtml +
+        '<div class="promo-footer-row">' +
+          '<span class="promo-inline-code">' +
+            '<span>' + codeLabel + '</span>' +
+            '<strong>' + deal.code + '</strong>' +
+            '<button class="promo-copy-btn" data-code="' + deal.code + '" aria-label="Copy ' + deal.code + '">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>' +
+            '</button>' +
+          '</span>' +
+          '<button class="promo-view-btn" data-deal-id="' + deal.id + '">' +
+            (isAr ? 'التفاصيل' : 'View deal') +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>' +
+          '</button>' +
+        '</div>' +
+      '</div>' +
+    '</article>';
+  }
+
+  /* ── render flash strip ── */
+  function _renderFlashStrip() {
+    var isAr = html.lang === 'ar';
+    var flashDeals = DEALS_DATA.filter(function(d){ return d.expiresMs <= 72*3600000; });
+    flashDeals.sort(function(a,b){ return a.expiresMs - b.expiresMs; });
+    if (!flashDeals.length) return;
+    var wrap = document.getElementById('flash-strip-wrap');
+    if (!wrap) return;
+    var cardsHtml = flashDeals.map(function(d){
+      var dest = isAr ? d.titleAr : d.titleEn;
+      var rem  = _dealRemaining(d);
+      return '<div class="flash-card" data-deal-id="' + d.id + '">' +
+        '<img class="flash-card-img" src="' + d.img + '" alt="' + dest + '" loading="lazy">' +
+        '<div class="flash-card-body">' +
+          '<div class="flash-card-pct">' + (isAr ? d.discAr : d.disc) + '</div>' +
+          '<div class="flash-card-dest">' + dest + '</div>' +
+          '<div class="flash-card-from">' + (isAr ? 'من ' : 'From ') + 'SAR ' + d.bkPrice.toLocaleString() + '</div>' +
+          '<div class="flash-card-timer" data-flash-timer="' + d.id + '">' + _fmtTime(rem) + '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+    wrap.innerHTML =
+      '<div class="flash-strip">' +
+        '<div class="flash-strip-head">' +
+          '<span class="flash-strip-title">' +
+            '⚡ ' + (isAr ? 'تخفيضات مؤقتة' : 'Flash Deals') +
+            '<span class="flash-live-badge">' + (isAr ? 'مباشر' : 'LIVE') + '</span>' +
+          '</span>' +
+        '</div>' +
+        '<div class="flash-scroll" id="flash-scroll">' + cardsHtml + '</div>' +
+      '</div>';
+    wrap.querySelectorAll('.flash-card').forEach(function(fc){
+      fc.addEventListener('click', function(){
+        openDealDetail(fc.getAttribute('data-deal-id'));
+      });
     });
-    var vb = card.querySelector('.promo-view-btn');
-    if (vb) vb.addEventListener('click', function(e){ e.stopPropagation(); showDealComingSoon(); });
+  }
+
+  /* ── render deals grid ── */
+  function _renderDealsGrid(cat) {
+    var grid = document.getElementById('deals-grid');
+    if (!grid) return;
+    var list = cat === 'all' ? DEALS_DATA : DEALS_DATA.filter(function(d){ return d.cat === cat; });
+    grid.innerHTML = list.map(_renderDealCard).join('');
+    /* wire events */
+    grid.querySelectorAll('.promo-copy-btn').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var code = btn.getAttribute('data-code') || '';
+        try { navigator.clipboard.writeText(code); } catch(err){}
+        showToast(html.lang === 'ar' ? 'تم نسخ الكود ✓' : 'Code copied ✓');
+      });
+    });
+    grid.querySelectorAll('[data-deal-id]').forEach(function(card){
+      function openIt(e){
+        if (e.target.closest('.promo-copy-btn')) return;
+        openDealDetail(card.getAttribute('data-deal-id'));
+      }
+      card.addEventListener('click', openIt);
+      card.addEventListener('keydown', function(e){
+        if (e.key==='Enter'||e.key===' '){ e.preventDefault(); openDealDetail(card.getAttribute('data-deal-id')); }
+      });
+    });
+  }
+
+  /* ── countdown ticker ── */
+  var _dealTimerIv = null;
+  function _startDealTimers() {
+    if (_dealTimerIv) clearInterval(_dealTimerIv);
+    _dealTimerIv = setInterval(function(){
+      /* card timers */
+      document.querySelectorAll('[data-deal-timer]').forEach(function(el){
+        var id = el.getAttribute('data-deal-timer');
+        var d  = DEALS_DATA.filter(function(x){ return x.id === id; })[0];
+        if (!d) return;
+        var rem = _dealRemaining(d);
+        el.textContent = _fmtTime(rem);
+        el.classList.toggle('urgent', rem < 6*3600000);
+      });
+      /* flash strip timers */
+      document.querySelectorAll('[data-flash-timer]').forEach(function(el){
+        var id = el.getAttribute('data-flash-timer');
+        var d  = DEALS_DATA.filter(function(x){ return x.id === id; })[0];
+        if (!d) return;
+        el.textContent = _fmtTime(_dealRemaining(d));
+      });
+      /* overlay timer */
+      var ovTimer = document.getElementById('deal-ov-timer');
+      if (ovTimer) {
+        var oid = ovTimer.getAttribute('data-deal-timer');
+        var od  = DEALS_DATA.filter(function(x){ return x.id === oid; })[0];
+        if (od) ovTimer.textContent = _fmtTime(_dealRemaining(od));
+      }
+    }, 1000);
+  }
+
+  /* ── deal detail overlay ── */
+  var _dealOvEl = document.getElementById('deal-overlay');
+
+  function openDealDetail(id) {
+    var deal = DEALS_DATA.filter(function(d){ return d.id === id; })[0];
+    if (!deal || !_dealOvEl) return;
+    var isAr   = html.lang === 'ar';
+    var title  = isAr ? deal.titleAr : deal.titleEn;
+    var desc   = isAr ? deal.descAr  : deal.descEn;
+    var cat    = isAr ? deal.catAr   : deal.catEn;
+    var disc   = isAr ? deal.discAr  : deal.disc;
+    var terms  = isAr ? deal.termsAr : deal.termsEn;
+    var rem    = _dealRemaining(deal);
+    var cdHtml = rem < 30*24*3600000 ?
+      '<div class="deal-ov-cd">' +
+        '<span style="font-size:20px">⏱</span>' +
+        '<div><div class="deal-ov-cd-label">' + (isAr ? 'ينتهي العرض خلال' : 'Offer ends in') + '</div>' +
+          '<div class="deal-ov-cd-time" id="deal-ov-timer" data-deal-timer="' + id + '">' + _fmtTime(rem) + '</div></div>' +
+      '</div>' : '';
+    var bkLabel = isAr ? deal.bkLabelAr : deal.bkLabelEn;
+    var panel = document.getElementById('deal-ov-panel');
+    panel.innerHTML =
+      '<div class="deal-ov-hero">' +
+        '<img src="' + deal.img + '" alt="' + title + '">' +
+        '<div class="deal-ov-hero-scrim"></div>' +
+        '<div class="deal-ov-disc">' + disc + '</div>' +
+        '<button class="deal-ov-close" id="deal-ov-close-btn" aria-label="Close">✕</button>' +
+      '</div>' +
+      '<div class="deal-ov-body">' +
+        '<div class="deal-ov-cat">' + cat + '</div>' +
+        '<div class="deal-ov-title">' + title + '</div>' +
+        '<div class="deal-ov-desc">' + desc + '</div>' +
+        cdHtml +
+        '<div class="deal-ov-terms">' +
+          '<div class="deal-ov-terms-ttl">' + (isAr ? 'الشروط والأحكام' : 'Terms & Conditions') + '</div>' +
+          '<ul>' + terms.map(function(t){ return '<li>' + t + '</li>'; }).join('') + '</ul>' +
+        '</div>' +
+        '<div class="deal-ov-code-box">' +
+          '<div class="deal-ov-code-info">' +
+            '<div class="deal-ov-code-label">' + (isAr ? 'استخدم الكود عند الدفع' : 'Apply at checkout') + '</div>' +
+            '<div class="deal-ov-code-val">' + deal.code + '</div>' +
+          '</div>' +
+          '<button class="deal-ov-copy-btn" id="deal-ov-copy">' + (isAr ? 'نسخ' : 'Copy') + '</button>' +
+        '</div>' +
+        '<div class="deal-ov-price-row">' +
+          '<span class="deal-ov-from-lbl">' + (isAr ? 'يبدأ من' : 'Starting from') + '</span>' +
+          '<span class="deal-ov-price">' + deal.bkPrice.toLocaleString() + '</span>' +
+          '<span class="deal-ov-currency">SAR</span>' +
+        '</div>' +
+        '<button class="deal-ov-book-btn" id="deal-ov-book">' +
+          (isAr ? 'احجز الآن' : 'Book Now') +
+        '</button>' +
+      '</div>';
+
+    _dealOvEl.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    document.getElementById('deal-ov-close-btn').addEventListener('click', closeDealDetail);
+    document.getElementById('deal-ov-backdrop').addEventListener('click', closeDealDetail);
+    document.getElementById('deal-ov-copy').addEventListener('click', function(){
+      try { navigator.clipboard.writeText(deal.code); } catch(err){}
+      showToast(html.lang === 'ar' ? 'تم نسخ الكود ✓' : 'Code copied ✓');
+    });
+    document.getElementById('deal-ov-book').addEventListener('click', function(){
+      closeDealDetail();
+      setTimeout(function(){ openBooking(deal.bkType, bkLabel, deal.bkPrice, deal.bkNights); }, 200);
+    });
+  }
+
+  function closeDealDetail() {
+    if (_dealOvEl) _dealOvEl.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── filter tabs ── */
+  var _currentDealCat = 'all';
+  document.getElementById('deals-tabs').addEventListener('click', function(e){
+    var tab = e.target.closest('.deals-tab');
+    if (!tab) return;
+    _currentDealCat = tab.getAttribute('data-cat') || 'all';
+    document.querySelectorAll('.deals-tab').forEach(function(t){ t.classList.toggle('active', t === tab); });
+    _renderDealsGrid(_currentDealCat);
   });
 
-  /* "View all" → coming soon */
-  var vaDealBtn = document.getElementById('deals-view-all');
-  if (vaDealBtn) vaDealBtn.addEventListener('click', showDealComingSoon);
+  /* ── init ── */
+  _renderFlashStrip();
+  _renderDealsGrid('all');
+  _startDealTimers();
 
   /* ═══════════════════════════════════════════════════
      CITY GUIDE — DATA + OVERLAY NAVIGATION
