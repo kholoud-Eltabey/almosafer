@@ -663,17 +663,23 @@ html[data-theme="dark"] .sf-swap-btn { background: #0c2330; border-color: var(--
 }
 .svc-item:hover { border-bottom-color: var(--alm-cyan); background: rgba(0,183,198,0.04); }
 .svc-item.active { border-bottom-color: var(--alm-cyan); }
-.svc-img-wrap {
-  width: 56px; height: 56px; border-radius: 50%; overflow: hidden;
-  border: 2.5px solid var(--border);
-  transition: border-color 180ms, transform 180ms; flex-shrink: 0;
+.svc-icon-wrap {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(0,183,198,0.10); border: 1.5px solid rgba(0,183,198,0.20);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 160ms, border-color 160ms, transform 180ms cubic-bezier(.34,1.56,.64,1);
+  flex-shrink: 0;
 }
-.svc-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.svc-item:hover .svc-img-wrap { border-color: var(--alm-cyan); transform: scale(1.06); }
-.svc-item.active .svc-img-wrap { border-color: var(--alm-cyan); }
+.svc-item:hover .svc-icon-wrap {
+  background: rgba(0,183,198,0.18); border-color: var(--alm-cyan);
+  transform: scale(1.08);
+}
+.svc-item.active .svc-icon-wrap { background: rgba(0,183,198,0.22); border-color: var(--alm-cyan); }
+.svc-icon-wrap svg { width: 24px; height: 24px; stroke: var(--alm-cyan); fill: none; }
 .svc-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); line-height: 1.2; text-align: center; }
+.svc-item:hover .svc-label { color: var(--alm-cyan); }
 html[data-theme="dark"] .svc-bar { background: #0c2330; border-color: #163545; }
-html[data-theme="dark"] .svc-img-wrap { border-color: #224455; }
+html[data-theme="dark"] .svc-icon-wrap { background: rgba(0,183,198,0.14); border-color: rgba(0,183,198,0.25); }
 html[data-theme="dark"] .svc-label { color: #7aacb8; }
 
 /* Search button */
@@ -3576,31 +3582,31 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
   <nav class="svc-bar" aria-label="Services">
     <div class="svc-track">
       <button class="svc-item" type="button" data-svc="Airport Transfer">
-        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=120&h=120&fit=crop&q=80" alt="Airport Transfer" loading="lazy"></div>
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.5H2M17 16.5l-5-9-5 9M12 7.5V3M8 3h8"/><circle cx="5" cy="19.5" r="1.5"/><circle cx="19" cy="19.5" r="1.5"/></svg></div>
         <span class="svc-label"><span class="en">Airport Transfer</span><span class="ar">النقل من المطار</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="Haramain Train">
-        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1474487548417-781cb6d646ef?w=120&h=120&fit=crop&q=80" alt="Haramain Train" loading="lazy"></div>
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="13" rx="3"/><path d="M8 3v13M16 3v13M4 10h16"/><path d="M8 19l-2 2M16 19l2 2"/><line x1="6" y1="21" x2="18" y2="21"/></svg></div>
         <span class="svc-label"><span class="en">Haramain Train</span><span class="ar">قطار الحرمين</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="Car Rental">
-        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=120&h=120&fit=crop&q=80" alt="Car Rental" loading="lazy"></div>
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.5-4.5h11L19 11"/><rect x="2" y="11" width="20" height="7" rx="2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M2 15h20"/></svg></div>
         <span class="svc-label"><span class="en">Car Rental</span><span class="ar">تأجير السيارات</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="Domestic Tourism">
-        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1586232702178-f044c5f4d4b7?w=120&h=120&fit=crop&q=80" alt="Domestic Tourism" loading="lazy"></div>
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
         <span class="svc-label"><span class="en">Domestic Tourism</span><span class="ar">السياحة الداخلية</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="Packages">
-        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=120&h=120&fit=crop&q=80" alt="Packages" loading="lazy"></div>
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
         <span class="svc-label"><span class="en">Packages</span><span class="ar">باقات</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="Cruise">
-        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=120&h=120&fit=crop&q=80" alt="Cruise" loading="lazy"></div>
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20c2 2 6 2 8 0s6-2 8 0"/><path d="M12 2v8"/><path d="M4.93 11l7.07 5 7.07-5"/><path d="M3 15l9-11 9 11H3z"/></svg></div>
         <span class="svc-label"><span class="en">Cruise</span><span class="ar">الرحلات البحرية</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="More Services">
-        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?w=120&h=120&fit=crop&q=80" alt="More Services" loading="lazy"></div>
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></div>
         <span class="svc-label"><span class="en">More Services</span><span class="ar">المزيد من الخدمات</span></span>
       </button>
     </div>
