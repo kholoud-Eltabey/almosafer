@@ -651,12 +651,12 @@ html[data-theme="dark"] .sf-swap-btn { background: #0c2330; border-color: var(--
 .svc-bar::-webkit-scrollbar { display: none; }
 .svc-track {
   max-width: 1200px; margin: 0 auto; padding: 0 24px;
-  display: flex; justify-content: center; min-width: max-content;
+  display: flex; justify-content: center;
 }
 .svc-item {
   display: flex; flex-direction: column; align-items: center; gap: 8px;
-  padding: 14px 22px; background: none; border: none; cursor: pointer;
-  white-space: nowrap; flex-shrink: 0; border-bottom: 2px solid transparent;
+  padding: 14px 12px; background: none; border: none; cursor: pointer;
+  flex: 1; flex-shrink: 1; border-bottom: 2px solid transparent;
   transition: border-color 150ms, background 120ms; font-family: inherit;
   border-radius: var(--r-md) var(--r-md) 0 0;
 }
@@ -680,7 +680,7 @@ html[data-theme="dark"] .sf-swap-btn { background: #0c2330; border-color: var(--
 .svc-item.active .svc-label { color: var(--alm-cyan); font-weight: 600; }
 /* Focus-visible */
 .svc-item:focus-visible .svc-icon-wrap { box-shadow: 0 0 0 3px rgba(0,183,198,0.35); border-color: var(--alm-cyan); }
-.svc-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); line-height: 1.2; text-align: center; transition: color 160ms; }
+.svc-label { font-size: 11px; font-weight: 500; color: var(--text-secondary); line-height: 1.2; text-align: center; transition: color 160ms; white-space: nowrap; }
 html[data-theme="dark"] .svc-bar { background: #0c2330; border-color: #163545; }
 html[data-theme="dark"] .svc-icon-wrap { background: #0c2330; border-color: #224455; }
 html[data-theme="dark"] .svc-icon-wrap svg { stroke: #7aacb8; }
@@ -3590,7 +3590,7 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
       </button>
       <button class="svc-item" type="button" data-svc="Six Flags Qiddiya City">
         <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div>
-        <span class="svc-label"><span class="en">Six Flags<br>Qiddiya City</span><span class="ar">سيكس فلاجز<br>القدية</span></span>
+        <span class="svc-label"><span class="en">Six Flags Qiddiya City</span><span class="ar">سيكس فلاجز القدية</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="eSIM">
         <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/><path d="M9 7h6M9 11h6M9 15h3"/></svg></div>
@@ -3598,7 +3598,7 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
       </button>
       <button class="svc-item" type="button" data-svc="Aquarabia Qiddiya City">
         <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c.5-1 1.5-2 3-2s2.5 1 3 2 1.5 2 3 2 2.5-1 3-2 1.5-2 3-2 2.5 1 3 2"/><path d="M2 17c.5-1 1.5-2 3-2s2.5 1 3 2 1.5 2 3 2 2.5-1 3-2 1.5-2 3-2 2.5 1 3 2"/><path d="M12 3v5M8 5l4-2 4 2"/></svg></div>
-        <span class="svc-label"><span class="en">Aquarabia<br>Qiddiya City</span><span class="ar">أكواربيا<br>القدية</span></span>
+        <span class="svc-label"><span class="en">Aquarabia Qiddiya City</span><span class="ar">أكواربيا القدية</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="Car Rental">
         <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l1.5-4.5h11L19 11"/><rect x="2" y="11" width="20" height="7" rx="2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M2 15h20"/></svg></div>
