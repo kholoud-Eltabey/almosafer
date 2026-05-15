@@ -614,6 +614,47 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
   outline: var(--border-width-focus) solid var(--color-border-focus);
   outline-offset: 2px;
 }
+/* Inline clear button on city fields */
+.sf-val-clr {
+  display: none; width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(0,0,0,0.22); border: none; cursor: pointer;
+  color: #fff; font-size: 11px; font-weight: 700; line-height: 1;
+  align-items: center; justify-content: center; flex-shrink: 0;
+  transition: background 120ms; margin-inline-start: auto; padding: 0;
+}
+.sf-val-clr:hover { background: rgba(0,0,0,0.40); }
+.sf-has-val .sf-val-clr { display: flex; }
+
+/* ── Services Bar ── */
+.svc-bar {
+  background: var(--bg-surface); border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.svc-track {
+  max-width: 1200px; margin: 0 auto; padding: 0 16px;
+  display: flex; overflow-x: auto; scrollbar-width: none;
+}
+.svc-track::-webkit-scrollbar { display: none; }
+.svc-item {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 14px 18px; background: none; border: none; cursor: pointer;
+  white-space: nowrap; flex-shrink: 0; border-bottom: 2px solid transparent;
+  transition: border-color 150ms, background 120ms; font-family: inherit;
+  border-radius: var(--r-md) var(--r-md) 0 0;
+}
+.svc-item:hover { border-bottom-color: var(--alm-cyan); background: rgba(0,183,198,0.04); }
+.svc-item.active { border-bottom-color: var(--alm-cyan); }
+.svc-icon-wrap {
+  width: 46px; height: 46px; border-radius: var(--r-lg);
+  background: rgba(0,183,198,0.10); display: flex; align-items: center; justify-content: center;
+  transition: background 150ms;
+}
+.svc-item:hover .svc-icon-wrap { background: rgba(0,183,198,0.18); }
+.svc-icon-wrap svg { width: 22px; height: 22px; color: var(--alm-cyan); stroke: var(--alm-cyan); }
+.svc-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); line-height: 1.2; text-align: center; }
+html[data-theme="dark"] .svc-bar { background: #0c2330; border-color: #163545; }
+html[data-theme="dark"] .svc-icon-wrap { background: rgba(0,183,198,0.14); }
+html[data-theme="dark"] .svc-label { color: #7aacb8; }
 
 /* Search button */
 .sf-btn {
@@ -3247,20 +3288,22 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
             <div class="sf-row">
               <div class="sf-field">
                 <label id="lbl-orig"><span class="en">ORIGIN</span><span class="ar">المغادرة من</span></label>
-                <div class="sf-input" id="si-orig" role="combobox" aria-labelledby="lbl-orig" aria-haspopup="listbox" aria-expanded="false">
+                <div class="sf-input sf-has-val" id="si-orig" role="combobox" aria-labelledby="lbl-orig" aria-haspopup="listbox" aria-expanded="false">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-                  <div>
+                  <div style="flex:1;min-width:0">
                     <span class="sf-val" id="origVal" data-ph="Riyadh">Riyadh</span>
                   </div>
+                  <button class="sf-val-clr" type="button" data-clear="origVal" aria-label="Clear origin">✕</button>
                 </div>
               </div>
               <div class="sf-field">
                 <label id="lbl-dest"><span class="en">DESTINATION</span><span class="ar">الوصول إلى</span></label>
                 <div class="sf-input" id="si-dest" role="combobox" aria-labelledby="lbl-dest" aria-haspopup="listbox" aria-expanded="false">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                  <div>
+                  <div style="flex:1;min-width:0">
                     <span class="sf-val sf-muted" id="destVal"><span class="en">City</span><span class="ar">مدينة</span></span>
                   </div>
+                  <button class="sf-val-clr" type="button" data-clear="destVal" aria-label="Clear destination">✕</button>
                 </div>
               </div>
               <div class="sf-field" id="sf-depart-wrap">
@@ -3503,6 +3546,40 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
 
 <!-- DESTINATIONS -->
 <main id="main">
+  <!-- ── Services Bar ── -->
+  <nav class="svc-bar" aria-label="Services">
+    <div class="svc-track">
+      <button class="svc-item" type="button" data-svc="Airport Transfer">
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 16.5H2M17 16.5l-5-9-5 9M12 7.5V3M8 3h8"/><circle cx="5" cy="19" r="1.5"/><circle cx="19" cy="19" r="1.5"/></svg></div>
+        <span class="svc-label"><span class="en">Airport Transfer</span><span class="ar">النقل من المطار</span></span>
+      </button>
+      <button class="svc-item" type="button" data-svc="Haramain Train">
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="3" width="16" height="13" rx="3"/><path d="M8 3v13M16 3v13"/><path d="M4 10h16"/><path d="M8 19l-2 2M16 19l2 2"/><line x1="6" y1="21" x2="18" y2="21"/></svg></div>
+        <span class="svc-label"><span class="en">Haramain Train</span><span class="ar">قطار الحرمين</span></span>
+      </button>
+      <button class="svc-item" type="button" data-svc="Car Rental">
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 11l1.5-4.5h11L19 11"/><rect x="2" y="11" width="20" height="7" rx="2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M2 15h20"/></svg></div>
+        <span class="svc-label"><span class="en">Car Rental</span><span class="ar">تأجير السيارات</span></span>
+      </button>
+      <button class="svc-item" type="button" data-svc="Domestic Tourism">
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 21h18M3 21l4-8 4 4 4-6 4 10"/><path d="M12 8a2 2 0 100-4 2 2 0 000 4z"/></svg></div>
+        <span class="svc-label"><span class="en">Domestic Tourism</span><span class="ar">السياحة الداخلية</span></span>
+      </button>
+      <button class="svc-item" type="button" data-svc="Packages">
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M16.5 9.4l-9-5.19"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
+        <span class="svc-label"><span class="en">Packages</span><span class="ar">باقات</span></span>
+      </button>
+      <button class="svc-item" type="button" data-svc="Cruise">
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 20c2 2 6 2 8 0s6-2 8 0"/><path d="M12 2v8"/><path d="M4.93 11l7.07 5 7.07-5"/><path d="M3 15l9-11 9 11H3z"/></svg></div>
+        <span class="svc-label"><span class="en">Cruise</span><span class="ar">الرحلات البحرية</span></span>
+      </button>
+      <button class="svc-item" type="button" data-svc="More Services">
+        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></div>
+        <span class="svc-label"><span class="en">More Services</span><span class="ar">المزيد من الخدمات</span></span>
+      </button>
+    </div>
+  </nav>
+
   <div class="section">
     <div class="section-head">
       <div>
@@ -4862,14 +4939,43 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
 
   /* ── Clear buttons ── */
   document.querySelectorAll('[data-clear]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
+    btn.addEventListener('mousedown', function (e) {
+      e.preventDefault();
       var targetId = btn.getAttribute('data-clear');
       var el = document.getElementById(targetId);
-      if (el) {
-        var ph = el.getAttribute('data-ph') || '';
-        el.textContent = ph;
-        el.classList.add('s-placeholder');
+      if (!el) return;
+      /* City field X button — restore bilingual placeholder */
+      if (btn.classList.contains('sf-val-clr')) {
+        var phHtml = { origVal: '<span class="en">City or Airport</span><span class="ar">مدينة أو مطار</span>', destVal: '<span class="en">City</span><span class="ar">مدينة</span>' }[targetId] || '';
+        if (phHtml) el.innerHTML = phHtml;
+        el.classList.add('sf-muted');
+        var sfInp = el.closest('.sf-input');
+        if (sfInp) sfInp.classList.remove('sf-has-val');
+        closeSuggest();
+        return;
       }
+      /* Generic clear (date fields etc.) */
+      var ph = el.getAttribute('data-ph') || '';
+      el.textContent = ph;
+      el.classList.add('s-placeholder');
+    });
+  });
+
+  /* ── Services bar ── */
+  document.querySelectorAll('.svc-item[data-svc]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var svc = btn.getAttribute('data-svc');
+      var isAr = html.lang === 'ar';
+      var labelAr = {
+        'Airport Transfer': 'توصيل المطار',
+        'Haramain Train':   'قطار الحرمين',
+        'Car Rental':       'تأجير السيارات',
+        'Domestic Tourism': 'السياحة الداخلية',
+        'Packages':         'الباقات السياحية',
+        'Cruise':           'الرحلات البحرية',
+        'More Services':    'المزيد من الخدمات'
+      }[svc] || svc;
+      showToast(isAr ? (labelAr + ' — قريباً') : (svc + ' — coming soon'));
     });
   });
 
@@ -5134,6 +5240,7 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
         valSpan.style.display = '';
         if (inp && inp.parentNode) inp.remove();
         sfInput.classList.remove('sf-focus');
+        sfInput.classList.add('sf-has-val');
         closeSuggest();
       });
     });
@@ -5222,6 +5329,7 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
         valSpan.style.display = '';
         inp.remove();
         sfInput.classList.remove('sf-focus');
+        sfInput.classList.toggle('sf-has-val', !valSpan.classList.contains('sf-muted'));
         if (panelSuggest._anchor === sfInput) closeSuggest();
       }
       inp.addEventListener('blur',    function () { setTimeout(commit, 160); });
