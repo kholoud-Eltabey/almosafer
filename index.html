@@ -2672,22 +2672,37 @@ html[data-theme="dark"] .deal-row-label { color:var(--text-primary); }
 
 /* ── DEAL DETAIL OVERLAY — centered modal ── */
 #deal-overlay {
-  position:fixed; inset:0; z-index:1900; display:none;
-  align-items:center; justify-content:center; padding:20px;
+  position:fixed; inset:0; z-index:1900;
+  background:var(--bg-surface);
+  display:flex; flex-direction:column;
+  transform:translateY(100%);
+  transition:transform 320ms cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
 }
-#deal-overlay.open { display:flex; }
-.deal-ov-backdrop { position:absolute; inset:0; background:rgba(0,10,20,.65); backdrop-filter:blur(10px); cursor:pointer; }
+#deal-overlay.open { transform:translateY(0); }
+.deal-ov-backdrop { display:none; }
 .deal-ov-panel {
-  position:relative; z-index:1;
-  width:min(600px,100%); max-height:88vh;
-  background:var(--bg-surface); border-radius:var(--r-xl);
-  display:flex; flex-direction:column; overflow:hidden;
-  box-shadow:0 28px 90px rgba(0,0,0,.42);
-  transform:scale(.93) translateY(24px); opacity:0;
-  transition:transform 300ms cubic-bezier(.34,1.4,.64,1), opacity 240ms ease;
+  display:flex; flex-direction:column;
+  flex:1; overflow:hidden;
+  opacity:1; transform:none;
 }
-#deal-overlay.open .deal-ov-panel { transform:scale(1) translateY(0); opacity:1; }
-.deal-ov-hero { position:relative; height:260px; flex-shrink:0; }
+/* deal detail — full-screen layout */
+.deal-ov-topbar {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 16px; border-bottom:1px solid var(--border);
+  background:var(--bg-surface); flex-shrink:0;
+}
+.deal-ov-back {
+  display:flex; align-items:center; gap:4px;
+  background:none; border:none; cursor:pointer; color:var(--text-primary);
+  font-size:14px; font-weight:600; font-family:inherit; padding:6px 8px;
+  border-radius:var(--r-sm);
+}
+.deal-ov-back:hover { background:var(--bg-page); }
+.deal-ov-back svg { width:18px; height:18px; flex-shrink:0; }
+.deal-ov-topbar-title { font-size:12px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--alm-cyan); }
+.deal-ov-scroll { flex:1; overflow-y:auto; }
+.deal-ov-hero { position:relative; height:300px; flex-shrink:0; }
 .deal-ov-hero img { width:100%; height:100%; object-fit:cover; display:block; }
 .deal-ov-hero-scrim {
   position:absolute; inset:0;
@@ -2698,16 +2713,7 @@ html[data-theme="dark"] .deal-row-label { color:var(--text-primary); }
   font-size:42px; font-weight:900; color:#fff; line-height:1;
   text-shadow:0 2px 14px rgba(0,0,0,.5);
 }
-.deal-ov-close {
-  position:absolute; top:14px; inset-inline-end:14px;
-  width:36px; height:36px; border-radius:50%;
-  background:rgba(0,0,0,.55); backdrop-filter:blur(8px);
-  border:none; cursor:pointer; color:#fff; font-size:16px;
-  display:flex; align-items:center; justify-content:center; z-index:2;
-  transition:background 140ms;
-}
-.deal-ov-close:hover { background:rgba(0,0,0,.75); }
-.deal-ov-body { flex:1; overflow-y:auto; padding:24px 28px 36px; }
+.deal-ov-body { max-width:680px; margin:0 auto; padding:24px 28px 48px; }
 .deal-ov-cat { font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--alm-cyan); margin-bottom:6px; }
 .deal-ov-title { font-size:20px; font-weight:800; color:var(--text-primary); line-height:1.3; margin-bottom:8px; }
 .deal-ov-desc { font-size:13.5px; color:var(--text-secondary); line-height:1.65; margin-bottom:18px; }
@@ -6559,13 +6565,20 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     var bkLabel = isAr ? deal.bkLabelAr : deal.bkLabelEn;
     var panel = document.getElementById('deal-ov-panel');
     panel.innerHTML =
-      '<div class="deal-ov-hero">' +
-        '<img src="' + deal.img + '" alt="' + title + '">' +
-        '<div class="deal-ov-hero-scrim"></div>' +
-        '<div class="deal-ov-disc">' + disc + '</div>' +
-        '<button class="deal-ov-close" id="deal-ov-close-btn" aria-label="Close">✕</button>' +
+      '<div class="deal-ov-topbar">' +
+        '<button class="deal-ov-back" id="deal-ov-close-btn" aria-label="' + (isAr ? 'رجوع' : 'Back') + '">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>' +
+          '<span>' + (isAr ? 'رجوع' : 'Back') + '</span>' +
+        '</button>' +
+        '<div class="deal-ov-topbar-title">' + cat + '</div>' +
       '</div>' +
-      '<div class="deal-ov-body">' +
+      '<div class="deal-ov-scroll">' +
+        '<div class="deal-ov-hero">' +
+          '<img src="' + deal.img + '" alt="' + title + '">' +
+          '<div class="deal-ov-hero-scrim"></div>' +
+          '<div class="deal-ov-disc">' + disc + '</div>' +
+        '</div>' +
+        '<div class="deal-ov-body">' +
         '<div class="deal-ov-cat">' + cat + '</div>' +
         '<div class="deal-ov-title">' + title + '</div>' +
         '<div class="deal-ov-desc">' + desc + '</div>' +
@@ -6589,6 +6602,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
         '<button class="deal-ov-book-btn" id="deal-ov-book">' +
           (isAr ? 'احجز الآن' : 'Book Now') +
         '</button>' +
+      '</div>' +
       '</div>';
 
     _dealOvEl.classList.add('open');
@@ -7258,6 +7272,11 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     el.classList.add('ovp-open');
     void el.offsetWidth;
     el.style.transition = prev;
+  }
+
+  function setHeroVisible(visible) {
+    var hero = document.querySelector('.hero');
+    if (hero) hero.style.display = visible ? '' : 'none';
   }
 
   function openAllDestinations() {
