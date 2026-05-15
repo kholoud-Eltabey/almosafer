@@ -1246,20 +1246,6 @@ html[data-theme="dark"] .cgw-tab:not(.active):hover { background: rgba(255,255,2
   .cgw-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .cgw-tabs::-webkit-scrollbar { display: none; }
 }
-.cg-footer-cta { display: flex; gap: 12px; flex-wrap: wrap; padding-top: 28px; border-top: 1px solid var(--border); margin-top: 40px; }
-.cg-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 22px; border-radius: var(--r-md);
-  font-size: 14px; font-weight: 600; border: none; cursor: pointer;
-  transition: opacity 120ms, transform 120ms; white-space: nowrap;
-}
-.cg-btn:hover { opacity: 0.88; transform: translateY(-1px); }
-.cg-btn:focus-visible { outline: 3px solid var(--color-border-focus); outline-offset: 2px; }
-.cg-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
-.cg-btn-flights    { background: var(--alm-red);  color: #fff; }
-.cg-btn-stays      { background: var(--alm-dark); color: #fff; }
-.cg-btn-activities { background: var(--alm-cyan); color: var(--alm-dark); }
-html[data-theme="dark"] .cg-btn-stays { background: #0a2840; }
 .cg-intro-text { font-size: 15px; line-height: 1.75; color: var(--text-secondary); margin-bottom: 22px; }
 .cg-best-time {
   display: inline-flex; align-items: center; gap: 7px;
@@ -8241,16 +8227,6 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
         '</div>' + /* /cgw-card */
       '</div>'; /* /cg-widget-wrap */
 
-    var ctaBar = function(cityId) {
-      return '<div class="cg-cta-bar">' +
-        '<button class="cg-btn cg-btn-flights" data-city-id="' + cityId + '">' + flightSvg +
-          '<span class="en">Search flights</span><span class="ar">ابحث عن رحلات</span></button>' +
-        '<button class="cg-btn cg-btn-stays" data-city-id="' + cityId + '">' + staysSvg +
-          '<span class="en">Search stays</span><span class="ar">ابحث عن إقامات</span></button>' +
-        '<button class="cg-btn cg-btn-activities" data-city-id="' + cityId + '">' + activitiesSvg +
-          '<span class="en">Activities</span><span class="ar">الأنشطة</span></button>' +
-      '</div>';
-    };
 
     var backArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>';
 
@@ -8297,20 +8273,6 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
           '<h2 class="cg-section-title"><span class="en">Travel Tips</span><span class="ar">نصائح السفر</span></h2>' +
           '<div class="cg-tips">' + tipsHtml + '</div>' +
         '</section>' +
-        '<div class="cg-footer-cta">' +
-          '<button class="cg-btn cg-btn-flights" data-city-id="' + city.id + '">' + flightSvg +
-            '<span class="en">Flights to ' + city.nameEn + '</span>' +
-            '<span class="ar">رحلات إلى ' + city.nameAr + '</span>' +
-          '</button>' +
-          '<button class="cg-btn cg-btn-stays" data-city-id="' + city.id + '">' + staysSvg +
-            '<span class="en">Stays in ' + city.nameEn + '</span>' +
-            '<span class="ar">إقامات في ' + city.nameAr + '</span>' +
-          '</button>' +
-          '<button class="cg-btn cg-btn-activities" data-city-id="' + city.id + '">' + activitiesSvg +
-            '<span class="en">Activities in ' + city.nameEn + '</span>' +
-            '<span class="ar">أنشطة في ' + city.nameAr + '</span>' +
-          '</button>' +
-        '</div>' +
       '</div>';
   }
 
@@ -9015,13 +8977,6 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       return;
     }
 
-    /* Footer CTA buttons */
-    var fb = e.target.closest('.cg-btn-flights[data-city-id]');
-    if (fb) { fillAndClose(fb.getAttribute('data-city-id'), 'flights'); return; }
-    var sb = e.target.closest('.cg-btn-stays[data-city-id]');
-    if (sb) { fillAndClose(sb.getAttribute('data-city-id'), 'stays'); return; }
-    var ab = e.target.closest('.cg-btn-activities[data-city-id]');
-    if (ab) { fillAndClose(ab.getAttribute('data-city-id'), 'activities'); }
   });
 
   /* Keyboard Enter/Space on room cards, attraction cards and hotel rows */

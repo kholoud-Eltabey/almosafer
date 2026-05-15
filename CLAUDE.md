@@ -159,10 +159,12 @@ Single IIFE in `<script>` at bottom of `<body>`. Key sections:
 | Swap button | `#swapBtn` rotate animation, swap `#origVal` ↔ `#destVal` text |
 | Clear buttons | `[data-clear]` → restore placeholder from `data-ph` |
 | City Guide | `openCityGuide()`, `closeCityGuide()`, `renderCityGuide()` |
+| Hero visibility | `setHeroVisible(bool)` — hides/shows `.hero` when overlays open |
 | Hotel Detail | `showHotelDetail()`, `hideHotelDetail()`, `HOTEL_DETAILS` lookup |
 | Flight Detail | `showFlightDetail()`, `hideFlightDetail()`, `_AIRLINE_META` / `_CITY_IATA` |
 | Attraction Detail | `showAttractionDetail()`, `hideAttractionDetail()`, `ATTR_DETAILS` lookup |
 | Search Results | `showCgResults()` — filterable results panel inside city guide |
+| Offers & Deals | `DEALS_DATA`, `DEAL_ROWS`, `_renderOneRow()`, `openDealDetail()`, `openDealSeeAll()` |
 | Booking Flow | `openBooking()`, `closeBk()`, `_renderBkStep()` — 3-step checkout |
 | My Account | `renderMyAccount()`, `closeMyAccount()`, `openMyTickets()` |
 | Ticket Cart | `_cart` array, `addToCart()`, ticket wallet panel |
@@ -171,10 +173,13 @@ Single IIFE in `<script>` at bottom of `<body>`. Key sections:
 
 ## City Guide System
 
-### Panel state machine
-All panels live inside `#cg-overlay`. Only one is visible at a time:
+### Overlay ID
+`#cg-page` (class `overlay-page`) — opened/closed via `_openOverlay()` / `_closeOverlay()`
 
-| Panel ID | Content |
+### Panel state machine
+Content is rendered into `#cg-body` by `renderCityGuide()`. Sub-panels:
+
+| Element | Content |
 |---|---|
 | `#cg-page-content` | City overview (tabs: Hotels / Flights / Activities / To-Do) |
 | `#cg-results` | Search results (filtered hotel/flight/activity cards) |
@@ -182,18 +187,18 @@ All panels live inside `#cg-overlay`. Only one is visible at a time:
 | `#cg-flight-detail` | Full flight detail with cabin selector |
 | `#cg-attr-detail` | Attraction/activity detail with ticket bar |
 
-Utility: `_hideAllCgPanels()` — clears all panels, restores `#cg-page-content`.
-
-### Navigation variable
+### Navigation variables
 ```javascript
-var _cgCurrentCity = null;     // currently-open city object
-var _cgDetailFrom  = 'city';   // 'city' | 'results' — back-button routing
+var _cgCurrentCity  = null;     // currently-open city object
+var _cgFromAllDest  = false;    // opened from All Destinations overlay?
+var _cgDetailFrom   = 'city';   // 'city' | 'results' — back-button routing
 ```
-
-`_cgDetailFrom` is set to `'results'` when opening a detail from the results panel so the Back button returns to results rather than the city overview.
 
 ### 10 supported cities
 `dubai` · `istanbul` · `maldives` · `london` · `cairo` · `riyadh` · `jeddah` · `paris` · `bali` · `tokyo`
+
+### Removed: Footer CTA buttons
+The "Flights to / Stays in / Activities in [city]" colored buttons were **removed** from city guide pages. Do not re-add them.
 
 ---
 
@@ -241,6 +246,34 @@ CSS prefix: `.cgfd-*`
 
 ---
 
+## Offers & Deals Section
+
+### Layout: Netflix-style horizontal rows
+5 category rows rendered by `DEAL_ROWS` array. Each row has:
+- Header: emoji + title + optional LIVE badge + "See all" button
+- Horizontal scroll track with prev/next arrows (40×40px circle, 16×16px icon — both locked with `min-width/min-height/flex-shrink:0`)
+- Cards: `.drc` (230px wide), with image, discount badge, category tag, timer pill, title, price, promo code, "View deal" button
+
+### Deal data: `DEALS_DATA` array (9 deals)
+Each deal: `{ id, titleEn, titleAr, catEn, catAr, catAr, disc, discAr, img, code, bkPrice, bkLabelEn, bkLabelAr, descEn, descAr, termsEn, termsAr, expiresMs }`
+
+### Row navigation arrows
+- CSS: `opacity:0` by default, revealed on `.deal-row-track:hover`
+- JS: `_syncRowArrows()` disables prev/next at scroll boundaries, RTL-aware
+
+### Deal detail overlay (`#deal-overlay`)
+Full-screen slide-up overlay (z-index 1900). Layout:
+1. **Topbar**: "← Back" button + category label
+2. **Hero image**: 300px tall, discount text overlaid
+3. **Scrollable body** (max-width 680px, centered): category, title, description, countdown timer, T&Cs, promo code box (with Copy button), price, "Book Now" button
+
+### See All overlay (`#dsa-overlay`)
+Full-screen slide-up (z-index 1600). Shows all deals for a row category in a responsive CSS grid. Triggered by "See all" button on each row.
+
+CSS prefixes: `.drc-*` (row cards), `.deal-ov-*` (deal detail), `.dsa-*` (see-all overlay)
+
+---
+
 ## Booking Flow
 
 ### Entry points (all call `openBooking()`)
@@ -250,6 +283,7 @@ CSS prefix: `.cgfd-*`
 | Room card "Select" (`.cghd-room-select`) | `'room'` |
 | Flight "Select Flight" (`#cgfd-select-btn`) | `'flight'` |
 | Attraction "Book Ticket" (`#cgad-book-btn`) | `'activity'` |
+| Deal "Book Now" (`#deal-ov-book`) | `'activity'` |
 
 ### `openBooking(type, label, price, nights)`
 Opens `#alm-booking` overlay (fixed, full-screen, blurred backdrop). Panel slides in from inline-end. 3 steps:
@@ -283,13 +317,16 @@ Key classes: `.bk-panel`, `.bk-steps`, `.bk-step-bar`, `.bk-summary`, `.bk-field
 ## Sections in order
 1. `<header>` — dark teal bar, logo, nav, lang toggle, Sign In
 2. `<section class="hero">` — full-bleed photo bg, scrim, title, search widget
-3. `<main id="main">` — Top Destinations cards (10 cities)
-4. All Destinations grid — `#all-dest-overlay`
-5. City Guide overlay — `#cg-overlay` with full detail flow
-6. My Account panel — quick rows: My Trips, My Wallet, My Tickets
-7. My Tickets panel — ticket wallet
-8. Booking overlay — `#alm-booking` (3-step checkout)
-9. `<footer>` — brand, links, social, copyright
+3. `<main id="main">` — Top Destinations cards (3 featured cities)
+4. Offers & Deals section — Netflix-style rows inside `#main`
+5. All Destinations grid — `#all-dest-overlay`
+6. City Guide overlay — `#cg-page` with full detail flow
+7. Deal detail overlay — `#deal-overlay` (full-screen)
+8. Deal See-All overlay — `#dsa-overlay` (full-screen)
+9. My Account panel — quick rows: My Trips, My Wallet, My Tickets
+10. My Tickets panel — ticket wallet
+11. Booking overlay — `#alm-booking` (3-step checkout)
+12. `<footer>` — brand, links, social, copyright
 
 ---
 
@@ -301,6 +338,7 @@ Key classes: `.bk-panel`, `.bk-steps`, `.bk-step-bar`, `.bk-summary`, `.bk-field
 - Use `.en`/`.ar` spans for all user-visible text
 - `font-family: inherit` on all new elements (never hardcode font name in components)
 - Use `inset-inline-start/end` for RTL-safe positioning
+- All card images must be real photos (Unsplash URLs) — no placeholders
 
 ### Never
 - Do not add external JS libraries or frameworks
@@ -309,6 +347,7 @@ Key classes: `.bk-panel`, `.bk-steps`, `.bk-step-bar`, `.bk-summary`, `.bk-field
 - Do not hardcode language-specific text without bilingual spans
 - Do not add `min-height` to `.sf-btn` (use `padding: 16px` instead)
 - Do not use `flex: 1` on `.sh-tab` (tabs hug content)
+- Do not re-add the "Flights to / Stays in / Activities in [city]" CTA buttons — they were intentionally removed
 
 ### Logo edits
 - Gradient positions for Arabic م are measured values: **63%–73% = red, 73%–83% = cyan**
@@ -322,7 +361,7 @@ Key classes: `.bk-panel`, `.bk-steps`, `.bk-step-bar`, `.bk-summary`, `.bk-field
 ```
 git add index.html CLAUDE.md
 git commit -m "message"
-git push origin main
+git push origin master
 ```
 Remote: `https://github.com/kholoud-Eltabey/almosafer.git`
 
@@ -339,4 +378,4 @@ Or run `deploy.bat`. Project name: `almosafer`.
 - Google Fonts loaded via `<link>` in `<head>` (IBM Plex Sans + IBM Plex Sans Arabic)
 - Hero background: Pinterest image hosted at `i.pinimg.com/originals/...`
 - Overlay opacity kept soft (`0.30–0.38`) to keep hero image vibrant
-- `index.html` is ~540 KB (all-in-one: HTML + CSS + JS + all data)
+- `index.html` is ~600 KB (all-in-one: HTML + CSS + JS + all data)
