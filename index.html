@@ -428,7 +428,7 @@ a:focus:not(:focus-visible) { outline: none; }
   box-shadow: 0 8px 32px rgba(0,0,0,0.30);
   opacity: 0; pointer-events: none;
   transition: opacity var(--motion-normal), transform var(--motion-normal);
-  z-index: 999; white-space: nowrap;
+  z-index: 9999; white-space: nowrap;
 }
 #alm-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -5249,6 +5249,8 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   document.querySelectorAll('.sf-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       if (btn.classList.contains('mc-add-link')) return;
+      /* skip — city guide handles its own search results internally */
+      if (btn.closest('#cg-page')) return;
       btn.classList.add('sf-loading');
       var activeTabBtn = document.querySelector('.sh-tab.active');
       var activeTab = activeTabBtn ? activeTabBtn.getAttribute('data-sh-tab') : 'flights';
@@ -6245,7 +6247,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
       descEn:'Book activity packages for Saudi Seasons — concerts, festivals, and cultural experiences across the Kingdom.',
       descAr:'احجز باقات أنشطة لفعاليات المواسم السعودية — حفلات ومهرجانات وتجارب ثقافية في أنحاء المملكة.',
       code:'SEASON20',
-      img:'https://images.unsplash.com/photo-1512250029847-23ee4bf87df8?w=900&q=85&fit=crop&auto=format',
+      img:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=900&q=85&fit=crop&auto=format',
       accent:'linear-gradient(90deg,#7B2D8B,#B85DB8)',
       expiresMs:10*24*3600000,
       termsEn:['Valid on selected Saudi Seasons events','Advance booking only','Non-transferable'],
