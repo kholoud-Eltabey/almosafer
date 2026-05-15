@@ -628,32 +628,33 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
 /* ── Services Bar ── */
 .svc-bar {
   background: var(--bg-surface); border-bottom: 1px solid var(--border);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow-x: auto; scrollbar-width: none;
 }
+.svc-bar::-webkit-scrollbar { display: none; }
 .svc-track {
-  max-width: 1200px; margin: 0 auto; padding: 0 16px;
-  display: flex; overflow-x: auto; scrollbar-width: none;
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: flex; justify-content: center; min-width: max-content;
 }
-.svc-track::-webkit-scrollbar { display: none; }
 .svc-item {
   display: flex; flex-direction: column; align-items: center; gap: 8px;
-  padding: 14px 18px; background: none; border: none; cursor: pointer;
+  padding: 14px 22px; background: none; border: none; cursor: pointer;
   white-space: nowrap; flex-shrink: 0; border-bottom: 2px solid transparent;
   transition: border-color 150ms, background 120ms; font-family: inherit;
   border-radius: var(--r-md) var(--r-md) 0 0;
 }
 .svc-item:hover { border-bottom-color: var(--alm-cyan); background: rgba(0,183,198,0.04); }
 .svc-item.active { border-bottom-color: var(--alm-cyan); }
-.svc-icon-wrap {
-  width: 46px; height: 46px; border-radius: var(--r-lg);
-  background: rgba(0,183,198,0.10); display: flex; align-items: center; justify-content: center;
-  transition: background 150ms;
+.svc-img-wrap {
+  width: 56px; height: 56px; border-radius: 50%; overflow: hidden;
+  border: 2.5px solid var(--border);
+  transition: border-color 180ms, transform 180ms; flex-shrink: 0;
 }
-.svc-item:hover .svc-icon-wrap { background: rgba(0,183,198,0.18); }
-.svc-icon-wrap svg { width: 22px; height: 22px; color: var(--alm-cyan); stroke: var(--alm-cyan); }
+.svc-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.svc-item:hover .svc-img-wrap { border-color: var(--alm-cyan); transform: scale(1.06); }
+.svc-item.active .svc-img-wrap { border-color: var(--alm-cyan); }
 .svc-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); line-height: 1.2; text-align: center; }
 html[data-theme="dark"] .svc-bar { background: #0c2330; border-color: #163545; }
-html[data-theme="dark"] .svc-icon-wrap { background: rgba(0,183,198,0.14); }
+html[data-theme="dark"] .svc-img-wrap { border-color: #224455; }
 html[data-theme="dark"] .svc-label { color: #7aacb8; }
 
 /* Search button */
@@ -3550,31 +3551,31 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
   <nav class="svc-bar" aria-label="Services">
     <div class="svc-track">
       <button class="svc-item" type="button" data-svc="Airport Transfer">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 16.5H2M17 16.5l-5-9-5 9M12 7.5V3M8 3h8"/><circle cx="5" cy="19" r="1.5"/><circle cx="19" cy="19" r="1.5"/></svg></div>
+        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=120&h=120&fit=crop&q=80" alt="Airport Transfer" loading="lazy"></div>
         <span class="svc-label"><span class="en">Airport Transfer</span><span class="ar">النقل من المطار</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="Haramain Train">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="3" width="16" height="13" rx="3"/><path d="M8 3v13M16 3v13"/><path d="M4 10h16"/><path d="M8 19l-2 2M16 19l2 2"/><line x1="6" y1="21" x2="18" y2="21"/></svg></div>
+        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1474487548417-781cb6d646ef?w=120&h=120&fit=crop&q=80" alt="Haramain Train" loading="lazy"></div>
         <span class="svc-label"><span class="en">Haramain Train</span><span class="ar">قطار الحرمين</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="Car Rental">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 11l1.5-4.5h11L19 11"/><rect x="2" y="11" width="20" height="7" rx="2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M2 15h20"/></svg></div>
+        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=120&h=120&fit=crop&q=80" alt="Car Rental" loading="lazy"></div>
         <span class="svc-label"><span class="en">Car Rental</span><span class="ar">تأجير السيارات</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="Domestic Tourism">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 21h18M3 21l4-8 4 4 4-6 4 10"/><path d="M12 8a2 2 0 100-4 2 2 0 000 4z"/></svg></div>
+        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1586232702178-f044c5f4d4b7?w=120&h=120&fit=crop&q=80" alt="Domestic Tourism" loading="lazy"></div>
         <span class="svc-label"><span class="en">Domestic Tourism</span><span class="ar">السياحة الداخلية</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="Packages">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M16.5 9.4l-9-5.19"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
+        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=120&h=120&fit=crop&q=80" alt="Packages" loading="lazy"></div>
         <span class="svc-label"><span class="en">Packages</span><span class="ar">باقات</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="Cruise">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 20c2 2 6 2 8 0s6-2 8 0"/><path d="M12 2v8"/><path d="M4.93 11l7.07 5 7.07-5"/><path d="M3 15l9-11 9 11H3z"/></svg></div>
+        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=120&h=120&fit=crop&q=80" alt="Cruise" loading="lazy"></div>
         <span class="svc-label"><span class="en">Cruise</span><span class="ar">الرحلات البحرية</span></span>
       </button>
       <button class="svc-item" type="button" data-svc="More Services">
-        <div class="svc-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></div>
+        <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?w=120&h=120&fit=crop&q=80" alt="More Services" loading="lazy"></div>
         <span class="svc-label"><span class="en">More Services</span><span class="ar">المزيد من الخدمات</span></span>
       </button>
     </div>
