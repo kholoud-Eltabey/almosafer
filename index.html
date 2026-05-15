@@ -2516,6 +2516,45 @@ html[data-theme="dark"] .deal-ov-currency { color:var(--text-secondary); }
   padding:2px 8px; border-radius:var(--r-full); letter-spacing:.5px;
   animation:flash-pulse 1.5s infinite;
 }
+/* ── Deal See-All overlay ── */
+#dsa-overlay {
+  position:fixed; inset:0; z-index:1600;
+  background:var(--bg-page);
+  display:flex; flex-direction:column;
+  transform:translateY(100%);
+  transition:transform 320ms cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+}
+#dsa-overlay.open { transform:translateY(0); }
+.dsa-head {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 24px 16px;
+  border-bottom:1px solid var(--border);
+  background:var(--bg-surface);
+  flex-shrink:0;
+}
+.dsa-title { font-size:18px; font-weight:700; color:var(--text-primary); display:flex; align-items:center; gap:8px; }
+.dsa-close {
+  width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border);
+  background:var(--bg-page); color:var(--text-primary);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; flex-shrink:0;
+}
+.dsa-close svg { width:16px; height:16px; pointer-events:none; }
+.dsa-close:hover { background:var(--border); }
+.dsa-close:focus-visible { outline:2px solid var(--alm-cyan); outline-offset:2px; }
+.dsa-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+  gap:16px;
+  padding:24px;
+  overflow-y:auto;
+  flex:1;
+}
+.dsa-grid .drc { flex:unset; }
+html[data-theme="dark"] #dsa-overlay { background:var(--bg-page); }
+html[data-theme="dark"] .dsa-head { background:var(--bg-surface); }
+
 .deal-row-see {
   font-size:12.5px; font-weight:600; color:var(--alm-cyan);
   background:none; border:none; cursor:pointer; font-family:inherit;
@@ -3354,6 +3393,17 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
   <div class="deal-ov-panel" id="deal-ov-panel">
     <!-- injected by openDealDetail() -->
   </div>
+</div>
+
+<!-- DEAL SEE ALL -->
+<div id="dsa-overlay" role="dialog" aria-modal="true">
+  <div class="dsa-head">
+    <div class="dsa-title" id="dsa-title"></div>
+    <button class="dsa-close" id="dsa-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="dsa-grid" id="dsa-grid"></div>
 </div>
 
 <!-- DESTINATIONS -->
@@ -6367,6 +6417,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
     nextBtn.addEventListener('click', function(){ scrollEl.scrollBy({ left: isAr ? -step : step, behavior:'smooth' }); });
     scrollEl.addEventListener('scroll', _syncRowArrows, { passive:true });
     _syncRowArrows();
+    rowEl.querySelector('.deal-row-see').addEventListener('click', function(){ openDealSeeAll(rowDef); });
     rowEl.querySelectorAll('.drc').forEach(function(card){
       function open(e){
         if (e.target.closest('.drc-view-btn')) return;
@@ -6445,6 +6496,44 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 
   /* ── deal detail overlay ── */
   var _dealOvEl = document.getElementById('deal-overlay');
+
+  /* ── See-All overlay ── */
+  var _dsaEl    = document.getElementById('dsa-overlay');
+  var _dsaGrid  = document.getElementById('dsa-grid');
+  var _dsaTitle = document.getElementById('dsa-title');
+  document.getElementById('dsa-close').addEventListener('click', closeDealSeeAll);
+  _dsaEl.addEventListener('keydown', function(e){ if (e.key==='Escape') closeDealSeeAll(); });
+
+  function openDealSeeAll(rowDef) {
+    var isAr  = html.lang === 'ar';
+    var deals = rowDef.filter(DEALS_DATA);
+    if (rowDef.sort) deals = rowDef.sort(deals);
+    var liveHtml = rowDef.live ? ' <span class="deal-row-live">' + (isAr ? 'مباشر' : 'LIVE') + '</span>' : '';
+    _dsaTitle.innerHTML = rowDef.emoji + ' ' + (isAr ? rowDef.titleAr : rowDef.titleEn) + liveHtml;
+    _dsaGrid.innerHTML  = deals.map(function(d){ return _renderRowCard(d, !!rowDef.hasTimer); }).join('');
+    _dsaGrid.querySelectorAll('.drc').forEach(function(card){
+      card.addEventListener('click', function(e){
+        if (e.target.closest('.drc-view-btn')) return;
+        openDealDetail(card.getAttribute('data-deal-id'));
+      });
+      card.addEventListener('keydown', function(e){
+        if (e.key==='Enter'||e.key===' '){ e.preventDefault(); openDealDetail(card.getAttribute('data-deal-id')); }
+      });
+    });
+    _dsaGrid.querySelectorAll('.drc-view-btn').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        openDealDetail(btn.getAttribute('data-deal-id'));
+      });
+    });
+    _dsaEl.classList.add('open');
+    _dsaEl.scrollTop = 0;
+    document.getElementById('dsa-close').focus();
+  }
+
+  function closeDealSeeAll() {
+    _dsaEl.classList.remove('open');
+  }
 
   function openDealDetail(id) {
     var deal = DEALS_DATA.filter(function(d){ return d.id === id; })[0];
