@@ -614,15 +614,17 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
   outline: var(--border-width-focus) solid var(--color-border-focus);
   outline-offset: 2px;
 }
-/* Inline clear button on city fields */
+/* Inline clear button on city fields — frameless icon, 24×24 touch target */
 .sf-val-clr {
-  display: none; width: 20px; height: 20px; border-radius: 50%;
-  background: rgba(0,0,0,0.22); border: none; cursor: pointer;
-  color: #fff; font-size: 11px; font-weight: 700; line-height: 1;
+  display: none; width: 24px; height: 24px;
+  background: none; border: none; cursor: pointer;
+  color: var(--text-subtle); padding: 0;
   align-items: center; justify-content: center; flex-shrink: 0;
-  transition: background 120ms; margin-inline-start: auto; padding: 0;
+  margin-inline-start: auto; border-radius: var(--r-sm);
+  transition: color 120ms;
 }
-.sf-val-clr:hover { background: rgba(0,0,0,0.40); }
+.sf-val-clr:hover { color: var(--text-primary); }
+.sf-val-clr svg { width: 12px; height: 12px; stroke: currentColor; display: block; }
 .sf-has-val .sf-val-clr { display: flex; }
 
 /* ── Flight search 2-column grid layout ── */
@@ -3345,7 +3347,7 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
                   <div style="flex:1;min-width:0">
                     <span class="sf-val" id="origVal" data-ph="Riyadh">Riyadh</span>
                   </div>
-                  <button class="sf-val-clr" type="button" data-clear="origVal" aria-label="Clear origin">✕</button>
+                  <button class="sf-val-clr" type="button" data-clear="origVal" aria-label="Clear origin"><svg viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg></button>
                 </div>
               </div>
               <!-- Swap -->
@@ -3361,7 +3363,7 @@ html[dir="rtl"] .ma-sub-back svg { transform:scaleX(-1); }
                   <div style="flex:1;min-width:0">
                     <span class="sf-val sf-muted" id="destVal"><span class="en">City</span><span class="ar">مدينة</span></span>
                   </div>
-                  <button class="sf-val-clr" type="button" data-clear="destVal" aria-label="Clear destination">✕</button>
+                  <button class="sf-val-clr" type="button" data-clear="destVal" aria-label="Clear destination"><svg viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg></button>
                 </div>
               </div>
             </div>
