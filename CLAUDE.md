@@ -166,7 +166,7 @@ Single IIFE in `<script>` at bottom of `<body>`. Key sections:
 | Search Results | `showCgResults()` — filterable results panel inside city guide |
 | Offers & Deals | `DEALS_DATA`, `DEAL_ROWS`, `_renderOneRow()`, `openDealDetail()`, `openDealSeeAll()` |
 | Booking Flow | `openBooking()`, `closeBk()`, `_renderBkStep()` — 3-step checkout |
-| My Account | `renderMyAccount()`, `closeMyAccount()`, `openMyTickets()` |
+| My Account | `openMyAccount()`, `closeMyAccount()`, `renderMyAccount()`, `openMyTickets()` — open/close calls `setHeroVisible(false/true)` |
 | My Account Sub-Panels | `openMaSubPanel(key)` — slides in `.ma-sub-view` with key-specific content |
 | Ticket Cart | `_cart` array, `addToCart()`, ticket wallet panel |
 | Icon System | `_ICONS` map (29 types) + `_icon(name, size, extra)` helper |
@@ -350,6 +350,17 @@ Key classes: `.bk-panel`, `.bk-steps`, `.bk-step-bar`, `.bk-summary`, `.bk-field
 
 ### Structure
 `openMaSubPanel(key)` renders content into `#ma-sub-view` (`.ma-sub-view`) and slides it in with `.ma-sub-open`.
+
+### RTL / Slide direction
+The sub-panel uses a CSS transform slide:
+- LTR default: `translateX(110%)` (off right) → open: `translateX(0)`
+- RTL default: `translateX(-110%)` (off left) → open: `translateX(0)`
+Both open states are covered by separate CSS rules. The RTL open rule has higher specificity (0,3,1) than the RTL default (0,2,1):
+```css
+html[dir="rtl"] .ma-sub-view { transform:translateX(-110%); }
+.ma-sub-view.ma-sub-open { transform:translateX(0); }
+html[dir="rtl"] .ma-sub-view.ma-sub-open { transform:translateX(0); }
+```
 
 | Key | Content |
 |---|---|

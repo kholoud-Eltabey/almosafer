@@ -422,7 +422,7 @@ a:focus:not(:focus-visible) { outline: none; }
   box-shadow: 0 8px 32px rgba(0,0,0,0.30);
   opacity: 0; pointer-events: none;
   transition: opacity var(--motion-normal), transform var(--motion-normal);
-  z-index: 9999; white-space: nowrap;
+  z-index: 10200; white-space: nowrap;
 }
 #alm-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -3353,6 +3353,7 @@ html[data-theme="dark"] .ma-quick-row:hover { background:rgba(0,183,198,.08); }
 }
 html[dir="rtl"] .ma-sub-view { transform:translateX(-110%); }
 .ma-sub-view.ma-sub-open { transform:translateX(0); }
+html[dir="rtl"] .ma-sub-view.ma-sub-open { transform:translateX(0); }
 .ma-sub-topbar {
   display:flex; align-items:center; gap:10px; padding:14px 20px;
   border-bottom:1px solid var(--border); background:var(--bg-page);
@@ -4754,18 +4755,22 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
     if (bcS) bcS.classList.remove('bc-open');
     if (dcs) dcs.classList.remove('open');
     if (mainEl) mainEl.style.display = 'none';
+    setHeroVisible(false);
     maSection.classList.add('ma-open');
-    window.scrollTo({ top:0, behavior:'smooth' });
+    window.scrollTo({ top:0, behavior:'instant' });
   }
 
   function closeMyAccount() {
     if (maSection) maSection.classList.remove('ma-open');
+    setHeroVisible(true);
     if (mainEl)    mainEl.style.display = '';
   }
 
   /* ── My Account Sub-Panels ── */
   var _maSubEl = null;
+  var _maCurrentSubKey = null;
   function openMaSubPanel(key) {
+    _maCurrentSubKey = key;
     _maSubEl = document.getElementById('ma-sub-view');
     if (!_maSubEl || !ALM_USER) return;
     var isAr = html.lang === 'ar';
@@ -4793,19 +4798,19 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
         return s + Math.round(tot * 0.025);
       }, 0);
       var balance = 250 + cashback;
-      var txns = [{ icon:'🎁', name: isAr?'رصيد ترحيبي Nusuk+':'Nusuk+ Welcome Credit', date:'Jan 2026', amt:'+SAR 250', cls:'ma-txn-credit' }];
+      var txns = [{ icon:'🎁', name: isAr?'رصيد ترحيبي Nusuk+':'Nusuk+ Welcome Credit', date:isAr?'يناير 2026':'Jan 2026', amt:'+SAR 250', cls:'ma-txn-credit' }];
       _cart.forEach(function(item) {
         var tot = item.total || item.price || item.ticketSAR || 0;
         var cb = Math.round(tot * 0.025);
         if (!cb) return;
-        var lbl = item.label || item.attrName || 'Booking';
-        txns.push({ icon:'✈️', name:(isAr?'استرداد نقدي — ':'Cashback — ')+lbl, date:'May 2026', amt:'+SAR '+cb, cls:'ma-txn-credit' });
+        var lbl = item.label || item.attrName || (isAr?'حجز':'Booking');
+        txns.push({ icon:'✈️', name:(isAr?'استرداد نقدي — ':'Cashback — ')+lbl, date:isAr?'مايو 2026':'May 2026', amt:'+SAR '+cb, cls:'ma-txn-credit' });
       });
       body =
         '<div class="ma-wallet-card">' +
           '<div class="ma-wallet-lbl">' + (isAr?'الرصيد المتاح':'Available Balance') + '</div>' +
           '<div class="ma-wallet-amt">SAR ' + balance.toLocaleString() + '<span style="font-size:16px;font-weight:600">.00</span></div>' +
-          '<div class="ma-wallet-sub">' + (isAr?'Nusuk+ محفظة المكافآت':'Nusuk+ Rewards Wallet') + '</div>' +
+          '<div class="ma-wallet-sub">' + (isAr?'محفظة مكافآت Nusuk+':'Nusuk+ Rewards Wallet') + '</div>' +
           '<button class="ma-wallet-topup">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true" focusable="false"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
             (isAr?'إضافة رصيد':'Top Up') +
@@ -4968,6 +4973,7 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
     document.getElementById('ma-sub-back-btn').addEventListener('click', function() {
       _maSubEl.classList.remove('ma-sub-open');
       _maSubEl.setAttribute('aria-hidden', 'true');
+      _maCurrentSubKey = null;
     });
 
     /* wire nationality custom picker */
@@ -10790,12 +10796,20 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
 
   renderTopDestinations();
 
-  /* Re-render home cards on language switch; also re-render all-dest if open */
+  /* Re-render home cards on language switch; also re-render all-dest / account if open */
   document.getElementById('langBtn').addEventListener('click', function() {
     renderTopDestinations();
     if (ovAllDest && !ovAllDest.hasAttribute('aria-hidden')) {
       var srch = document.getElementById('adp-search-input');
       renderAllDestinations(srch ? srch.value : '');
+    }
+    /* Re-render My Account if currently open so language change takes effect */
+    if (maSection && maSection.classList.contains('ma-open') && ALM_USER) {
+      renderMyAccount();
+    }
+    /* Re-render open sub-panel if any */
+    if (_maSubEl && _maSubEl.classList.contains('ma-sub-open') && _maCurrentSubKey) {
+      openMaSubPanel(_maCurrentSubKey);
     }
   });
 
