@@ -16,6 +16,7 @@ Server config: `.claude/launch.json`
 ```
 Almosafer/
 ├── index.html          ← entire app (HTML + CSS + JS, no build step)
+├── CLAUDE.md           ← project context for Claude
 ├── deploy.bat          ← Cloudflare Pages deploy script
 └── .claude/
     └── launch.json     ← npx serve config
@@ -48,6 +49,16 @@ Almosafer/
 --r-sm: 6px  --r-md: 10px  --r-lg: 14px  --r-xl: 20px  --r-full: 9999px
 ```
 
+### Motion tokens
+```css
+--motion-fast:   100ms cubic-bezier(0.2,0,0,1)
+--motion-normal: 200ms cubic-bezier(0.2,0,0,1)
+--motion-slow:   300ms cubic-bezier(0.2,0,0,1)
+--motion-enter:  200ms cubic-bezier(0,0,0.2,1)
+--motion-exit:   150ms cubic-bezier(0.4,0,1,1)
+--motion-layout: 400ms cubic-bezier(0,0,0.2,1)
+```
+
 ### Typography
 | Mode    | Font                   |
 |---------|------------------------|
@@ -59,13 +70,32 @@ Font switching is handled at the `html` element:
 html { font-family: var(--font); }
 html[lang="ar"] { font-family: var(--font-ar); }
 ```
-All children inherit via `font-family: inherit`.
+All children inherit via `font-family: inherit`. **Never hardcode font names inside component rules.**
+
+---
+
+## Dark / Light Theme
+
+Toggled by `#themeBtn`. Stored in `localStorage` key `"alm-theme"`. Applied via `html[data-theme="dark"]`.
+
+```css
+html[data-theme="dark"] {
+  --text-primary:   #ddeef2;
+  --text-secondary: #7aacb8;
+  --text-subtle:    #8ec4cf;
+  --bg-page:        #071820;
+  --bg-surface:     #0c2330;
+  --border:         #163545;
+}
+```
+
+Header always stays `--alm-dark` background in both modes.
 
 ---
 
 ## Bilingual / RTL System
-- Language is stored in `localStorage` key `alm-lang` (`"en"` or `"ar"`)
-- `html.lang` and `html.dir` are toggled by `#langBtn`
+- Language stored in `localStorage` key `alm-lang` (`"en"` or `"ar"`)
+- `html.lang` and `html.dir` toggled by `#langBtn`
 - Content uses `.en` / `.ar` helper spans:
   ```html
   <span class="en">English text</span>
@@ -77,22 +107,40 @@ All children inherit via `font-family: inherit`.
   html[lang="ar"] .en { display: none; }
   html[lang="ar"] .ar { display: inline; }
   ```
+- RTL positioning: always `inset-inline-start` / `inset-inline-end` — **never `left` / `right`**
+- RTL-flippable icons: class `.icon--flip-rtl`
+  ```css
+  html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
+  ```
 
 ---
 
 ## Logo Rules
 - **English mode**: show `.logo-en` only → wordmark `Alm<span class="logo-o">o</span>safer`
-- **Arabic mode**: show `.logo-ar` only → wordmark `ال<span class="logo-meem">م</span>سافر`
-- Split-color "o" / "م": CSS `background-clip: text` gradient (cyan → red)
-- Arabic wordmark uses a full-word gradient (no span wrapping that breaks shaping):
+- **Arabic mode**: show `.logo-ar` only → wordmark `المسافر` (no span wrapping — breaks Arabic shaping)
+- Split-color "o": CSS `background-clip: text` gradient (cyan 50% → red 50%)
+- Arabic wordmark uses full-word gradient on `.logo-wordmark` only:
   ```css
   .logo-ar .logo-wordmark {
+    font-family: var(--font-ar);
+    letter-spacing: 0;
     background: linear-gradient(to right, #fff 63%, #E63946 63% 73%, #00B7C6 73% 83%, #fff 83%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   ```
+- **م gradient positions are measured values: 63%–73% = red, 73%–83% = cyan**
 - **No SVG, no image, no icon** in the logo — text only
+- **Never wrap Arabic characters in `<span>`** — breaks Arabic letter shaping/connection
+
+Logo switching CSS:
+```css
+.logo-en { display: flex; }
+.logo-ar { display: none; }
+html[lang="ar"] .logo-en { display: none; }
+html[lang="ar"] .logo-ar { display: flex; }
+```
 
 ---
 
@@ -115,7 +163,7 @@ All children inherit via `font-family: inherit`.
 |-------------|--------------------------------------------------|
 | One Way     | Origin → Dest → Departure → Travellers → Search  |
 | Round Trip  | Origin → Dest → Departure → Return → Travellers → Search |
-| Multi City  | CSS Grid (5 equal cols). Row 1: all 5 fields. Extra rows: cols 1–3 only |
+| Multi City  | CSS Grid (4 equal cols). Row 1: all 4 fields. Extra rows: cols 1–3 only |
 
 - **Default on page load: One Way**
 - JS function: `setTripType('one-way' | 'round-trip' | 'multi-city')`
@@ -125,18 +173,19 @@ All children inherit via `font-family: inherit`.
 ```css
 .mc-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   align-items: end;
 }
+.mc-search-btn { width: 100%; justify-content: center; margin-top: 8px; }
 ```
-Extra rows (flights 2–6) append 3 grid children each (Origin, Dest, Date) → auto-placed in cols 1–3.
 
 ### Input field spacing rule
 All `.sf-input` fields use:
 ```css
 padding: 16px 12px;
 ```
+**Never add `min-height` to `.sf-btn` or `.sf-input`.**
 
 ### Search button
 ```css
@@ -147,12 +196,35 @@ border-radius: var(--r-md);
 
 ---
 
+## DOM ORDER — Sections in this exact sequence
+
+```
+1.  <header>                  sticky dark header
+2.  #si-modal                 sign-in glassmorphism modal
+3.  #cg-page                  city guide overlay
+4.  #all-dest-overlay         all destinations overlay
+5.  #my-account               account section
+6.  #deal-overlay             deal detail overlay
+7.  #dsa-overlay              deal see-all overlay
+8.  #deal-coming-soon         ← ALWAYS OUTSIDE <main>, BEFORE it
+9.  <main id="main">          services bar + top destinations + deals
+10. <footer>
+11. #alm-toast                toast notification
+12. #alm-bk                   booking backdrop
+13. #alm-picker               date picker
+14. #alm-pax                  travellers panel
+15. <script>                  single IIFE — ALL JS inside
+```
+
+---
+
 ## JavaScript Architecture
 Single IIFE in `<script>` at bottom of `<body>`. Key sections:
 
 | Section | What it does |
 |---------|-------------|
 | Language | `setLang()`, `#langBtn` click, localStorage persist |
+| Theme | `setTheme()`, `#themeBtn` click, localStorage persist |
 | Hero tabs | `.sh-tab` click → show/hide `.sh-form`, update `data-corner` |
 | Trip type | `setTripType()`, `[data-trip]` chip clicks |
 | Multi City | `addMcRow()`, `makeMcCell()`, `mc-add` click, `MC_MAX` guard |
@@ -166,9 +238,10 @@ Single IIFE in `<script>` at bottom of `<body>`. Key sections:
 | Search Results | `showCgResults()` — filterable results panel inside city guide |
 | Offers & Deals | `DEALS_DATA`, `DEAL_ROWS`, `_renderOneRow()`, `openDealDetail()`, `openDealSeeAll()` |
 | Booking Flow | `openBooking()`, `closeBk()`, `_renderBkStep()` — 3-step checkout |
-| My Account | `openMyAccount()`, `closeMyAccount()`, `renderMyAccount()`, `openMyTickets()` — open/close calls `setHeroVisible(false/true)` |
+| My Account | `openMyAccount()`, `closeMyAccount()`, `renderMyAccount()`, `openMyTickets()` |
 | My Account Sub-Panels | `openMaSubPanel(key)` — slides in `.ma-sub-view` with key-specific content |
 | Ticket Cart | `_cart` array, `addToCart()`, ticket wallet panel |
+| Toast | `showToast(msg, duration)` |
 | Icon System | `_ICONS` map (29 types) + `_icon(name, size, extra)` helper |
 
 ---
@@ -176,16 +249,13 @@ Single IIFE in `<script>` at bottom of `<body>`. Key sections:
 ## Icon System
 
 ### `_ICONS` map
-29 named SVG path strings matching the design system icon library:
+29 named SVG path strings:
 `account · back · baggage · booking · calendar · check · chevron-down · chevron-left · chevron-right · close · currency · error · favorite · filter · flight · hotel · info · language · location · package · passenger · payment · search · share · sort · success · time · user · warning`
 
 ### `_icon(name, size, extra)`
-Returns an inline `<svg>` string using the `_ICONS` map.
 - `size`: `'sm'` = 16px, `'md'` = 20px (default), `'lg'` = 24px
-- `extra`: replaces default `aria-hidden="true" focusable="false"`
 - Output class: `icon icon--{size}`
 
-### CSS — `.icon` base
 ```css
 .icon { display:inline-flex; flex-shrink:0; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 .icon--sm { width:16px; height:16px; }
@@ -195,29 +265,12 @@ Returns an inline `<svg>` string using the `_ICONS` map.
 .icon--inverse { color:#fff; }
 ```
 
-### Flight icon path (Lucide Plane)
-```
-M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L4.8 6.2A2 2 0 0 0 4 8 2 2 0 0 0 6 10l2.1.1 4.6 8.3a2 2 0 0 0 2.7.7l.2-.1a2 2 0 0 0 .8-2.2
-```
-Used in: Flights tab, My Trips quick row, flight detail, booking summary.
-
 ---
 
 ## City Guide System
 
 ### Overlay ID
 `#cg-page` (class `overlay-page`) — opened/closed via `_openOverlay()` / `_closeOverlay()`
-
-### Panel state machine
-Content is rendered into `#cg-body` by `renderCityGuide()`. Sub-panels:
-
-| Element | Content |
-|---|---|
-| `#cg-page-content` | City overview (tabs: Hotels / Flights / Activities / To-Do) |
-| `#cg-results` | Search results (filtered hotel/flight/activity cards) |
-| `#cg-hotel-detail` | Full hotel detail with rooms |
-| `#cg-flight-detail` | Full flight detail with cabin selector |
-| `#cg-attr-detail` | Attraction/activity detail with ticket bar |
 
 ### Navigation variables
 ```javascript
@@ -226,183 +279,197 @@ var _cgFromAllDest  = false;    // opened from All Destinations overlay?
 var _cgDetailFrom   = 'city';   // 'city' | 'results' — back-button routing
 ```
 
+### Sub-panels
+| Element | Content |
+|---|---|
+| `#cg-page-content` | City overview (tabs: Hotels / Flights / Activities / To-Do) |
+| `#cg-results` | Search results (filtered hotel/flight/activity cards) |
+| `#cg-hotel-detail` | Full hotel detail with rooms |
+| `#cg-flight-detail` | Full flight detail with cabin selector |
+| `#cg-attr-detail` | Attraction/activity detail with ticket bar |
+
 ### 10 supported cities
 `dubai` · `istanbul` · `maldives` · `london` · `cairo` · `riyadh` · `jeddah` · `paris` · `bali` · `tokyo`
 
-### Removed: Footer CTA buttons
-The "Flights to / Stays in / Activities in [city]" colored buttons were **removed** from city guide pages. Do not re-add them.
+### REMOVED — Do Not Re-Add
+The "Flights to / Stays in / Activities in [city]" colored CTA buttons were **permanently removed** from city guide pages.
 
 ---
 
 ## Hotel Detail — `HOTEL_DETAILS`
-Keyed by `hotel.nameEn`. Each entry:
-```javascript
-{
-  img: '...url...',
-  descEn: '...', descAr: '...',
-  addressEn: '...', addressAr: '...',
-  rating: 4.6, reviewCount: 28400,
-  amenities: ['wifi','pool','parking','breakfast','spa','gym','restaurant','roomservice'],
-  rooms: [
-    {
-      nameEn: 'Deluxe King Room', nameAr: 'غرفة كينج ديلوكس',
-      img: '...url...',
-      beds: 1, bedType: 'King', bedTypeAr: 'كينج',
-      sizeSqm: 50,
-      viewEn: 'Palm View', viewAr: 'إطلالة نخلة',
-      chips: ['Balcony','Rain Shower','Mini Bar','55" Smart TV'],
-      chipsAr: ['بلكونة','دش مطري','ميني بار','تلفزيون ذكي 55"'],
-      priceSAR: 3200
-    }
-    // 2–3 rooms per hotel
-  ]
-}
-```
-All 40 hotels across 10 cities have `rooms` arrays. Room cards show bed icon + count/type, size icon + m², view icon + outlook, amenity chips, price per night, and a "Select" button that opens the booking flow.
+Keyed by `hotel.nameEn`. Each entry has: `img`, `descEn`, `descAr`, `addressEn`, `addressAr`, `rating`, `reviewCount`, `amenities[]`, `rooms[]`.
 
-CSS prefix: `.cghd-*` (hotel detail), `.cghd-room-*` (room cards)
+Each room: `nameEn`, `nameAr`, `img`, `beds`, `bedType`, `bedTypeAr`, `sizeSqm`, `viewEn`, `viewAr`, `chips[]`, `chipsAr[]`, `priceSAR`.
+
+All 40 hotels across 10 cities have `rooms` arrays. CSS prefix: `.cghd-*`
 
 ---
 
 ## Flight Detail
-Enrichment maps:
 ```javascript
 var _AIRLINE_META = { 'Saudia': { color:'#006437', short:'SV' }, ... };
 var _CITY_IATA    = { dubai:'DXB', istanbul:'IST', ... };
 var _CITY_DURATION= { dubai:'2h 15m', istanbul:'4h 30m', ... };
 ```
-
-Panel sections: dark route bar (RUH → DXB with large IATA codes) · airline badge · times row · info grid (Duration / Stops / Baggage) · cabin selector (Economy / Business at 2.6× price, wired inline) · book bar.
-
 CSS prefix: `.cgfd-*`
 
 ---
 
 ## Offers & Deals Section
 
-### Layout: Netflix-style horizontal rows
-5 category rows rendered by `DEAL_ROWS` array. Each row has:
-- Header: emoji + title + optional LIVE badge + "See all" button
-- Horizontal scroll track with prev/next arrows (40×40px circle, 16×16px icon — both locked with `min-width/min-height/flex-shrink:0`)
-- Cards: `.drc` (230px wide), with image, discount badge, category tag, timer pill, title, price, promo code, "View deal" button
+- 5 category rows in `DEAL_ROWS` array
+- Row arrows: **40×40px circle, 16×16px icon — both locked with `min-width/min-height/flex-shrink:0`**
+- Cards `.drc`: 230px wide
+- `DEALS_DATA` array: 9 deals
+- Deal detail: `#deal-overlay` (z-index 1900)
+- See All: `#dsa-overlay` (z-index 1600)
+- Coming Soon: `#deal-coming-soon` — **must be outside `<main>`, placed before it**
 
-### Deal data: `DEALS_DATA` array (9 deals)
-Each deal: `{ id, titleEn, titleAr, catEn, catAr, catAr, disc, discAr, img, code, bkPrice, bkLabelEn, bkLabelAr, descEn, descAr, termsEn, termsAr, expiresMs }`
-
-### Row navigation arrows
-- CSS: `opacity:0` by default, revealed on `.deal-row-track:hover`
-- JS: `_syncRowArrows()` disables prev/next at scroll boundaries, RTL-aware
-
-### Deal detail overlay (`#deal-overlay`)
-Full-screen slide-up overlay (z-index 1900). Layout:
-1. **Topbar**: "← Back" button + category label
-2. **Hero image**: 300px tall, discount text overlaid
-3. **Scrollable body** (max-width 680px, centered): category, title, description, countdown timer, T&Cs, promo code box (with Copy button), price, "Book Now" button
-
-### See All overlay (`#dsa-overlay`)
-Full-screen slide-up (z-index 1600). Shows all deals for a row category in a responsive CSS grid. Triggered by "See all" button on each row.
-
-CSS prefixes: `.drc-*` (row cards), `.deal-ov-*` (deal detail), `.dsa-*` (see-all overlay)
+CSS prefixes: `.drc-*` · `.deal-ov-*` · `.dsa-*`
 
 ---
 
 ## Booking Flow
 
-### Entry points (all call `openBooking()`)
+### Entry points
 | Trigger | Type |
 |---|---|
-| Hotel "Book Now" (`#cghd-book-btn`) | `'hotel'` |
-| Room card "Select" (`.cghd-room-select`) | `'room'` |
-| Flight "Select Flight" (`#cgfd-select-btn`) | `'flight'` |
-| Attraction "Book Ticket" (`#cgad-book-btn`) | `'activity'` |
-| Deal "Book Now" (`#deal-ov-book`) | `'activity'` |
-
-### `openBooking(type, label, price, nights)`
-Opens `#alm-booking` overlay (fixed, full-screen, blurred backdrop). Panel slides in from inline-end. 3 steps:
-
-**Step 1 — Your Details**
-Fields: First Name, Last Name (2-col grid), Email, Phone, Nationality (select with 8 GCC options)
-
-**Step 2 — Payment**
-- STC Pay / Apple Pay quick-tap buttons (toggle `.active`)
-- Card number (auto-formats `XXXX XXXX XXXX XXXX`)
-- Name on card
-- Expiry (auto-inserts `/` after `MM`) + CVV (password field)
-- SSL secure note
-
-**Step 3 — Booking Confirmed**
-- Animated ✓ (spring pop)
-- Unique booking ref: `ALM-XXXXXX`
-- Summary card: item, nights (hotels), total in cyan, green "Confirmed" badge
-- "Back to Browsing" closes overlay
+| Hotel "Book Now" | `'hotel'` |
+| Room "Select" | `'room'` |
+| Flight "Select Flight" | `'flight'` |
+| Attraction "Book Ticket" | `'activity'` |
+| Deal "Book Now" | `'activity'` |
 
 ### State object
 ```javascript
 var _bk = { step: 1, type: '', label: '', price: 0, nights: 1, ref: '' };
 ```
 
-### CSS prefix: `.bk-*`
-Key classes: `.bk-panel`, `.bk-steps`, `.bk-step-bar`, `.bk-summary`, `.bk-fields`, `.bk-grid-2`, `.bk-input`, `.bk-pay-quick-btn`, `.bk-confirm`, `.bk-confirm-ref`, `.bk-confirm-card`, `.bk-status-badge`
+3 steps: Your Details → Payment → Booking Confirmed (ref: `ALM-XXXXXXX`)
+
+CSS prefix: `.bk-*`
+
+---
+
+## Sign-In / OTP Flow
+
+- Modal: `#si-modal` — glassmorphism: `background:rgba(0,183,198,0.10); backdrop-filter:blur(28px)`
+- Two modes: Email / Phone with country code selector
+- 6-box OTP: auto-advance, backspace, arrow keys, paste support
+- Prototype: any 6 digits accepted (`SI_TEST_OTP` shown on screen)
+- Resend countdown: 58 seconds
+- On success: `ALM_USER` set → `localStorage` persisted → `openMyAccount()` after 220ms
 
 ---
 
 ## My Account Sub-Panels
 
-### Structure
-`openMaSubPanel(key)` renders content into `#ma-sub-view` (`.ma-sub-view`) and slides it in with `.ma-sub-open`.
+`openMaSubPanel(key)` renders into `#ma-sub-view`.
 
-### RTL / Slide direction
-The sub-panel uses a CSS transform slide:
-- LTR default: `translateX(110%)` (off right) → open: `translateX(0)`
-- RTL default: `translateX(-110%)` (off left) → open: `translateX(0)`
-Both open states are covered by separate CSS rules. The RTL open rule has higher specificity (0,3,1) than the RTL default (0,2,1):
+### RTL slide fix — 3 rules required (specificity matters)
 ```css
-html[dir="rtl"] .ma-sub-view { transform:translateX(-110%); }
-.ma-sub-view.ma-sub-open { transform:translateX(0); }
-html[dir="rtl"] .ma-sub-view.ma-sub-open { transform:translateX(0); }
+html[dir="rtl"] .ma-sub-view { transform: translateX(-110%); }   /* specificity 0,2,1 */
+.ma-sub-view.ma-sub-open { transform: translateX(0); }            /* specificity 0,2,0 */
+html[dir="rtl"] .ma-sub-view.ma-sub-open { transform: translateX(0); } /* specificity 0,3,1 — wins */
 ```
 
+### Sub-panel keys
 | Key | Content |
 |---|---|
 | `profile` | Edit name, email/phone, nationality picker (flagcdn.com flags) |
 | `travellers` | Saved traveller cards + Add Traveller inline form |
 | `preferences` | Travel preference toggles |
-| `loyalty` | Points card, airline program rows + Link New Loyalty Program inline form |
+| `loyalty` | Points card, airline rows + Link New Loyalty Program form |
 | `payment` | Saved cards + Add New Card inline form |
-| `security` | Email/password rows, 2FA toggles, Change Password form, Deactivate Account confirmation |
-| `wallet` | Wallet balance, top-up button |
-
-### Inline form pattern (Add Traveller / Add Card / Link Loyalty / Change Password)
-Button click → hides button → inserts `.ma-add-trav-form` div before it → Save/Cancel handlers:
-- Save: validates → appends new card/row → removes form → restores button → `showToast()`
-- Cancel: removes form → restores button
+| `security` | Email/password, 2FA toggles, Change Password, Deactivate Account |
+| `wallet` | Balance = SAR 250 + 2.5% cashback per `_cart` item + transactions |
 
 ### CSS classes
 | Class | Role |
 |---|---|
-| `.ma-input` | Standard input/select: `border:1px solid var(--border)`, hover/focus = cyan border + glow |
-| `.ma-form-save` | Primary action button: `background:var(--alm-dark)`, 12px/500 |
-| `.ma-form-neutral` | Cancel button: subtle danger — `rgba(230,57,70,.07)` bg, red border and text |
-| `.ma-toggle` | Toggle switch off: `background:var(--border)` |
-| `.ma-toggle.on` | Toggle switch on: `background:var(--alm-dark)` |
-| `.ma-pref-val` | Value text in pref rows: `color:var(--text-subtle)` (neutral, not cyan) |
-| `.ma-card-num` | Card number text: 12px / 500 |
+| `.ma-input` | `border:1px solid var(--border)`, hover/focus = cyan border + glow |
+| `.ma-form-save` | `background:var(--alm-dark)`, 12px/500 |
+| `.ma-form-neutral` | Cancel: `rgba(230,57,70,.07)` bg, red border + text |
+| `.ma-toggle` | Off: `background:var(--border)` |
+| `.ma-toggle.on` | On: `background:var(--alm-dark)` |
+| `.ma-pref-val` | `color:var(--text-subtle)` — never cyan |
+| `.ma-card-num` | 12px / 500 |
 
 ---
 
-## Sections in order
-1. `<header>` — dark teal bar, logo, nav, lang toggle, Sign In
-2. `<section class="hero">` — full-bleed photo bg, scrim, title, search widget
-3. `<main id="main">` — Top Destinations cards (3 featured cities)
-4. Offers & Deals section — Netflix-style rows inside `#main`
-5. All Destinations grid — `#all-dest-overlay`
-6. City Guide overlay — `#cg-page` with full detail flow
-7. Deal detail overlay — `#deal-overlay` (full-screen)
-8. Deal See-All overlay — `#dsa-overlay` (full-screen)
-9. My Account panel — quick rows: My Trips, My Wallet, My Tickets
-10. My Tickets panel — ticket wallet
-11. Booking overlay — `#alm-booking` (3-step checkout)
-12. `<footer>` — brand, links, social, copyright
+## Known Bugs Fixed — Do Not Revert
+
+### BUG 01 — Logo showing both languages simultaneously
+**Cause:** No CSS rule to hide inactive logo on language switch.
+**Fix:**
+```css
+.logo-en { display: flex; }
+.logo-ar { display: none; }
+html[lang="ar"] .logo-en { display: none; }
+html[lang="ar"] .logo-ar { display: flex; }
+```
+
+### BUG 02 — #deal-coming-soon permanently invisible
+**Cause:** `#deal-coming-soon` was nested inside `<main id="main">`. `showDealComingSoon()` calls `mainEl.style.display='none'` first — parent `display:none` overrides child `display:block`. CSS law, not a JS bug.
+**Fix:** Move `#deal-coming-soon` to be a sibling BEFORE `<main>` in the DOM. Same pattern as `#my-account`, `#deal-overlay`, `#dsa-overlay`.
+
+### BUG 03 — City guide back button routing to wrong destination
+**Cause:** Back button had one hardcoded destination — no navigation state tracked.
+**Fix:** Two state variables control routing:
+```javascript
+var _cgDetailFrom  = 'city';   // 'city' | 'results'
+var _cgFromAllDest = false;    // true → return to all-destinations on close
+```
+
+### BUG 04 — RTL sub-panel CSS specificity conflict
+**Cause:** `html[dir="rtl"] .ma-sub-view` (specificity 0,2,1) was overriding `.ma-sub-view.ma-sub-open` (specificity 0,2,0) — open state never won in RTL.
+**Fix:** Add third rule with matching RTL+open specificity (0,3,1):
+```css
+html[dir="rtl"] .ma-sub-view.ma-sub-open { transform: translateX(0); }
+```
+
+### BUG 05 — Arabic wordmark breaking letter connections
+**Cause:** Wrapping "م" in `<span>` created an inline element boundary — Arabic shaping engine disconnected surrounding letters.
+**Fix:** Remove all `<span>` from Arabic wordmark. Apply gradient to `.logo-ar .logo-wordmark` only. Never wrap Arabic characters in any element.
+
+### BUG 06 — Deal row arrows collapsing size
+**Cause:** No locked dimensions on arrow buttons or inner icons — flexbox compressed them.
+**Fix:**
+```css
+/* Arrow button */
+min-width: 40px; min-height: 40px; flex-shrink: 0;
+/* Inner icon */
+min-width: 16px; min-height: 16px; flex-shrink: 0;
+```
+
+---
+
+## Overlay Routing Logic
+
+No router — pure CSS class toggles + display switches.
+
+**Open any overlay:**
+1. `setHeroVisible(false)`
+2. `mainEl.style.display = 'none'`
+3. Add open class to target section
+
+**Close any overlay:**
+1. Remove open class
+2. `setHeroVisible(true)`
+3. `mainEl.style.display = ''`
+
+**z-index stack:**
+```
+Sign-in modal     900
+All Destinations  600
+City Guide        700
+Deal Coming Soon  800
+Deal See-All     1600
+Deal Detail      1900
+Booking          2000
+```
+
+**Escape key** closes in order: City Guide → All Destinations → Sign-in
 
 ---
 
@@ -412,22 +479,24 @@ Button click → hides button → inserts `.ma-add-trav-form` div before it → 
 - Edit `index.html` only — no separate CSS/JS files
 - Use CSS variables (`var(--alm-cyan)`) — never raw hex in component rules
 - Use `.en`/`.ar` spans for all user-visible text
-- `font-family: inherit` on all new elements (never hardcode font name in components)
+- `font-family: inherit` on all new elements
 - Use `inset-inline-start/end` for RTL-safe positioning
-- All card images must be real photos (Unsplash URLs) — no placeholders
+- All card images must be real Unsplash URLs — no placeholders
+- All new JS inside the existing IIFE only
+- All new HTML sections follow the DOM ORDER above
 
 ### Never
 - Do not add external JS libraries or frameworks
 - Do not split into multiple files
 - Do not use SVG or images in the logo
 - Do not hardcode language-specific text without bilingual spans
-- Do not add `min-height` to `.sf-btn` (use `padding: 16px` instead)
-- Do not use `flex: 1` on `.sh-tab` (tabs hug content)
-- Do not re-add the "Flights to / Stays in / Activities in [city]" CTA buttons — they were intentionally removed
-
-### Logo edits
-- Gradient positions for Arabic م are measured values: **63%–73% = red, 73%–83% = cyan**
-- Do not wrap Arabic characters in spans (breaks shaping) — use full-word gradient only
+- Do not add `min-height` to `.sf-btn` — use `padding: 16px` instead
+- Do not use `flex: 1` on `.sh-tab` — tabs hug content
+- Do not re-add "Flights to / Stays in / Activities in [city]" CTA buttons
+- Do not nest `#deal-coming-soon` inside `<main>`
+- Do not use `left` / `right` in positioning rules
+- Do not wrap Arabic characters in `<span>`
+- Do not remove existing aria attributes
 
 ---
 
@@ -443,15 +512,24 @@ Remote: `https://github.com/kholoud-Eltabey/almosafer.git`
 
 ### Cloudflare Pages
 ```
-npx wrangler pages deploy . --project-name almosafer --commit-dirty=true
+cp index.html public/index.html
+npx wrangler pages deploy public/ --project-name almosafer --commit-dirty=true
 ```
-Or run `deploy.bat`. Project name: `almosafer`.
+Project name: `almosafer` — **ONLY this project, never `Almosafer-Design-System`**
+
+### Local preview
+```
+npx serve . --listen 3000 --no-clipboard
+```
+URL: `http://localhost:3000`
+
+All three environments (local, Claude Preview, Cloudflare) must always reflect the same `index.html`.
 
 ---
 
 ## Dev Notes
-- No build step, no npm install — open `index.html` directly or via `npx serve`
-- Google Fonts loaded via `<link>` in `<head>` (IBM Plex Sans + IBM Plex Sans Arabic)
-- Hero background: Pinterest image hosted at `i.pinimg.com/originals/...`
-- Overlay opacity kept soft (`0.30–0.38`) to keep hero image vibrant
-- `index.html` is ~600 KB (all-in-one: HTML + CSS + JS + all data)
+- No build step — open `index.html` directly or via `npx serve`
+- Google Fonts loaded via `<link>` in `<head>`
+- Hero background: Unsplash/Pinimg hosted image
+- Overlay scrim opacity: `0.30–0.38` — kept soft to keep hero vibrant
+- `index.html` is ~10,800+ lines (all-in-one: HTML + CSS + JS + data)
