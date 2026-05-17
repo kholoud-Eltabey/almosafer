@@ -167,7 +167,39 @@ Single IIFE in `<script>` at bottom of `<body>`. Key sections:
 | Offers & Deals | `DEALS_DATA`, `DEAL_ROWS`, `_renderOneRow()`, `openDealDetail()`, `openDealSeeAll()` |
 | Booking Flow | `openBooking()`, `closeBk()`, `_renderBkStep()` — 3-step checkout |
 | My Account | `renderMyAccount()`, `closeMyAccount()`, `openMyTickets()` |
+| My Account Sub-Panels | `openMaSubPanel(key)` — slides in `.ma-sub-view` with key-specific content |
 | Ticket Cart | `_cart` array, `addToCart()`, ticket wallet panel |
+| Icon System | `_ICONS` map (29 types) + `_icon(name, size, extra)` helper |
+
+---
+
+## Icon System
+
+### `_ICONS` map
+29 named SVG path strings matching the design system icon library:
+`account · back · baggage · booking · calendar · check · chevron-down · chevron-left · chevron-right · close · currency · error · favorite · filter · flight · hotel · info · language · location · package · passenger · payment · search · share · sort · success · time · user · warning`
+
+### `_icon(name, size, extra)`
+Returns an inline `<svg>` string using the `_ICONS` map.
+- `size`: `'sm'` = 16px, `'md'` = 20px (default), `'lg'` = 24px
+- `extra`: replaces default `aria-hidden="true" focusable="false"`
+- Output class: `icon icon--{size}`
+
+### CSS — `.icon` base
+```css
+.icon { display:inline-flex; flex-shrink:0; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.icon--sm { width:16px; height:16px; }
+.icon--md { width:20px; height:20px; }
+.icon--lg { width:24px; height:24px; }
+.icon--brand { color:var(--alm-cyan); }
+.icon--inverse { color:#fff; }
+```
+
+### Flight icon path (Lucide Plane)
+```
+M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L4.8 6.2A2 2 0 0 0 4 8 2 2 0 0 0 6 10l2.1.1 4.6 8.3a2 2 0 0 0 2.7.7l.2-.1a2 2 0 0 0 .8-2.2
+```
+Used in: Flights tab, My Trips quick row, flight detail, booking summary.
 
 ---
 
@@ -311,6 +343,39 @@ var _bk = { step: 1, type: '', label: '', price: 0, nights: 1, ref: '' };
 
 ### CSS prefix: `.bk-*`
 Key classes: `.bk-panel`, `.bk-steps`, `.bk-step-bar`, `.bk-summary`, `.bk-fields`, `.bk-grid-2`, `.bk-input`, `.bk-pay-quick-btn`, `.bk-confirm`, `.bk-confirm-ref`, `.bk-confirm-card`, `.bk-status-badge`
+
+---
+
+## My Account Sub-Panels
+
+### Structure
+`openMaSubPanel(key)` renders content into `#ma-sub-view` (`.ma-sub-view`) and slides it in with `.ma-sub-open`.
+
+| Key | Content |
+|---|---|
+| `profile` | Edit name, email/phone, nationality picker (flagcdn.com flags) |
+| `travellers` | Saved traveller cards + Add Traveller inline form |
+| `preferences` | Travel preference toggles |
+| `loyalty` | Points card, airline program rows + Link New Loyalty Program inline form |
+| `payment` | Saved cards + Add New Card inline form |
+| `security` | Email/password rows, 2FA toggles, Change Password form, Deactivate Account confirmation |
+| `wallet` | Wallet balance, top-up button |
+
+### Inline form pattern (Add Traveller / Add Card / Link Loyalty / Change Password)
+Button click → hides button → inserts `.ma-add-trav-form` div before it → Save/Cancel handlers:
+- Save: validates → appends new card/row → removes form → restores button → `showToast()`
+- Cancel: removes form → restores button
+
+### CSS classes
+| Class | Role |
+|---|---|
+| `.ma-input` | Standard input/select: `border:1px solid var(--border)`, hover/focus = cyan border + glow |
+| `.ma-form-save` | Primary action button: `background:var(--alm-dark)`, 12px/500 |
+| `.ma-form-neutral` | Cancel button: subtle danger — `rgba(230,57,70,.07)` bg, red border and text |
+| `.ma-toggle` | Toggle switch off: `background:var(--border)` |
+| `.ma-toggle.on` | Toggle switch on: `background:var(--alm-dark)` |
+| `.ma-pref-val` | Value text in pref rows: `color:var(--text-subtle)` (neutral, not cyan) |
+| `.ma-card-num` | Card number text: 12px / 500 |
 
 ---
 
