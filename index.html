@@ -600,11 +600,12 @@ html[data-theme="dark"] .sf-check input[type="checkbox"]:checked {
 .sf-clear {
   margin-inline-start: auto; width: 20px; height: 20px; border-radius: 50%;
   background: var(--color-background-disabled); color: var(--color-text-subtle);
-  display: flex; align-items: center; justify-content: center;
+  display: none; align-items: center; justify-content: center;
   flex-shrink: 0; cursor: pointer; font-size: 12px; font-weight: 700;
   transition: background var(--motion-fast), color var(--motion-fast); line-height: 1;
   border: none; font-family: inherit; /* button reset */
 }
+.sf-has-date .sf-clear { display: flex; } /* only visible when a date is selected */
 .sf-clear:hover { background: var(--color-border-strong); color: var(--color-text-primary); }
 .sf-clear:focus-visible {
   outline: var(--border-width-focus) solid var(--color-border-focus);
@@ -3699,6 +3700,7 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
                   <div>
                     <span class="sf-val sf-muted"><span class="en">Add date</span><span class="ar">أضف تاريخاً</span></span>
                   </div>
+                  <button type="button" class="sf-clear" id="depart-clr" aria-label="Clear departure date">✕</button>
                 </div>
               </div>
               <div class="sf-field" id="sf-return-wrap">
@@ -6763,12 +6765,15 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
   /* Date display helpers */
   function setDateDisplay(valSpan, date) {
     if (!valSpan) return;
+    var sfInput = valSpan.closest('.sf-input');
     if (date) {
       valSpan.textContent = fmtDate(date);
       valSpan.classList.remove('sf-muted');
+      if (sfInput) sfInput.classList.add('sf-has-date');
     } else {
       valSpan.innerHTML = '<span class="en">Add date</span><span class="ar">أضف تاريخاً</span>';
       valSpan.classList.add('sf-muted');
+      if (sfInput) sfInput.classList.remove('sf-has-date');
     }
   }
 
@@ -6799,6 +6804,27 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
         setDateDisplay(departVal, W.depart);
         setDateDisplay(returnVal,  W.ret);
       });
+    });
+  }
+
+  /* ── Clear buttons for departure and return date fields ── */
+  var departClrBtn = document.getElementById('depart-clr');
+  var returnClrBtn = returnInput && returnInput.querySelector('.sf-clear');
+  if (departClrBtn) {
+    departClrBtn.addEventListener('click', function (e) {
+      e.stopPropagation(); /* prevent click bubbling to sf-input (opens picker) */
+      W.depart = null;
+      setDateDisplay(departVal, null);
+      /* also clear return when departure is cleared (range becomes invalid) */
+      W.ret = null;
+      setDateDisplay(returnVal, null);
+    });
+  }
+  if (returnClrBtn) {
+    returnClrBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      W.ret = null;
+      setDateDisplay(returnVal, null);
     });
   }
 
