@@ -187,6 +187,38 @@ padding: 16px 12px;
 ```
 **Never add `min-height` to `.sf-btn` or `.sf-input`.**
 
+### Clear buttons
+
+#### City fields (Origin / Destination) — `.sf-val-clr`
+- Frameless icon, 24×24px, hidden by default
+- Shown via `.sf-has-val .sf-val-clr { display: flex; }`
+- Triggered by `data-clear="origVal"` / `data-clear="destVal"` attributes
+- Restores bilingual placeholder HTML and adds back `sf-muted`
+
+#### Date fields (Departure / Return) — `.sf-clear`
+- Circular 20×20px button, hidden by default
+- Shown via `.sf-has-date .sf-clear { display: flex; }`
+- `setDateDisplay(valSpan, date)` toggles `sf-has-date` class on parent `.sf-input`
+- Click handler uses `e.stopPropagation()` — prevents bubbling to `.sf-input` (which opens picker)
+- Departure clear (`#depart-clr`) clears both `W.depart` and `W.ret` (range becomes invalid)
+- Return clear (`.sf-clear` inside `#si-return`) clears only `W.ret`
+
+```javascript
+// setDateDisplay — always call this to update date fields:
+function setDateDisplay(valSpan, date) {
+  var sfInput = valSpan.closest('.sf-input');
+  if (date) {
+    valSpan.textContent = fmtDate(date);
+    valSpan.classList.remove('sf-muted');
+    if (sfInput) sfInput.classList.add('sf-has-date');
+  } else {
+    valSpan.innerHTML = '<span class="en">Add date</span><span class="ar">أضف تاريخاً</span>';
+    valSpan.classList.add('sf-muted');
+    if (sfInput) sfInput.classList.remove('sf-has-date');
+  }
+}
+```
+
 ### Search button
 ```css
 background: var(--alm-red);
