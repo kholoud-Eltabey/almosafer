@@ -2380,6 +2380,13 @@ html[data-theme="dark"] .af-chip { color:var(--alm-cyan); }
 .flt-range::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:var(--alm-cyan); border:2px solid #fff; cursor:pointer; }
 .rs-list { flex:1; min-width:0; }
 .rs-list.rs-loading { opacity:.4; pointer-events:none; transition:opacity 200ms; }
+/* Round-trip section headers */
+.rs-trip-hdr { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--alm-dark); border-radius:var(--r-md); margin-bottom:10px; margin-top:4px; }
+.rs-trip-hdr:first-child { margin-top:0; }
+.rs-trip-hdr-icon { color:var(--alm-cyan); font-size:16px; flex-shrink:0; }
+.rs-trip-hdr-label { display:flex; flex-direction:column; gap:2px; }
+.rs-trip-dir { font-size:12px; font-weight:600; color:#fff; font-family:inherit; }
+.rs-trip-route { font-size:11px; color:rgba(255,255,255,0.55); font-family:inherit; letter-spacing:0.02em; }
 .rs-empty { text-align:center; padding:52px 24px; background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-lg); }
 .rs-empty-icon { font-size:38px; margin-bottom:12px; }
 .rs-empty-title { font-size: 16px; font-weight:700; color:var(--text-primary); margin-bottom:6px; }
@@ -7544,7 +7551,30 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
 
     function doRender(){
       var data, out;
-      if(tab==='flights'){ data=applyFlightFlt(); out=data.map(function(f){ return flightCard(f,isAr); }).join(''); }
+      if(tab==='flights'){
+        data=applyFlightFlt();
+        if(currentTripType==='round-trip' && data.length>0){
+          /* Round Trip: show outbound section then return section (both use same RUH-origin pool) */
+          var origText  = _getSearchOrig();
+          var destText  = _getSearchDest();
+          var origLabel = origText || (isAr?'الرياض':'Riyadh');
+          var destLabel = destText || (isAr?'الوجهة':'Destination');
+          var cards     = data.map(function(f){ return flightCard(f,isAr); }).join('');
+          var secOut = function(dir, from, to){
+            return '<div class="rs-trip-hdr">'+
+              '<span class="rs-trip-hdr-icon">✈</span>'+
+              '<span class="rs-trip-hdr-label">'+
+                '<span class="rs-trip-dir">'+(isAr?(dir==='out'?'رحلة الذهاب':'رحلة العودة'):(dir==='out'?'Outbound Flight':'Return Flight'))+'</span>'+
+                '<span class="rs-trip-route">'+from+' → '+to+'</span>'+
+              '</span>'+
+            '</div>';
+          };
+          out = secOut('out', origLabel, destLabel) + cards +
+                secOut('ret', destLabel, origLabel) + cards;
+        } else {
+          out=data.map(function(f){ return flightCard(f,isAr); }).join('');
+        }
+      }
       else if(tab==='stays'){ data=applyStayFlt(); out=data.map(function(s){ return stayCard(s,isAr); }).join(''); }
       else { data=applyActFlt(); out=data.map(function(a){ return actCard(a,isAr); }).join(''); }
 
