@@ -7371,13 +7371,19 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
     var searchDest = _getSearchDest();
     var destIata   = _getCityCode(searchDest);
 
-    /* All FLIGHT_DATA entries are RUH-origin (JED domestic flights permanently removed).
-       Filter only by destination — IATA exact match handles both EN and AR city names. */
+    /* All FLIGHT_DATA entries are RUH-origin.
+       If the user searches *to* Riyadh (destIata === 'RUH'), flip to the origin city —
+       e.g. Cairo → Riyadh becomes RUH → CAI, which has real data. */
+    if (destIata === 'RUH') {
+      var origIata = _getCityCode(_getSearchOrig());
+      destIata = (origIata && origIata !== 'RUH') ? origIata : null;
+    }
+
     var d = FLIGHT_DATA.slice();
     if (destIata) {
       /* Exact IATA match — always apply; may yield [] which renders "No results" */
       d = d.filter(function(x){ return x.dest === destIata; });
-    } else if (searchDest) {
+    } else if (searchDest && _getCityCode(searchDest) !== 'RUH') {
       /* Text fallback for typed values not in CITIES list */
       var sd = searchDest.toLowerCase();
       var byText = d.filter(function(x){
