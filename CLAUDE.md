@@ -60,10 +60,10 @@ Almosafer/
 ```
 
 ### Typography
-| Mode    | Font                   |
-|---------|------------------------|
-| English | IBM Plex Sans          |
-| Arabic  | IBM Plex Sans Arabic   |
+| Mode    | Font          |
+|---------|---------------|
+| English | IBM Plex Sans |
+| Arabic  | Cairo         |
 
 Font switching is handled at the `html` element:
 ```css
