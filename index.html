@@ -2012,18 +2012,92 @@ html[data-theme="dark"] .mt-footer { background: #0d1e2b; }
 html[data-theme="dark"] .mt-footer-total-val { color: #e8f4f7; }
 
 /* ── Booking Flow ── */
-#alm-booking { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: stretch; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); animation: bk-fade 220ms ease; }
+/* ── Booking — full-page overlay ── */
+#alm-booking {
+  position: fixed; inset: 0; z-index: 10000;
+  display: flex; flex-direction: column;
+  background: var(--bg-page);
+  overflow-y: auto;
+  animation: bk-fade 260ms cubic-bezier(0,0,0.2,1);
+}
 #alm-booking[hidden] { display: none; }
-@keyframes bk-fade { from { opacity: 0; } to { opacity: 1; } }
-.bk-panel { width: min(480px, 100vw); margin-inline-start: auto; background: var(--bg-surface); display: flex; flex-direction: column; overflow-y: auto; animation: bk-slide 300ms cubic-bezier(0.22,1,0.36,1); }
-html[data-theme="dark"] .bk-panel { background: #0d1e2b; }
-@keyframes bk-slide { from { transform: translateX(100%); } to { transform: translateX(0); } }
-html[dir="rtl"] .bk-panel { margin-inline-start: 0; margin-inline-end: auto; }
-html[dir="rtl"] @keyframes bk-slide { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-/* Header */
-.bk-header { padding: 18px 20px 0; flex-shrink: 0; }
-.bk-close { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: var(--r-full); border: 1px solid var(--border); background: transparent; cursor: pointer; color: var(--text-secondary); margin-bottom: 14px; font-family: inherit; transition: background 150ms, color 150ms; }
-.bk-close:hover { background: var(--bg-page); color: var(--text-primary); }
+@keyframes bk-fade { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Page header bar — matches main header style */
+.bk-page-hdr {
+  background: var(--alm-dark);
+  flex-shrink: 0;
+  position: sticky; top: 0; z-index: 10;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.bk-page-hdr-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 24px; height: 62px;
+  display: flex; align-items: center; gap: 14px;
+}
+.bk-page-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--r-full); padding: 0 14px; height: 34px;
+  color: rgba(255,255,255,0.80); font-size: 12px; font-weight: 500;
+  cursor: pointer; font-family: inherit;
+  transition: border-color var(--motion-fast), color var(--motion-fast);
+}
+.bk-page-back:hover { border-color: var(--alm-cyan); color: var(--alm-cyan); }
+.bk-page-back svg { width: 15px; height: 15px; flex-shrink: 0; }
+html[dir="rtl"] .bk-page-back svg { transform: scaleX(-1); }
+.bk-page-title {
+  font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.90);
+  flex: 1; text-align: center;
+}
+.bk-page-steps {
+  display: flex; gap: 5px; align-items: center;
+}
+.bk-page-step-dot {
+  width: 28px; height: 4px; border-radius: 99px;
+  background: rgba(255,255,255,0.20);
+  transition: background 300ms;
+}
+.bk-page-step-dot.done { background: var(--alm-cyan); }
+
+/* Main content area */
+.bk-panel {
+  width: 100%; flex: 1;
+  display: flex; flex-direction: column;
+}
+html[data-theme="dark"] .bk-panel { background: transparent; }
+
+/* Inner content wrapper */
+.bk-content-wrap {
+  max-width: 680px; margin: 0 auto; width: 100%;
+  padding: 32px 24px 80px;
+  display: flex; flex-direction: column; gap: 24px;
+  flex: 1;
+}
+
+/* Step title inside content */
+.bk-step-title {
+  font-size: 22px; font-weight: 700; color: var(--text-primary);
+  padding-bottom: 18px; border-bottom: 1px solid var(--border);
+}
+html[data-theme="dark"] .bk-step-title { color: #e8f4f7; }
+
+/* Sticky footer CTA */
+.bk-footer {
+  position: sticky; bottom: 0;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  flex-shrink: 0;
+  box-shadow: 0 -4px 20px rgba(0,59,74,0.08);
+}
+html[data-theme="dark"] .bk-footer { background: #0d1e2b; }
+
+/* Header — now hidden (header moved to bk-page-hdr) */
+.bk-header { display: none; }
+.bk-steps  { display: none; }
+.bk-close  { display: none; }
 /* Steps bar */
 .bk-steps { display: flex; gap: 4px; margin-bottom: 14px; }
 .bk-step-bar { flex: 1; height: 3px; border-radius: 99px; background: var(--border); transition: background 300ms; }
@@ -2031,7 +2105,7 @@ html[dir="rtl"] @keyframes bk-slide { from { transform: translateX(-100%); } to 
 .bk-step-label { font-size: 16px; font-weight: 700; color: var(--text-primary); padding-bottom: 16px; border-bottom: 1px solid var(--border); margin-bottom: 0; }
 html[data-theme="dark"] .bk-step-label { color: #e8f4f7; }
 /* Body */
-.bk-body { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
+.bk-body { flex: 1; display: flex; flex-direction: column; gap: 16px; }
 /* Summary card */
 .bk-summary { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: var(--r-lg); background: rgba(0,183,198,0.07); border: 1px solid rgba(0,183,198,0.20); }
 .bk-summary-icon { width: 40px; height: 40px; border-radius: var(--r-md); background: rgba(0,183,198,0.12); display: flex; align-items: center; justify-content: center; color: var(--alm-cyan); flex-shrink: 0; }
@@ -2075,7 +2149,7 @@ html[data-theme="dark"] .bk-footer { background: #0d1e2b; }
 .bk-next-btn { padding: 12px 28px; border-radius: var(--r-md); background: var(--alm-red); color: #fff; font-size: 16px; font-weight: 700; font-family: inherit; border: none; cursor: pointer; transition: background 150ms; }
 .bk-next-btn:hover { filter: brightness(1.08); }
 /* Confirmation */
-.bk-confirm { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 28px 48px; text-align: center; }
+.bk-confirm { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 0; text-align: center; }
 .bk-confirm-check { width: 76px; height: 76px; border-radius: 50%; background: rgba(0,183,198,0.10); border: 2px solid rgba(0,183,198,0.30); display: flex; align-items: center; justify-content: center; margin-bottom: 22px; animation: bk-pop 400ms cubic-bezier(0.34,1.56,0.64,1) both; }
 @keyframes bk-pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .bk-confirm-title { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
@@ -2096,8 +2170,11 @@ html[data-theme="dark"] .bk-confirm-val { color: #c8e8ee; }
 .bk-done-btn { padding: 13px 36px; border-radius: var(--r-md); background: var(--alm-dark); color: #fff; font-size: 16px; font-weight: 700; font-family: inherit; border: none; cursor: pointer; transition: background 150ms; }
 .bk-done-btn:hover { background: var(--alm-cyan); color: var(--alm-dark); }
 @media (max-width: 520px) {
-  .bk-panel { width: 100vw; }
+  .bk-content-wrap { padding: 20px 16px 80px; }
   .bk-grid-2 { grid-template-columns: 1fr 1fr; }
+  .bk-page-hdr-inner { padding: 0 16px; }
+  .bk-page-title { font-size: 13px; }
+  .bk-footer { padding: 12px 16px; }
 }
 
 /* ── City guide card interactions — Step 1: Hover + Focus ── */
@@ -10171,14 +10248,19 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
     _bk.price  = price || 0;
     _bk.nights = nights || 1;
     _bk.ref    = _genBkRef();
+    /* Hide main page content — same pattern as all overlays */
+    setHeroVisible(false);
+    if (mainEl) mainEl.style.display = 'none';
     _renderBkStep(1);
-    document.body.style.overflow = 'hidden';
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
   function closeBk() {
     var el = document.getElementById('alm-booking');
     if (el) { el.hidden = true; el.innerHTML = ''; }
-    document.body.style.overflow = '';
+    /* Restore main page content */
+    setHeroVisible(true);
+    if (mainEl) mainEl.style.display = '';
   }
 
   function _bkStepsHtml(n) {
@@ -10278,6 +10360,23 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
         '</div>';
     }
 
+    /* ── Build page header bar (shared across all steps) ── */
+    var stepDots = '<div class="bk-page-steps">';
+    for (var si = 1; si <= 3; si++) stepDots += '<div class="bk-page-step-dot' + (si <= n ? ' done' : '') + '"></div>';
+    stepDots += '</div>';
+
+    var pageHdr =
+      '<div class="bk-page-hdr">' +
+        '<div class="bk-page-hdr-inner">' +
+          '<button class="bk-page-back" id="bk-close-btn" type="button" aria-label="' + (isAr ? 'إغلاق' : 'Close') + '">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="icon--flip-rtl"><polyline points="15 18 9 12 15 6"/></svg>' +
+            (isAr ? 'رجوع' : 'Back') +
+          '</button>' +
+          '<div class="bk-page-title">' + (isAr ? 'إتمام الحجز' : 'Complete Booking') + '</div>' +
+          stepDots +
+        '</div>' +
+      '</div>';
+
     var panelHtml;
     if (n === 3) {
       /* Confirmation screen — save booking to My Tickets */
@@ -10292,66 +10391,60 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
         ts:     Date.now()
       });
       panelHtml =
+        pageHdr +
         '<div class="bk-panel">' +
-          '<div class="bk-header">' +
-            '<button class="bk-close" id="bk-close-btn" type="button" aria-label="Close">' +
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
-            '</button>' +
-            _bkStepsHtml(3) +
-          '</div>' +
-          '<div class="bk-confirm">' +
-            '<div class="bk-confirm-check">' +
-              '<svg viewBox="0 0 24 24" fill="none" stroke="var(--alm-cyan)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="38" height="38" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12"/></svg>' +
-            '</div>' +
-            '<div class="bk-confirm-title">' + (isAr ? '🎉 تم تأكيد الحجز!' : '🎉 Booking Confirmed!') + '</div>' +
-            '<div class="bk-confirm-sub">' + (isAr ? 'شكراً لك! تم استلام حجزك بنجاح.' : 'Thank you! Your booking has been received successfully.') + '</div>' +
-            '<div class="bk-confirm-ref">' +
-              '<div class="bk-confirm-ref-label">' + (isAr ? 'رقم الحجز' : 'Booking Reference') + '</div>' +
-              '<div class="bk-confirm-ref-code">' + _bk.ref + '</div>' +
-            '</div>' +
-            '<div class="bk-confirm-card">' +
-              '<div class="bk-confirm-row">' +
-                '<span>' + (isAr ? 'العنصر' : 'Item') + '</span>' +
-                '<span class="bk-confirm-val">' + _bk.label + '</span>' +
+          '<div class="bk-content-wrap">' +
+            '<div class="bk-confirm">' +
+              '<div class="bk-confirm-check">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="var(--alm-cyan)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="38" height="38" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12"/></svg>' +
               '</div>' +
-              (_bk.type !== 'flight' ? '<div class="bk-confirm-row"><span>' + (isAr ? 'عدد الليالي' : 'Nights') + '</span><span class="bk-confirm-val">' + _bk.nights + '</span></div>' : '') +
-              '<div class="bk-confirm-row">' +
-                '<span>' + (isAr ? 'الإجمالي المدفوع' : 'Total Paid') + '</span>' +
-                '<span class="bk-confirm-val" style="color:var(--alm-cyan);font-weight:700">SAR ' + total3.toLocaleString() + '</span>' +
+              '<div class="bk-confirm-title">' + (isAr ? '🎉 تم تأكيد الحجز!' : '🎉 Booking Confirmed!') + '</div>' +
+              '<div class="bk-confirm-sub">' + (isAr ? 'شكراً لك! تم استلام حجزك بنجاح.' : 'Thank you! Your booking has been received successfully.') + '</div>' +
+              '<div class="bk-confirm-ref">' +
+                '<div class="bk-confirm-ref-label">' + (isAr ? 'رقم الحجز' : 'Booking Reference') + '</div>' +
+                '<div class="bk-confirm-ref-code">' + _bk.ref + '</div>' +
               '</div>' +
-              '<div class="bk-confirm-row">' +
-                '<span>' + (isAr ? 'الحالة' : 'Status') + '</span>' +
-                '<span class="bk-status-badge">' + (isAr ? 'مؤكد' : 'Confirmed') + '</span>' +
+              '<div class="bk-confirm-card">' +
+                '<div class="bk-confirm-row">' +
+                  '<span>' + (isAr ? 'العنصر' : 'Item') + '</span>' +
+                  '<span class="bk-confirm-val">' + _bk.label + '</span>' +
+                '</div>' +
+                (_bk.type !== 'flight' ? '<div class="bk-confirm-row"><span>' + (isAr ? 'عدد الليالي' : 'Nights') + '</span><span class="bk-confirm-val">' + _bk.nights + '</span></div>' : '') +
+                '<div class="bk-confirm-row">' +
+                  '<span>' + (isAr ? 'الإجمالي المدفوع' : 'Total Paid') + '</span>' +
+                  '<span class="bk-confirm-val" style="color:var(--alm-cyan);font-weight:700">SAR ' + total3.toLocaleString() + '</span>' +
+                '</div>' +
+                '<div class="bk-confirm-row">' +
+                  '<span>' + (isAr ? 'الحالة' : 'Status') + '</span>' +
+                  '<span class="bk-status-badge">' + (isAr ? 'مؤكد' : 'Confirmed') + '</span>' +
+                '</div>' +
               '</div>' +
-            '</div>' +
-            '<div class="bk-confirm-note">' + (isAr ? 'سيتم إرسال تفاصيل الحجز إلى بريدك الإلكتروني قريباً.' : 'Booking details will be sent to your email address shortly.') + '</div>' +
-            '<div style="display:flex;flex-direction:column;gap:10px;width:100%">' +
-              '<button class="bk-done-btn" id="bk-view-trips-btn" type="button" style="background:var(--alm-cyan);color:var(--alm-dark)">' +
-                (isAr ? '✈️ رحلاتي' : '✈️ View My Trips') +
-              '</button>' +
-              '<button class="bk-done-btn" id="bk-view-tickets-btn" type="button" style="background:var(--bg-page);color:var(--text-primary);border:1px solid var(--border)">' +
-                (isAr ? '🎫 عرض تذاكري' : '🎫 My Tickets') +
-              '</button>' +
-              '<button class="bk-done-btn" id="bk-done-btn" type="button" style="background:transparent;color:var(--text-subtle);font-weight:400;font-size: 12px;padding:8px">' +
-                (isAr ? 'العودة للتصفح' : 'Back to Browsing') +
-              '</button>' +
+              '<div class="bk-confirm-note">' + (isAr ? 'سيتم إرسال تفاصيل الحجز إلى بريدك الإلكتروني قريباً.' : 'Booking details will be sent to your email address shortly.') + '</div>' +
+              '<div style="display:flex;flex-direction:column;gap:10px;width:100%">' +
+                '<button class="bk-done-btn" id="bk-view-trips-btn" type="button" style="background:var(--alm-cyan);color:var(--alm-dark)">' +
+                  (isAr ? '✈️ رحلاتي' : '✈️ View My Trips') +
+                '</button>' +
+                '<button class="bk-done-btn" id="bk-view-tickets-btn" type="button" style="background:var(--bg-page);color:var(--text-primary);border:1px solid var(--border)">' +
+                  (isAr ? '🎫 عرض تذاكري' : '🎫 My Tickets') +
+                '</button>' +
+                '<button class="bk-done-btn" id="bk-done-btn" type="button" style="background:transparent;color:var(--text-subtle);font-weight:400;font-size:12px;padding:8px">' +
+                  (isAr ? 'العودة للتصفح' : 'Back to Browsing') +
+                '</button>' +
+              '</div>' +
             '</div>' +
           '</div>' +
         '</div>';
     } else {
-      var nextLabel = n === 1 ? (isAr ? 'التالي: الدفع ←' : 'Next: Payment →') : (isAr ? 'تأكيد الدفع' : 'Confirm Payment');
+      var nextLabel = n === 1 ? (isAr ? 'التالي: الدفع →' : 'Next: Payment →') : (isAr ? 'تأكيد الدفع' : 'Confirm Payment');
       panelHtml =
+        pageHdr +
         '<div class="bk-panel">' +
-          '<div class="bk-header">' +
-            '<button class="bk-close" id="bk-close-btn" type="button" aria-label="Close">' +
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
-            '</button>' +
-            _bkStepsHtml(n) +
-            '<div class="bk-step-label">' + stepLabels[n] + '</div>' +
-          '</div>' +
-          '<div class="bk-body">' +
-            _bkSummaryHtml(isAr) +
-            '<div class="bk-fields">' + bodyContent + '</div>' +
+          '<div class="bk-content-wrap">' +
+            '<div class="bk-step-title">' + stepLabels[n] + '</div>' +
+            '<div class="bk-body">' +
+              _bkSummaryHtml(isAr) +
+              '<div class="bk-fields">' + bodyContent + '</div>' +
+            '</div>' +
           '</div>' +
           '<div class="bk-footer">' +
             (n > 1 ? '<button class="bk-back-btn" id="bk-prev-btn" type="button">' + (isAr ? '→ رجوع' : '← Back') + '</button>' : '<div></div>') +
@@ -10362,6 +10455,7 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
 
     el.innerHTML = panelHtml;
     el.hidden = false;
+    el.scrollTop = 0;
 
     /* Wire events */
     var closeBtn = document.getElementById('bk-close-btn');
@@ -10412,12 +10506,8 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
       });
     }
 
-    /* Click backdrop to close */
-    el.addEventListener('click', function(ev) { if (ev.target === el) closeBk(); }, { once: true });
-
-    /* Scroll panel to top */
-    var panel = el.querySelector('.bk-panel');
-    if (panel) panel.scrollTop = 0;
+    /* Scroll page to top */
+    el.scrollTop = 0;
   }
 
   /* ── Event delegation — all-dest grid (city card v2) ── */
