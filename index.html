@@ -7280,24 +7280,70 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
   });
 
   /* ─── FILTER + SORT ─── */
-  /* Read destination city from hero widget */
+  /* Read origin city from hero widget — returns empty string when placeholder/no selection */
+  function _getSearchOrig() {
+    var ov = document.getElementById('origVal');
+    if (!ov || ov.classList.contains('sf-muted')) return '';
+    return (ov.textContent || '').trim();
+  }
+
+  /* Read destination city from hero widget — returns empty string when placeholder/no selection */
   function _getSearchDest() {
     var dv = document.getElementById('destVal');
-    return dv ? (dv.textContent || '').trim().toLowerCase() : '';
+    if (!dv || dv.classList.contains('sf-muted')) return '';
+    return (dv.textContent || '').trim();
+  }
+
+  /* Resolve a city name (EN or AR) to its IATA code via the CITIES lookup */
+  function _getCityCode(text) {
+    if (!text) return null;
+    var t = text.trim().toLowerCase();
+    for (var i = 0; i < CITIES.length; i++) {
+      var c = CITIES[i];
+      if (c.name.toLowerCase() === t || c.nameAr === text.trim()) return c.code;
+    }
+    return null;
   }
 
   function applyFlightFlt() {
-    var f=FLT.flight, d=FLIGHT_DATA.slice();
-    /* Filter by searched destination city if set */
+    var f = FLT.flight;
+    var searchOrig = _getSearchOrig();
     var searchDest = _getSearchDest();
-    if(searchDest && searchDest !== 'destination' && searchDest !== 'الوجهة') {
-      d = d.filter(function(x){
-        return x.destCity.toLowerCase().indexOf(searchDest) !== -1 ||
-               searchDest.indexOf(x.destCity.toLowerCase()) !== -1;
+    var origIata   = _getCityCode(searchOrig);
+    var destIata   = _getCityCode(searchDest);
+
+    /* ── Step 1: Origin filtering ──
+       Default to RUH-origin flights so JED domestic flights never pollute results.
+       Only show JED-origin flights when user explicitly searches Jeddah as origin. */
+    var d;
+    if (origIata) {
+      d = FLIGHT_DATA.filter(function(x){ return x.orig === origIata; });
+    } else if (searchOrig) {
+      /* Text fallback for typed values not in CITIES */
+      var so = searchOrig.toLowerCase();
+      d = FLIGHT_DATA.filter(function(x){
+        return x.origCity.toLowerCase().indexOf(so) !== -1 || so.indexOf(x.origCity.toLowerCase()) !== -1;
       });
-      /* If no match, show all */
-      if(d.length === 0) d = FLIGHT_DATA.slice();
+      if (d.length === 0) d = FLIGHT_DATA.filter(function(x){ return x.orig === 'RUH'; });
+    } else {
+      /* No origin specified — default to RUH only */
+      d = FLIGHT_DATA.filter(function(x){ return x.orig === 'RUH'; });
     }
+
+    /* ── Step 2: Destination filtering (on top of origin pool) ── */
+    if (destIata) {
+      /* Exact IATA match — works for both EN and AR city names */
+      var byDest = d.filter(function(x){ return x.dest === destIata; });
+      if (byDest.length > 0) d = byDest;
+    } else if (searchDest) {
+      /* Text fallback */
+      var sd = searchDest.toLowerCase();
+      var byDestText = d.filter(function(x){
+        return x.destCity.toLowerCase().indexOf(sd) !== -1 || sd.indexOf(x.destCity.toLowerCase()) !== -1;
+      });
+      if (byDestText.length > 0) d = byDestText;
+    }
+
     if(f.stops.length) d=d.filter(function(x){
       var s=x.stops>=2?'2+':String(x.stops);
       return f.stops.indexOf(s)!==-1;

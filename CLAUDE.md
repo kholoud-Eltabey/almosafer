@@ -442,6 +442,51 @@ min-width: 40px; min-height: 40px; flex-shrink: 0;
 min-width: 16px; min-height: 16px; flex-shrink: 0;
 ```
 
+### BUG 07 — Search results showing JED (Jeddah) flights for non-Jeddah searches
+**Cause (A):** Arabic mode sets `destVal.textContent = "القاهرة"`. Old filter compared Arabic text against English `destCity` in FLIGHT_DATA → 0 matches → fallback `d = FLIGHT_DATA.slice()` → ALL 26 flights shown (including JED→RUH domestic IDs 25-26).
+**Cause (B):** When user typed city as ORIGIN with no destination, no origin filter existed → all 26 flights shown including JED.
+**Cause (C):** Default state (no city selected) had no origin baseline, so JED flights polluted all results.
+
+**Fix — three-part:**
+
+1. `_getCityCode(text)` — resolves EN or AR city name to IATA code via `CITIES` lookup (handles bilingual):
+```javascript
+function _getCityCode(text) {
+  var t = text.trim().toLowerCase();
+  for (var i = 0; i < CITIES.length; i++) {
+    var c = CITIES[i];
+    if (c.name.toLowerCase() === t || c.nameAr === text.trim()) return c.code;
+  }
+  return null;
+}
+```
+
+2. `_getSearchOrig()` / `_getSearchDest()` — returns `''` when field has `sf-muted` class (placeholder state), preventing stale text from being used as a filter:
+```javascript
+function _getSearchDest() {
+  var dv = document.getElementById('destVal');
+  if (!dv || dv.classList.contains('sf-muted')) return '';
+  return (dv.textContent || '').trim();
+}
+```
+
+3. `applyFlightFlt()` — origin-first filtering strategy:
+```javascript
+// Step 1: Origin pool — DEFAULT to RUH-only (never JED unless user searched Jeddah)
+if (origIata) {
+  d = FLIGHT_DATA.filter(function(x){ return x.orig === origIata; });
+} else {
+  d = FLIGHT_DATA.filter(function(x){ return x.orig === 'RUH'; });
+}
+// Step 2: Destination filter on top of origin pool (IATA exact match, then text fallback)
+if (destIata) {
+  var byDest = d.filter(function(x){ return x.dest === destIata; });
+  if (byDest.length > 0) d = byDest;
+}
+```
+
+**Rule: JED→RUH domestic flights (FLIGHT_DATA IDs 25-26) only appear when user explicitly sets origin = Jeddah. They must NEVER appear for any other search.**
+
 ---
 
 ## Overlay Routing Logic
