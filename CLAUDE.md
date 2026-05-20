@@ -517,6 +517,49 @@ if (destIata) {
 
 **Rule: FLIGHT_DATA must only contain flights with `orig:'RUH'`. Never re-add JED-origin entries. If Jeddah domestic flights are needed in future, create a separate `DOMESTIC_DATA` array.**
 
+**FLIGHT_DATA current state — 46 entries, all `orig:'RUH'`:**
+
+| Destination | IATA | IDs | Airlines |
+|---|---|---|---|
+| Dubai | DXB | 1–5 | Saudia, flydubai, Emirates, flynas, Air Arabia |
+| Istanbul | IST | 6–8 | Saudia, Turkish Airlines, flynas |
+| Cairo | CAI | 9–11 | flynas, Saudia, Air Arabia |
+| London | LHR | 12–14 | Saudia, British Airways, Qatar Airways |
+| Maldives | MLE | 15–17 | Saudia, Emirates, Qatar Airways |
+| Paris | CDG | 18–20 | Air France, Saudia, Qatar Airways |
+| Bali | DPS | 21–22 | Emirates, Qatar Airways |
+| Tokyo | NRT | 23–24 | Saudia, Emirates |
+| Jeddah | JED | 25–27 | Saudia, flynas, flyadeal |
+| Madinah | MED | 28–29 | Saudia, flynas |
+| Dammam | DMM | 30–31 | Saudia, flynas |
+| Abu Dhabi | AUH | 32–34 | Saudia, Etihad, Air Arabia |
+| Amman | AMM | 35–36 | Saudia, Royal Jordanian |
+| Bangkok | BKK | 37–38 | Saudia, Qatar Airways |
+| Kuala Lumpur | KUL | 39–40 | Saudia, Emirates |
+| New York | JFK | 41–42 | Saudia, Qatar Airways |
+| Beirut | BEY | 43–44 | Saudia, Middle East Airlines |
+| Muscat | MCT | 45–46 | Saudia, Oman Air |
+
+**AIRLINE_META codes:** SV · FZ · EK · XY · G9 · TK · QR · F3 · EY · RJ · ME · WY
+
+---
+
+### BUG 08 — Full JavaScript failure after FLIGHT_DATA expansion
+**Cause:** When adding new entries to FLIGHT_DATA, the previously-last entry (id:24, Emirates Tokyo) had no trailing comma. The new entries were inserted after a comment block, but without a comma separator:
+```javascript
+{ id:24, ...cls:'Economy' }        ← no comma — was the last entry
+/* IDs 25-26 removed comment */
+{ id:25, ...cls:'Economy' },       ← SYNTAX ERROR
+```
+JavaScript parses the entire IIFE before executing any of it. A single syntax error anywhere in the script block causes **complete parse failure** — nothing runs:
+- `setTripType('one-way')` never called → RETURN field visible on load
+- `renderTopDestinations()` never called → Top Destinations cards blank
+- All JS initialization broken — Deals, city guide, booking flow all dead
+
+**Fix:** Add trailing comma to id:24 entry.
+
+**Rule: When appending entries to any JS array (FLIGHT_DATA, STAY_DATA, ACT_DATA, DEALS_DATA, CITIES_DATA), always verify the previously-last entry has a trailing comma before the new entry. A missing comma causes silent total JS failure — no console error is surfaced by the browser at runtime in some environments.**
+
 ---
 
 ## Overlay Routing Logic
