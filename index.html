@@ -7068,10 +7068,8 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
     { id:22, airline:'Qatar Airways',   code:'QR', fn:'QR 962', orig:'RUH', dest:'DPS', origCity:'Riyadh',   destCity:'Bali',      dep:'14:30', arr:'06:30', dur:720, stops:1, price:4400, baggage:true,  cls:'Economy' },
     /* ── Tokyo ── */
     { id:23, airline:'Saudia',          code:'SV', fn:'SV 921', orig:'RUH', dest:'NRT', origCity:'Riyadh',   destCity:'Tokyo',     dep:'02:00', arr:'19:00', dur:840, stops:1, price:5200, baggage:true,  cls:'Economy' },
-    { id:24, airline:'Emirates',        code:'EK', fn:'EK 318', orig:'RUH', dest:'NRT', origCity:'Riyadh',   destCity:'Tokyo',     dep:'09:00', arr:'02:30', dur:810, stops:1, price:5600, baggage:true,  cls:'Economy' },
-    /* ── Riyadh (domestic) ── */
-    { id:25, airline:'Saudia',          code:'SV', fn:'SV 006', orig:'JED', dest:'RUH', origCity:'Jeddah',   destCity:'Riyadh',    dep:'07:00', arr:'08:00', dur:60,  stops:0, price:310,  baggage:true,  cls:'Economy' },
-    { id:26, airline:'flynas',          code:'XY', fn:'XY 002', orig:'JED', dest:'RUH', origCity:'Jeddah',   destCity:'Riyadh',    dep:'12:00', arr:'13:00', dur:60,  stops:0, price:220,  baggage:false, cls:'Economy' }
+    { id:24, airline:'Emirates',        code:'EK', fn:'EK 318', orig:'RUH', dest:'NRT', origCity:'Riyadh',   destCity:'Tokyo',     dep:'09:00', arr:'02:30', dur:810, stops:1, price:5600, baggage:true,  cls:'Economy' }
+    /* IDs 25-26 (JED→RUH domestic) permanently removed — caused search pollution */
   ];
 
   var STAY_DATA = [
@@ -7307,41 +7305,23 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
 
   function applyFlightFlt() {
     var f = FLT.flight;
-    var searchOrig = _getSearchOrig();
     var searchDest = _getSearchDest();
-    var origIata   = _getCityCode(searchOrig);
     var destIata   = _getCityCode(searchDest);
 
-    /* ── Step 1: Origin filtering ──
-       Default to RUH-origin flights so JED domestic flights never pollute results.
-       Only show JED-origin flights when user explicitly searches Jeddah as origin. */
-    var d;
-    if (origIata) {
-      d = FLIGHT_DATA.filter(function(x){ return x.orig === origIata; });
-    } else if (searchOrig) {
-      /* Text fallback for typed values not in CITIES */
-      var so = searchOrig.toLowerCase();
-      d = FLIGHT_DATA.filter(function(x){
-        return x.origCity.toLowerCase().indexOf(so) !== -1 || so.indexOf(x.origCity.toLowerCase()) !== -1;
-      });
-      if (d.length === 0) d = FLIGHT_DATA.filter(function(x){ return x.orig === 'RUH'; });
-    } else {
-      /* No origin specified — default to RUH only */
-      d = FLIGHT_DATA.filter(function(x){ return x.orig === 'RUH'; });
-    }
-
-    /* ── Step 2: Destination filtering (on top of origin pool) ── */
+    /* All FLIGHT_DATA entries are RUH-origin (JED domestic flights permanently removed).
+       Filter only by destination — IATA exact match handles both EN and AR city names. */
+    var d = FLIGHT_DATA.slice();
     if (destIata) {
-      /* Exact IATA match — works for both EN and AR city names */
+      /* Exact IATA match — resolves Arabic/English city names correctly */
       var byDest = d.filter(function(x){ return x.dest === destIata; });
       if (byDest.length > 0) d = byDest;
     } else if (searchDest) {
-      /* Text fallback */
+      /* Text fallback for typed values not in CITIES list */
       var sd = searchDest.toLowerCase();
-      var byDestText = d.filter(function(x){
+      var byText = d.filter(function(x){
         return x.destCity.toLowerCase().indexOf(sd) !== -1 || sd.indexOf(x.destCity.toLowerCase()) !== -1;
       });
-      if (byDestText.length > 0) d = byDestText;
+      if (byText.length > 0) d = byText;
     }
 
     if(f.stops.length) d=d.filter(function(x){

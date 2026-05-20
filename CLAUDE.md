@@ -444,12 +444,14 @@ min-width: 16px; min-height: 16px; flex-shrink: 0;
 
 ### BUG 07 — Search results showing JED (Jeddah) flights for non-Jeddah searches
 **Cause (A):** Arabic mode sets `destVal.textContent = "القاهرة"`. Old filter compared Arabic text against English `destCity` in FLIGHT_DATA → 0 matches → fallback `d = FLIGHT_DATA.slice()` → ALL 26 flights shown (including JED→RUH domestic IDs 25-26).
-**Cause (B):** When user typed city as ORIGIN with no destination, no origin filter existed → all 26 flights shown including JED.
+**Cause (B):** When user typed city as ORIGIN (e.g. "Cairo→Riyadh"), no origin filter existed → all flights shown including JED.
 **Cause (C):** Default state (no city selected) had no origin baseline, so JED flights polluted all results.
 
-**Fix — three-part:**
+**Final Fix — root-cause removal + IATA-aware destination filter:**
 
-1. `_getCityCode(text)` — resolves EN or AR city name to IATA code via `CITIES` lookup (handles bilingual):
+1. **Deleted FLIGHT_DATA IDs 25-26 (JED→RUH domestic)** — permanently removed. These flights served no purpose and were the source of all JED pollution. FLIGHT_DATA now contains only 24 entries, all `orig:'RUH'`.
+
+2. `_getCityCode(text)` — resolves EN or AR city name to IATA code via `CITIES` lookup:
 ```javascript
 function _getCityCode(text) {
   var t = text.trim().toLowerCase();
@@ -461,7 +463,7 @@ function _getCityCode(text) {
 }
 ```
 
-2. `_getSearchOrig()` / `_getSearchDest()` — returns `''` when field has `sf-muted` class (placeholder state), preventing stale text from being used as a filter:
+3. `_getSearchDest()` — returns `''` when field has `sf-muted` class (placeholder), preventing stale placeholder text from triggering filters:
 ```javascript
 function _getSearchDest() {
   var dv = document.getElementById('destVal');
@@ -470,22 +472,18 @@ function _getSearchDest() {
 }
 ```
 
-3. `applyFlightFlt()` — origin-first filtering strategy:
+4. `applyFlightFlt()` — destination-only filter (origin filter removed since all data is RUH-origin):
 ```javascript
-// Step 1: Origin pool — DEFAULT to RUH-only (never JED unless user searched Jeddah)
-if (origIata) {
-  d = FLIGHT_DATA.filter(function(x){ return x.orig === origIata; });
-} else {
-  d = FLIGHT_DATA.filter(function(x){ return x.orig === 'RUH'; });
-}
-// Step 2: Destination filter on top of origin pool (IATA exact match, then text fallback)
+var d = FLIGHT_DATA.slice();
 if (destIata) {
   var byDest = d.filter(function(x){ return x.dest === destIata; });
-  if (byDest.length > 0) d = byDest;
+  if (byDest.length > 0) d = byDest;  // IATA exact match (handles Arabic names)
+} else if (searchDest) {
+  // text fallback only for values not in CITIES
 }
 ```
 
-**Rule: JED→RUH domestic flights (FLIGHT_DATA IDs 25-26) only appear when user explicitly sets origin = Jeddah. They must NEVER appear for any other search.**
+**Rule: FLIGHT_DATA must only contain flights with `orig:'RUH'`. Never re-add JED-origin entries. If Jeddah domestic flights are needed in future, create a separate `DOMESTIC_DATA` array.**
 
 ---
 
