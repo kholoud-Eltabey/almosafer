@@ -7096,6 +7096,38 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
     { id:23, airline:'Saudia',          code:'SV', fn:'SV 921', orig:'RUH', dest:'NRT', origCity:'Riyadh',   destCity:'Tokyo',     dep:'02:00', arr:'19:00', dur:840, stops:1, price:5200, baggage:true,  cls:'Economy' },
     { id:24, airline:'Emirates',        code:'EK', fn:'EK 318', orig:'RUH', dest:'NRT', origCity:'Riyadh',   destCity:'Tokyo',     dep:'09:00', arr:'02:30', dur:810, stops:1, price:5600, baggage:true,  cls:'Economy' }
     /* IDs 25-26 (JED→RUH domestic) permanently removed — caused search pollution */
+    /* ── Jeddah (domestic) ── */
+    { id:25, airline:'Saudia',          code:'SV', fn:'SV 101', orig:'RUH', dest:'JED', origCity:'Riyadh', destCity:'Jeddah',       dep:'06:00', arr:'07:15', dur:75,  stops:0, price:290,  baggage:true,  cls:'Economy' },
+    { id:26, airline:'flynas',          code:'XY', fn:'XY 102', orig:'RUH', dest:'JED', origCity:'Riyadh', destCity:'Jeddah',       dep:'10:30', arr:'11:45', dur:75,  stops:0, price:240,  baggage:false, cls:'Economy' },
+    { id:27, airline:'flyadeal',        code:'F3', fn:'F3 105', orig:'RUH', dest:'JED', origCity:'Riyadh', destCity:'Jeddah',       dep:'18:00', arr:'19:15', dur:75,  stops:0, price:199,  baggage:false, cls:'Economy' },
+    /* ── Madinah (domestic) ── */
+    { id:28, airline:'Saudia',          code:'SV', fn:'SV 201', orig:'RUH', dest:'MED', origCity:'Riyadh', destCity:'Madinah',      dep:'07:30', arr:'08:45', dur:75,  stops:0, price:320,  baggage:true,  cls:'Economy' },
+    { id:29, airline:'flynas',          code:'XY', fn:'XY 202', orig:'RUH', dest:'MED', origCity:'Riyadh', destCity:'Madinah',      dep:'14:00', arr:'15:15', dur:75,  stops:0, price:270,  baggage:false, cls:'Economy' },
+    /* ── Dammam (domestic) ── */
+    { id:30, airline:'Saudia',          code:'SV', fn:'SV 401', orig:'RUH', dest:'DMM', origCity:'Riyadh', destCity:'Dammam',       dep:'08:00', arr:'08:55', dur:55,  stops:0, price:210,  baggage:true,  cls:'Economy' },
+    { id:31, airline:'flynas',          code:'XY', fn:'XY 402', orig:'RUH', dest:'DMM', origCity:'Riyadh', destCity:'Dammam',       dep:'17:00', arr:'17:55', dur:55,  stops:0, price:180,  baggage:false, cls:'Economy' },
+    /* ── Abu Dhabi ── */
+    { id:32, airline:'Saudia',          code:'SV', fn:'SV 551', orig:'RUH', dest:'AUH', origCity:'Riyadh', destCity:'Abu Dhabi',    dep:'07:00', arr:'09:00', dur:120, stops:0, price:680,  baggage:true,  cls:'Economy' },
+    { id:33, airline:'Etihad',          code:'EY', fn:'EY 431', orig:'RUH', dest:'AUH', origCity:'Riyadh', destCity:'Abu Dhabi',    dep:'12:30', arr:'14:25', dur:115, stops:0, price:820,  baggage:true,  cls:'Economy' },
+    { id:34, airline:'Air Arabia',      code:'G9', fn:'G9 551', orig:'RUH', dest:'AUH', origCity:'Riyadh', destCity:'Abu Dhabi',    dep:'19:00', arr:'21:00', dur:120, stops:0, price:560,  baggage:false, cls:'Economy' },
+    /* ── Amman ── */
+    { id:35, airline:'Saudia',          code:'SV', fn:'SV 261', orig:'RUH', dest:'AMM', origCity:'Riyadh', destCity:'Amman',        dep:'09:00', arr:'11:30', dur:150, stops:0, price:890,  baggage:true,  cls:'Economy' },
+    { id:36, airline:'Royal Jordanian', code:'RJ', fn:'RJ 121', orig:'RUH', dest:'AMM', origCity:'Riyadh', destCity:'Amman',        dep:'15:00', arr:'17:30', dur:150, stops:0, price:780,  baggage:true,  cls:'Economy' },
+    /* ── Bangkok ── */
+    { id:37, airline:'Saudia',          code:'SV', fn:'SV 831', orig:'RUH', dest:'BKK', origCity:'Riyadh', destCity:'Bangkok',      dep:'03:00', arr:'13:30', dur:390, stops:0, price:2800, baggage:true,  cls:'Economy' },
+    { id:38, airline:'Qatar Airways',   code:'QR', fn:'QR 831', orig:'RUH', dest:'BKK', origCity:'Riyadh', destCity:'Bangkok',      dep:'14:00', arr:'02:30', dur:420, stops:1, price:2400, baggage:true,  cls:'Economy' },
+    /* ── Kuala Lumpur ── */
+    { id:39, airline:'Saudia',          code:'SV', fn:'SV 861', orig:'RUH', dest:'KUL', origCity:'Riyadh', destCity:'Kuala Lumpur', dep:'02:00', arr:'13:30', dur:330, stops:0, price:2600, baggage:true,  cls:'Economy' },
+    { id:40, airline:'Emirates',        code:'EK', fn:'EK 348', orig:'RUH', dest:'KUL', origCity:'Riyadh', destCity:'Kuala Lumpur', dep:'22:00', arr:'12:00', dur:360, stops:1, price:2200, baggage:true,  cls:'Economy' },
+    /* ── New York ── */
+    { id:41, airline:'Saudia',          code:'SV', fn:'SV 21',  orig:'RUH', dest:'JFK', origCity:'Riyadh', destCity:'New York',     dep:'01:00', arr:'09:00', dur:660, stops:0, price:5800, baggage:true,  cls:'Business'},
+    { id:42, airline:'Qatar Airways',   code:'QR', fn:'QR 703', orig:'RUH', dest:'JFK', origCity:'Riyadh', destCity:'New York',     dep:'07:00', arr:'16:30', dur:690, stops:1, price:5200, baggage:true,  cls:'Economy' },
+    /* ── Beirut ── */
+    { id:43, airline:'Saudia',               code:'SV', fn:'SV 241', orig:'RUH', dest:'BEY', origCity:'Riyadh', destCity:'Beirut', dep:'08:00', arr:'10:30', dur:150, stops:0, price:1100, baggage:true,  cls:'Economy' },
+    { id:44, airline:'Middle East Airlines', code:'ME', fn:'ME 502', orig:'RUH', dest:'BEY', origCity:'Riyadh', destCity:'Beirut', dep:'14:00', arr:'16:30', dur:150, stops:0, price:980,  baggage:true,  cls:'Economy' },
+    /* ── Muscat ── */
+    { id:45, airline:'Saudia',          code:'SV', fn:'SV 571', orig:'RUH', dest:'MCT', origCity:'Riyadh', destCity:'Muscat',       dep:'07:00', arr:'09:30', dur:150, stops:0, price:720,  baggage:true,  cls:'Economy' },
+    { id:46, airline:'Oman Air',        code:'WY', fn:'WY 501', orig:'RUH', dest:'MCT', origCity:'Riyadh', destCity:'Muscat',       dep:'13:00', arr:'15:30', dur:150, stops:0, price:650,  baggage:true,  cls:'Economy' }
   ];
 
   var STAY_DATA = [
@@ -7130,7 +7162,12 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
     XY: { color:'#F15C22', text:'#fff' },   /* flynas — orange */
     G9: { color:'#CE0E2D', text:'#fff' },   /* Air Arabia — red */
     TK: { color:'#C8102E', text:'#fff' },   /* Turkish Airlines — red */
-    QR: { color:'#5C0632', text:'#fff' }    /* Qatar Airways — maroon */
+    QR: { color:'#5C0632', text:'#fff' },   /* Qatar Airways — maroon */
+    F3: { color:'#E02A2A', text:'#fff' },   /* flyadeal — red */
+    EY: { color:'#BB9852', text:'#fff' },   /* Etihad — gold */
+    RJ: { color:'#8B1A1A', text:'#fff' },   /* Royal Jordanian — maroon */
+    ME: { color:'#006400', text:'#fff' },   /* Middle East Airlines — green */
+    WY: { color:'#7B3D91', text:'#fff' }    /* Oman Air — purple */
   };
 
   /* ── Hotel chain brands (STAY_DATA id → chain) ── */
