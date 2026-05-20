@@ -7312,16 +7312,15 @@ html[dir="rtl"] .icon--flip-rtl { transform: scaleX(-1); }
        Filter only by destination — IATA exact match handles both EN and AR city names. */
     var d = FLIGHT_DATA.slice();
     if (destIata) {
-      /* Exact IATA match — resolves Arabic/English city names correctly */
-      var byDest = d.filter(function(x){ return x.dest === destIata; });
-      if (byDest.length > 0) d = byDest;
+      /* Exact IATA match — always apply; may yield [] which renders "No results" */
+      d = d.filter(function(x){ return x.dest === destIata; });
     } else if (searchDest) {
       /* Text fallback for typed values not in CITIES list */
       var sd = searchDest.toLowerCase();
       var byText = d.filter(function(x){
         return x.destCity.toLowerCase().indexOf(sd) !== -1 || sd.indexOf(x.destCity.toLowerCase()) !== -1;
       });
-      if (byText.length > 0) d = byText;
+      d = byText; /* may be [] — renders "No results found" correctly */
     }
 
     if(f.stops.length) d=d.filter(function(x){
